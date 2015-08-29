@@ -2,20 +2,18 @@
 <%@ include file="/WEB-INF/content/base/taglibs.jsp"%>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator"%>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/page" prefix="page"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>Insert title here</title>
-	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>AdminLTE 2 | Dashboard</title>
+    <title>ImEthan Admin</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
     <link rel="stylesheet" href="${root}/theme/bootstrap/css/bootstrap.min.css">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="${root}/theme/other/font-awesome-4.4.0/css/font-awesome.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="${root}/theme/dist/css/AdminLTE.min.css">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -38,18 +36,37 @@
     <![endif]-->
 	<decorator:head></decorator:head>
 </head>
-  <body class="hold-transition skin-blue-light sidebar-mini">
+  <!--
+  BODY TAG OPTIONS:
+  =================
+  Apply one or more of the following classes to get the
+  desired effect
+  |---------------------------------------------------------|
+  | SKINS         | skin-blue                               |
+  |               | skin-black                              |
+  |               | skin-purple                             |
+  |               | skin-yellow                             |
+  |               | skin-red                                |
+  |               | skin-green                              |
+  |---------------------------------------------------------|
+  |LAYOUT OPTIONS | fixed                                   |
+  |               | layout-boxed                            |
+  |               | layout-top-nav                          |
+  |               | sidebar-collapse                        |
+  |               | sidebar-mini                            |
+  |---------------------------------------------------------|
+  -->
+<body class="hold-transition skin-blue-light fixed">
     <div class="wrapper">
 		<%@ include file="/WEB-INF/content/layout/header.jsp"%>
 		<%@ include file="/WEB-INF/content/layout/menu.jsp"%>
 		<decorator:body></decorator:body>
 		<%@ include file="/WEB-INF/content/layout/footer.jsp"%>
-		
 	</div>
 	<!-- jQuery 2.1.4 -->
     <script src="${root}/theme/plugins/jQuery/jQuery-2.1.4.min.js"></script>
     <!-- jQuery UI 1.11.4 -->
-    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+    <script src="${root}/theme/plugins/jQueryUI/jquery-ui.min.js"></script>
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
     <script>
       $.widget.bridge('uibutton', $.ui.button);
@@ -60,7 +77,7 @@
     <!-- jQuery Knob Chart -->
     <script src="${root}/theme/plugins/knob/jquery.knob.js"></script>
     <!-- daterangepicker -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js"></script>
+    <script src="${root}/theme/other/js/moment.min.js"></script>
     <script src="${root}/theme/plugins/daterangepicker/daterangepicker.js"></script>
     <!-- datepicker -->
     <script src="${root}/theme/plugins/datepicker/bootstrap-datepicker.js"></script>

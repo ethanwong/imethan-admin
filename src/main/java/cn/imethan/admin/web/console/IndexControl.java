@@ -16,10 +16,9 @@ public class IndexControl {
 	
     @RequestMapping("")
     public String indexOne(Model model) {
-    	System.out.println("----------------");
+    	System.out.println("------console----------");
     	return "console/index";
     }
-
 }
 
 
