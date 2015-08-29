@@ -4,7 +4,7 @@
         <div class="pull-right hidden-xs">
           <b>Version</b> 0.0.1
         </div>
-        <strong>Copyright &copy; 2015-2016 ImEthan.</strong> All rights reserved.
+        Copyright &copy; 2015-2016 ImEthan. All rights reserved.
       </footer>
 
       <!-- Control Sidebar -->

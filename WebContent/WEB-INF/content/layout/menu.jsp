@@ -27,9 +27,9 @@
     <!-- sidebar menu: : style can be found in sidebar.less -->
     <ul class="sidebar-menu ">
       <li class="header">MAIN NAVIGATION</li>
-      <li class="active">
+      <li class="">
         <a href="${root}/console">
-          <i class="fa fa-dashboard"></i> <span>用户主页</span> <small class="label pull-right bg-green">new</small>
+          <i class="fa fa-dashboard"></i> <span>用户首页</span> <small class="label pull-right bg-green">new</small>
         </a>
       </li>
       
@@ -42,14 +42,14 @@
 <!--           <li><a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li> -->
 <!--         </ul> -->
 <!--       </li> -->
-      <li class="treeview">
+      <li class="treeview active">
         <a href="#">
           <i class="fa fa-users"></i>
           <span>权限配置</span>
         </a>
         <ul class="treeview-menu">
-          <li><a href="${root}/theme/pages/layout/top-nav.html"><i class="fa fa-circle-o"></i> 用户管理</a></li>
-          <li><a href="${root}/theme/pages/layout/boxed.html"><i class="fa fa-circle-o"></i> 角色管理</a></li>
+          <li class="active"><a href="${root}/security/user"><i class="fa fa-circle-o"></i> 用户管理</a></li>
+          <li><a href="${root}/security/role"><i class="fa fa-circle-o"></i> 角色管理</a></li>
           <li><a href="${root}/theme/pages/layout/fixed.html"><i class="fa fa-circle-o"></i> 权限配置</a></li>
           <li><a href="${root}/theme/pages/layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> 资源管理</a></li>
         </ul>

@@ -7,7 +7,8 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>ImEthan Admin</title>
+    <title>ImEthan Admin V0.0.1</title>
+    <link rel="shortcut icon" href="${root}/theme/images/favicon.ico" type="image/x-icon" />
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
@@ -18,7 +19,8 @@
     <link rel="stylesheet" href="${root}/theme/dist/css/AdminLTE.min.css">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
-    <link rel="stylesheet" href="${root}/theme/dist/css/skins/_all-skins.min.css">
+<%--     <link rel="stylesheet" href="${root}/theme/dist/css/skins/_all-skins.min.css"> --%>
+    <link rel="stylesheet" href="${root}/theme/dist/css/skins/_all-skins.css">
     <!-- iCheck -->
     <link rel="stylesheet" href="${root}/theme/plugins/iCheck/flat/blue.css">
     <!-- Date Picker -->
