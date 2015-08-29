@@ -13,7 +13,7 @@
 	default-lazy-init="true">
 	
 	<!-- 默认访问跳转到首页 -->
-    <mvc:view-controller path="/" view-name="forward:/index" />
+    <mvc:view-controller path="/" view-name="forward:/login" />
 
 	<!-- 配置静态资源，直接映射到对应的文件夹，不被DispatcherServlet处理 -->
 	<mvc:resources mapping="/theme/**" location="/theme/" />
@@ -27,38 +27,11 @@
 	</context:component-scan>
 	
 <!-- 	<mvc:interceptors> -->
-		<!-- On pre-handle, resolve the device that originated the web request -->
-<!-- 		<mvc:interceptor> -->
-<!-- 			<mvc:mapping path="/mobile/**"/> -->
-<!--   			<bean class="org.springframework.mobile.device.DeviceResolverHandlerInterceptor" /> -->
-<!--   		</mvc:interceptor> -->
-  		
-  		 <!-- On pre-handle, manage the user's site preference (declare after DeviceResolverHandlerInterceptor) -->
-<!--   		<mvc:interceptor> -->
-<!--   			<mvc:mapping path="/mobile/**"/> -->
-<!--   			<bean class="org.springframework.mobile.device.site.SitePreferenceHandlerInterceptor" /> -->
-<!-- 		</mvc:interceptor> -->
-		
-		<!-- On pre-handle, redirects mobile users to "m.imethan.cn" (declare after DeviceResolverHandlerInterceptor) 
-		<mvc:interceptor>
-			<mvc:mapping path="/mobile/**"/>
-		    <bean class="org.springframework.mobile.device.switcher.SiteSwitcherHandlerInterceptor"  factory-method="mDot">
-		    	<constructor-arg index="0" type="java.lang.String" value="imethan.cn"/>
-    			<constructor-arg index="1" type="java.lang.Boolean" value="true"/>
-		    </bean>
-		</mvc:interceptor>-->
-		
 <!-- 		<mvc:interceptor> -->
 <!-- 			<mvc:mapping path="/console/**"/> -->
 <!-- 			<mvc:exclude-mapping path="/theme/**"/> -->
 <!-- 			<mvc:exclude-mapping path="/upload/**"/> -->
 <!-- 			<bean class="com.the3.web.interceptor.ConsoleInterceptor" /> -->
-<!-- 		</mvc:interceptor> -->
-<!-- 		<mvc:interceptor> -->
-<!-- 			<mvc:mapping path="/**"/> -->
-<!-- 			<mvc:exclude-mapping path="/theme/**"/> -->
-<!-- 			<mvc:exclude-mapping path="/upload/**"/> -->
-<!-- 			<bean class="com.the3.web.interceptor.FrontInterceptor" /> -->
 <!-- 		</mvc:interceptor> -->
 <!-- 	</mvc:interceptors> -->
 	
@@ -79,11 +52,6 @@
 				<property name="supportedMediaTypes" value="text/plain;charset=UTF-8" />
 			</bean>
 		</mvc:message-converters>
-		
-<!-- 		<mvc:argument-resolvers> -->
-<!--    			<bean class="org.springframework.mobile.device.DeviceWebArgumentResolver" /> -->
-<!--    			<bean class="org.springframework.mobile.device.site.SitePreferenceWebArgumentResolver" /> -->
-<!-- 		</mvc:argument-resolvers> -->
 	</mvc:annotation-driven>
 
 	<!-- REST中根据URL后缀自动判定Content-Type及相应的View -->
@@ -116,8 +84,7 @@
 		</property>
 		<property name="defaultViews">
 			<list>
-				<bean name="jsonView"
-					class="org.springframework.web.servlet.view.json.MappingJacksonJsonView" />
+				<bean name="jsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" />
 			</list>
 		</property>
 	</bean>
@@ -127,24 +94,4 @@
 	<!--  one of the properties available; the maximum file size in bytes -->
 	<property name="maxUploadSize" value="1000000" />
 	</bean>
-	
-	<!-- Enable Shiro Annotations for Spring-configured beans.  Only run after -->
-	<!-- the lifecycleBeanProcessor has run: -->
-	<!-- 开启Shiro注解的Spring配置方式的beans。在lifecycleBeanPostProcessor之后运行 -->
-<!--     <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor" /> -->
-<!--     <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor"> -->
-<!--         <property name="securityManager" ref="securityManager" /> -->
-<!--     </bean> -->
-    
-<!--     <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" /> -->
-
-	<!-- 验证不通过跳转 -->
-<!--     <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver"> -->
-<!--         <property name="exceptionMappings"> -->
-<!--             <props> -->
-<!--                 <prop key="org.apache.shiro.authz.UnauthorizedException">/base/error/403</prop> -->
-<!--             </props> -->
-<!--         </property> -->
-<!--     </bean> -->
-
 </beans> 

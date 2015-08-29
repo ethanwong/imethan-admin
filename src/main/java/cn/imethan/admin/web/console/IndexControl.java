@@ -1,8 +1,11 @@
 package cn.imethan.admin.web.console;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import cn.imethan.admin.service.security.UserService;
 
 /**
  * IndexControl.java
@@ -14,8 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/console")
 public class IndexControl {
 	
+	@Autowired
+	private UserService userService;
+	
     @RequestMapping("")
     public String indexOne(Model model) {
+    	userService.test();
     	System.out.println("------console----------");
     	return "console/index";
     }
