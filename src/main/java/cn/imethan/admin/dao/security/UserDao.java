@@ -1,10 +1,10 @@
 package cn.imethan.admin.dao.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
-import cn.imethan.admin.base.hibernate.MyHibernateDaoSupport;
+import cn.imethan.admin.base.hibernate.MyHibernateTemplate;
+import cn.imethan.admin.base.hibernate.SearchFilter;
+import cn.imethan.admin.entity.security.User;
 
 /**
  * UserDao.java
@@ -13,29 +13,20 @@ import cn.imethan.admin.base.hibernate.MyHibernateDaoSupport;
  * @time 2015年8月29日下午5:32:16
  */
 @Repository
-public class UserDao   {
-	
-//	@Autowired
-//	private SessionFactory sessionFactory;
-	@Autowired
-	private HibernateTemplate hibernateTemplate;
-	@Autowired
-	private MyHibernateDaoSupport myHibernateDaoSupport;
-	
-	
-//	@Override
-//	public void setSessionFactory(SessionFactory sessionFactory) {
-//		// TODO Auto-generated method stub
-//		super.setSessionFactory(sessionFactory);
-//	}
+public class UserDao extends MyHibernateTemplate<User, Long>{
+
 
 	public void test(){
-//		super.setSessionFactory(sessionFactory);
 //		hibernateTemplate.setSessionFactory(sessionFactory);
 //		this.setHibernateTemplate(hibernateTemplate);
-		
-		System.out.println("********************************:"+myHibernateDaoSupport.getHibernateTemplate().find(" from User where username='ethan'"));
+		System.out.println("********************************1:"+this.findByFilter(new SearchFilter("EQS_username","ethan"), false));
+//		System.out.println("********************************1:"+this.getAll());
+//		System.out.println("********************************1:"+this.getById(1l));
+//		System.out.println("********************************1:"+sessionFactory.getCurrentSession().get(User.class, 1l));
+//		System.out.println("********************************2:"+this.hibernateTemplate.find(" from User where username='ethan'"));
 	}
+
+
 
 }
 
