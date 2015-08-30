@@ -1,4 +1,4 @@
-package cn.imethan.admin.test;
+package cn.imethan.admin.spring;
 
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;

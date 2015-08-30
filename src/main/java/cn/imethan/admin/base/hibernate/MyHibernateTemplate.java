@@ -1,21 +1,24 @@
 package cn.imethan.admin.base.hibernate;
 
 import java.io.Serializable;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.util.Assert;
 
 import cn.imethan.admin.base.hibernate.SearchFilter.MatchType;
+import cn.imethan.admin.base.hibernate.SearchFilter.PropertyType;
 
 /**
  * MyHibernateTemplate.java
@@ -29,12 +32,11 @@ public class MyHibernateTemplate<T, P extends Serializable> {
 	protected SessionFactory sessionFactory;
 	@Autowired
 	protected HibernateTemplate hibernateTemplate;
-	@Autowired
-	protected MyHibernateDaoSupport myHibernateDaoSupport;
+
 	protected Class<T> clazz;
 
 	public MyHibernateTemplate() {
-		clazz = this.getSuperClassGenricType(this.getClass(), 0);
+		clazz = ReflectionUtil.getClassGenricType(this.getClass(), 0);
 	}
 
 	public Session getSession() {
@@ -45,6 +47,20 @@ public class MyHibernateTemplate<T, P extends Serializable> {
 		this.getSession().save(entity);
 	}
 
+	public void saveOrUpdate(T entity) {
+		this.getSession().saveOrUpdate(entity);
+	}
+
+	public void deleteById(P id) {
+		Assert.isNull(id, "不能删除id为空的记录");
+		this.hibernateTemplate.delete(this.getById(id));
+	}
+
+	public void delete(T entity) {
+		Assert.isNull(entity, "不能删除entity为空的记录");
+		this.hibernateTemplate.delete(entity);
+	}
+
 	public T getById(P id) {
 		return (T) this.getSession().get(clazz, id);
 	}
@@ -53,17 +69,38 @@ public class MyHibernateTemplate<T, P extends Serializable> {
 		return this.hibernateTemplate.loadAll(clazz);
 	}
 
-	public List<T> findByFilter(SearchFilter searchFilter, boolean isCache) {
+	public List<T> getByFilter(SearchFilter searchFilter, boolean isCache) {
 		Criterion criterion = buildCriterionBySearchFilter(searchFilter.getPropertyName(), searchFilter.getPropertyClass(), searchFilter.getMatchValue(), searchFilter.getMatchType());
-
-		return findByCriterions(isCache, new Criterion[] { criterion });
+		return getByCriterions(isCache, new Criterion[] { criterion });
+	}
+	
+	public List<T> getByFilters(List<SearchFilter> searchFilters, boolean isCache) {
+		List<Criterion> list = new ArrayList<Criterion>();
+		for(SearchFilter searchFilter : searchFilters){
+			Criterion criterion = buildCriterionBySearchFilter(searchFilter.getPropertyName(), searchFilter.getPropertyClass(), searchFilter.getMatchValue(), searchFilter.getMatchType());
+			list.add(criterion);
+		}
+		return getByCriterions(isCache, (Criterion[]) list.toArray(new Criterion[list.size()]));
+	}
+	
+	public List<T> getByFilterAndOrders(SearchFilter searchFilter,List<Order> orders, boolean isCache) {
+		Criterion criterion = buildCriterionBySearchFilter(searchFilter.getPropertyName(), searchFilter.getPropertyClass(), searchFilter.getMatchValue(), searchFilter.getMatchType());
+		return getByCriterionsAndOrders(isCache, new Criterion[] { criterion },orders);
 	}
 
-	private List<T> findByCriterions(boolean isCache, Criterion[] criterions) {
+	private List<T> getByCriterions(boolean isCache, Criterion[] criterions) {
 		return createCriteria(isCache, criterions).list();
 	}
+	
+	private List<T> getByCriterionsAndOrders(boolean isCache, Criterion[] criterions,List<Order> orders) {
+		Criteria criteria = createCriteria(isCache, criterions);
+		for(Order order : orders){
+			criteria.addOrder(order);
+		}
+		return criteria.list();
+	}
 
-	public Criteria createCriteria(boolean isCache, Criterion[] criterions) {
+	private Criteria createCriteria(boolean isCache, Criterion[] criterions) {
 		Criteria criteria = getSession().createCriteria(clazz);
 		for (Criterion criterion : criterions) {
 			criteria.add(criterion);
@@ -78,7 +115,7 @@ public class MyHibernateTemplate<T, P extends Serializable> {
 		Assert.hasText(propertyName, "propertyName不能为空");
 		Criterion criterion = null;
 
-		switch (matchType.ordinal()+1) {
+		switch (matchType.ordinal() + 1) {
 		case 1:
 			criterion = Restrictions.eq(propertyName, propertyValue);
 			break;
@@ -132,24 +169,6 @@ public class MyHibernateTemplate<T, P extends Serializable> {
 			criterion = Restrictions.not(Restrictions.between(propertyName, notBetweenValues[0], notBetweenValues[1]));
 		}
 		return criterion;
-	}
-
-	public Class getSuperClassGenricType(Class clazz, int index) {
-		Type genType = clazz.getGenericSuperclass();
-
-		if (!(genType instanceof ParameterizedType)) {
-			return Object.class;
-		}
-
-		Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
-
-		if ((index >= params.length) || (index < 0)) {
-			return Object.class;
-		}
-		if (!params[index].getClass().isAssignableFrom(Class.class)) {
-			return Object.class;
-		}
-		return (Class) params[index];
 	}
 
 }
