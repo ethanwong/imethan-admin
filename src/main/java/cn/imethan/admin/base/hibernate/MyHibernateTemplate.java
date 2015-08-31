@@ -2,15 +2,24 @@ package cn.imethan.admin.base.hibernate;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.internal.CriteriaImpl;
+import org.hibernate.transform.ResultTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.util.Assert;
@@ -19,6 +28,8 @@ import cn.imethan.admin.base.hibernate.SearchFilter.MatchType;
 
 /**
  * MyHibernateTemplate.java
+ * 
+ * DAO实现类继承该类，实现CRUD操作
  *
  * @author Ethan Wong
  * @time 2015年8月29日下午10:39:57
@@ -30,14 +41,19 @@ public class MyHibernateTemplate<T, P extends Serializable> {
 	@Autowired
 	protected HibernateTemplate hibernateTemplate;
 
-	protected Class<T> clazz;
+	protected Class<T> clazz;//实体类
+	protected String  entityName;//实体名称
+	protected String idName;//ID名称
 
 	public MyHibernateTemplate() {
 		clazz = ReflectionUtil.getClassGenricType(this.getClass(), 0);
+		entityName = hibernateTemplate.getSessionFactory().getClassMetadata(this.clazz).getEntityName();
+		idName = this.hibernateTemplate.getSessionFactory().getClassMetadata(this.clazz).getIdentifierPropertyName();
 	}
-	
+
 	/**
 	 * 获取session
+	 * 
 	 * @return
 	 *
 	 * @author Ethan
@@ -47,12 +63,25 @@ public class MyHibernateTemplate<T, P extends Serializable> {
 		return hibernateTemplate.getSessionFactory().getCurrentSession();
 	}
 	
-	//-------------------------------------------------------------------------
+	/**
+	 * 创建HQL查询
+	 * @param hql
+	 * @return
+	 *
+	 * @author Ethan
+	 * @datetime 2015年8月31日 下午10:22:36
+	 */
+	public Query createQuery(String hql){
+		return this.getSession().createQuery(hql);
+	}
+
+	// -------------------------------------------------------------------------
 	// 增加方法
-	//-------------------------------------------------------------------------
-	
+	// -------------------------------------------------------------------------
+
 	/**
 	 * 保存
+	 * 
 	 * @param entity 实体信息
 	 *
 	 * @author Ethan
@@ -61,9 +90,10 @@ public class MyHibernateTemplate<T, P extends Serializable> {
 	public void save(T entity) {
 		this.getSession().save(entity);
 	}
-	
+
 	/**
 	 * 保存或者更新
+	 * 
 	 * @param entity 实体信息
 	 *
 	 * @author Ethan
@@ -72,13 +102,14 @@ public class MyHibernateTemplate<T, P extends Serializable> {
 	public void saveOrUpdate(T entity) {
 		this.getSession().saveOrUpdate(entity);
 	}
-	
-	//-------------------------------------------------------------------------
+
+	// -------------------------------------------------------------------------
 	// 删除方法
-	//-------------------------------------------------------------------------
-	
+	// -------------------------------------------------------------------------
+
 	/**
 	 * 根据ID删除
+	 * 
 	 * @param id 实体ID
 	 *
 	 * @author Ethan
@@ -88,9 +119,10 @@ public class MyHibernateTemplate<T, P extends Serializable> {
 		Assert.isNull(id, "不能删除id为空的记录");
 		this.hibernateTemplate.delete(this.getById(id));
 	}
-	
+
 	/**
 	 * 删除
+	 * 
 	 * @param entity 实体信息
 	 *
 	 * @author Ethan
@@ -101,12 +133,24 @@ public class MyHibernateTemplate<T, P extends Serializable> {
 		this.hibernateTemplate.delete(entity);
 	}
 	
-	//-------------------------------------------------------------------------
+	/**
+	 * 删除全部
+	 *
+	 * @author Ethan
+	 * @datetime 2015年8月31日 下午10:28:42
+	 */
+	public void deleteAll(){
+	    String DELETE_ALL = "delete from " + entityName;
+	    getSession().createQuery(DELETE_ALL);
+	  }
+
+	// -------------------------------------------------------------------------
 	// 查询方法
-	//-------------------------------------------------------------------------
-	
+	// -------------------------------------------------------------------------
+
 	/**
 	 * 根据ID获取
+	 * 
 	 * @param id 实体ID
 	 * @return
 	 *
@@ -118,7 +162,22 @@ public class MyHibernateTemplate<T, P extends Serializable> {
 	}
 	
 	/**
+	 * 根据ID列表获取
+	 * @param ids ID列表
+	 * @param isCache 是否缓存
+	 * @return
+	 *
+	 * @author Ethan
+	 * @datetime 2015年8月31日 下午10:25:49
+	 */
+	public List<T> getByIdList(Collection<P> ids, boolean isCache) {
+		return getByCriterions(isCache, new Criterion[] { Restrictions.in(idName, ids) });
+	}
+	
+
+	/**
 	 * 获取全部列表
+	 * 
 	 * @return
 	 *
 	 * @author Ethan
@@ -127,9 +186,10 @@ public class MyHibernateTemplate<T, P extends Serializable> {
 	public List<T> getAll() {
 		return this.hibernateTemplate.loadAll(clazz);
 	}
-	
+
 	/**
 	 * 根据过滤条件查询列表
+	 * 
 	 * @param searchFilter 过滤条件
 	 * @param isCache 是否缓存
 	 * @return
@@ -142,15 +202,11 @@ public class MyHibernateTemplate<T, P extends Serializable> {
 		return getByCriterions(isCache, new Criterion[] { criterion });
 	}
 	
-	public Page<T> getPageByFilter(SearchFilter searchFilter, boolean isCache){
-		Criterion criterion = buildCriterionBySearchFilter(searchFilter.getPropertyName(), searchFilter.getPropertyClass(), searchFilter.getMatchValue(), searchFilter.getMatchType());
-		getByCriterions(isCache, new Criterion[] { criterion });
-		
-		return null;
-	}
 	
+
 	/**
 	 * 根据过滤条件列表查询列表
+	 * 
 	 * @param searchFilters 过滤条件列表
 	 * @param isCache 是否缓存
 	 * @return
@@ -160,15 +216,16 @@ public class MyHibernateTemplate<T, P extends Serializable> {
 	 */
 	public List<T> getByFilters(List<SearchFilter> searchFilters, boolean isCache) {
 		List<Criterion> list = new ArrayList<Criterion>();
-		for(SearchFilter searchFilter : searchFilters){
+		for (SearchFilter searchFilter : searchFilters) {
 			Criterion criterion = buildCriterionBySearchFilter(searchFilter.getPropertyName(), searchFilter.getPropertyClass(), searchFilter.getMatchValue(), searchFilter.getMatchType());
 			list.add(criterion);
 		}
 		return getByCriterions(isCache, (Criterion[]) list.toArray(new Criterion[list.size()]));
 	}
-	
+
 	/**
 	 * 根据过滤条件和排序条件查询列表
+	 * 
 	 * @param searchFilter 过滤条件
 	 * @param order 排序条件
 	 * @param isCache 是否缓存
@@ -177,15 +234,16 @@ public class MyHibernateTemplate<T, P extends Serializable> {
 	 * @author Ethan
 	 * @datetime 2015年8月31日 下午8:32:27
 	 */
-	public List<T> getByFilterAndOrder(SearchFilter searchFilter,Order order, boolean isCache) {
+	public List<T> getByFilterAndOrder(SearchFilter searchFilter, Order order, boolean isCache) {
 		Criterion criterion = buildCriterionBySearchFilter(searchFilter.getPropertyName(), searchFilter.getPropertyClass(), searchFilter.getMatchValue(), searchFilter.getMatchType());
 		List<Order> orders = new ArrayList<Order>();
 		orders.add(order);
-		return getByCriterionsAndOrders(isCache, new Criterion[] { criterion },orders);
+		return getByCriterionsAndOrders(isCache, new Criterion[] { criterion }, orders);
 	}
-	
+
 	/**
 	 * 根据过滤条件和排序条件列表查询列表
+	 * 
 	 * @param searchFilter 过滤条件
 	 * @param orders 排序条件
 	 * @param isCache 是否缓存
@@ -194,13 +252,35 @@ public class MyHibernateTemplate<T, P extends Serializable> {
 	 * @author Ethan
 	 * @datetime 2015年8月31日 下午8:33:05
 	 */
-	public List<T> getByFilterAndOrders(SearchFilter searchFilter,List<Order> orders, boolean isCache) {
+	public List<T> getByFilterAndOrders(SearchFilter searchFilter, List<Order> orders, boolean isCache) {
 		Criterion criterion = buildCriterionBySearchFilter(searchFilter.getPropertyName(), searchFilter.getPropertyClass(), searchFilter.getMatchValue(), searchFilter.getMatchType());
-		return getByCriterionsAndOrders(isCache, new Criterion[] { criterion },orders);
+		return getByCriterionsAndOrders(isCache, new Criterion[] { criterion }, orders);
 	}
 	
 	/**
+	 * 根据过滤条件列表和排序条件查询列表
+	 * @param searchFilters 过滤条件列表
+	 * @param order 排序条件
+	 * @param isCache 是否缓存
+	 * @return
+	 *
+	 * @author Ethan
+	 * @datetime 2015年8月31日 下午9:52:11
+	 */
+	public List<T> getByFiltersAndOrder(List<SearchFilter> searchFilters, Order order, boolean isCache) {
+		List<Criterion> list = new ArrayList<Criterion>();
+		for (SearchFilter searchFilter : searchFilters) {
+			Criterion criterion = buildCriterionBySearchFilter(searchFilter.getPropertyName(), searchFilter.getPropertyClass(), searchFilter.getMatchValue(), searchFilter.getMatchType());
+			list.add(criterion);
+		}
+		List<Order> orders = new ArrayList<Order>();
+		orders.add(order);
+		return getByCriterionsAndOrders(isCache, (Criterion[]) list.toArray(new Criterion[list.size()]), orders);
+	}
+
+	/**
 	 * 根据过滤条件列表和排序条件列表查询列表
+	 * 
 	 * @param searchFilters 过滤条件列表
 	 * @param orders 排序条件列表
 	 * @param isCache 是否缓存
@@ -209,29 +289,264 @@ public class MyHibernateTemplate<T, P extends Serializable> {
 	 * @author Ethan
 	 * @datetime 2015年8月31日 下午8:33:37
 	 */
-	public List<T> getByFiltersAndOrders(List<SearchFilter> searchFilters,List<Order> orders, boolean isCache) {
+	public List<T> getByFiltersAndOrders(List<SearchFilter> searchFilters, List<Order> orders, boolean isCache) {
 		List<Criterion> list = new ArrayList<Criterion>();
-		for(SearchFilter searchFilter : searchFilters){
+		for (SearchFilter searchFilter : searchFilters) {
 			Criterion criterion = buildCriterionBySearchFilter(searchFilter.getPropertyName(), searchFilter.getPropertyClass(), searchFilter.getMatchValue(), searchFilter.getMatchType());
 			list.add(criterion);
 		}
-		return getByCriterionsAndOrders(isCache, (Criterion[]) list.toArray(new Criterion[list.size()]),orders);
+		return getByCriterionsAndOrders(isCache, (Criterion[]) list.toArray(new Criterion[list.size()]), orders);
 	}
 	
+	/**
+	 * 根据HQL获取分页列表
+	 * @param page 分页信息
+	 * @param isCache 是否缓存
+	 * @param hql HQL语句
+	 * @param values 参数
+	 * @return
+	 *
+	 * @author Ethan
+	 * @datetime 2015年8月31日 下午10:20:50
+	 */
+	public Page<T> findPageByHql(Page<T> page, boolean isCache, String hql, Map<String, ?> values) {
+		Assert.notNull(page, "page不能为空");
+		Query query = this.getSession().createQuery(hql).setProperties(values);
+		long totalCount = countSqlResult(hql, isCache, values);
+		page.setTotalCount(totalCount);
+		if (isCache) {
+			query.setCacheable(true);
+		}
+		page.setList(query.list());		
+		return page;
+	}
 	
+	/**
+	 * 获取分页列表
+	 * @param page 分页信息
+	 * @param isCache 是否缓存
+	 * @return
+	 *
+	 * @author Ethan
+	 * @datetime 2015年8月31日 下午9:39:46
+	 */
+	public Page<T> getPage(Page<T> page, boolean isCache) {
+		return getPageByCriterions(page, isCache, new Criterion[0],null);
+	}
+	
+	/**
+	 * 根据过滤条件获取分页列表
+	 * @param page 分页信息
+	 * @param searchFilter 过滤条件
+	 * @param isCache 是否缓存
+	 * @return
+	 *
+	 * @author Ethan
+	 * @datetime 2015年8月31日 下午9:32:29
+	 */
+	public Page<T> getPageByFilter(Page<T> page,SearchFilter searchFilter, boolean isCache) {
+		Criterion criterion = buildCriterionBySearchFilter(searchFilter.getPropertyName(), searchFilter.getPropertyClass(), searchFilter.getMatchValue(), searchFilter.getMatchType());
+		List<SearchFilter> searchFilters = new ArrayList<SearchFilter>();
+		searchFilters.add(searchFilter);
+		return this.getPageByCriterions(page, isCache, new Criterion[] { criterion },searchFilters);
+	}
+	
+	/**
+	 * 根据过滤条件和排序条件获取分页列表
+	 * @param page 分页信息
+	 * @param searchFilter 过滤条件
+	 * @param order 排序条件
+	 * @param isCache 是否缓存
+	 * @return
+	 *
+	 * @author Ethan
+	 * @datetime 2015年8月31日 下午9:45:06
+	 */
+	public Page<T> getPageByFilterAndOrder(Page<T> page,SearchFilter searchFilter,Order order, boolean isCache) {
+		Criterion criterion = buildCriterionBySearchFilter(searchFilter.getPropertyName(), searchFilter.getPropertyClass(), searchFilter.getMatchValue(), searchFilter.getMatchType());
+		List<Order> orders = new ArrayList<Order>();
+		orders.add(order);
+		return this.getPageByCriterionsAndOrders(page, isCache, new Criterion[] { criterion },orders,null);
+	}
+	
+	/**
+	 * 根据过滤条件和排序条件列表获取分页列表
+	 * @param page 分页信息
+	 * @param searchFilter 过滤条件
+	 * @param orders 排序条件列表
+	 * @param isCache 是否缓存
+	 * @return
+	 *
+	 * @author Ethan
+	 * @datetime 2015年8月31日 下午9:48:15
+	 */
+	public Page<T> getPageByFilterAndOrders(Page<T> page,SearchFilter searchFilter,List<Order> orders, boolean isCache) {
+		Criterion criterion = buildCriterionBySearchFilter(searchFilter.getPropertyName(), searchFilter.getPropertyClass(), searchFilter.getMatchValue(), searchFilter.getMatchType());
+		return this.getPageByCriterionsAndOrders(page, isCache, new Criterion[] { criterion },orders,null);
+	}
+	
+	/**
+	 * 根据过滤条件列表和排序条件列表获取分页列表
+	 * @param page 分页信息
+	 * @param searchFilters 过滤条件列表
+	 * @param orders 排序条件列表
+	 * @param isCache 是否缓存
+	 * @return
+	 *
+	 * @author Ethan
+	 * @datetime 2015年8月31日 下午9:49:51
+	 */
+	public Page<T> getPageByFiltersAndOrders(Page<T> page,List<SearchFilter> searchFilters,List<Order> orders, boolean isCache) {
+		List<Criterion> list = new ArrayList<Criterion>();
+		for (SearchFilter searchFilter : searchFilters) {
+			Criterion criterion = buildCriterionBySearchFilter(searchFilter.getPropertyName(), searchFilter.getPropertyClass(), searchFilter.getMatchValue(), searchFilter.getMatchType());
+			list.add(criterion);
+		}
+		
+		return this.getPageByCriterionsAndOrders(page, isCache, (Criterion[]) list.toArray(new Criterion[list.size()]),orders,null);
+	}
+	
+	/**
+	 * 根据过滤条件列表获取分页列表
+	 * @param page 分页信息
+	 * @param searchFilter 过滤条件
+	 * @param isCache 是否缓存
+	 * @return
+	 *
+	 * @author Ethan
+	 * @datetime 2015年8月31日 下午9:32:29
+	 */
+	public Page<T> getPageByFilters(Page<T> page,List<SearchFilter> searchFilters, boolean isCache) {
+		List<Criterion> list = new ArrayList<Criterion>();
+		for (SearchFilter searchFilter : searchFilters) {
+			Criterion criterion = buildCriterionBySearchFilter(searchFilter.getPropertyName(), searchFilter.getPropertyClass(), searchFilter.getMatchValue(), searchFilter.getMatchType());
+			list.add(criterion);
+		}
+		return this.getPageByCriterions(page, isCache, (Criterion[]) list.toArray(new Criterion[list.size()]),null);
+	}
 
-	
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 	// 其他辅助方法
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	private Page<T> getPageByCriterions(Page<T> page, boolean isCache, Criterion[] criterions,List<SearchFilter> searchFilters) {
+		Criteria criteria = createCriteria(isCache, criterions);
+
+		criteria.setFirstResult(page.getFirstResult());
+		criteria.setMaxResults(page.getMaxResults());
+		List<T> list = criteria.list();
+		page.setList(list);
+		if(searchFilters == null || searchFilters.isEmpty()){
+			page.setTotalCount(this.countCriteriaResult(criteria));
+		}else{
+			page.setTotalCount(this.countFiltersResult(searchFilters, isCache));
+		}
+		
+		return page;
+	}
+	private Page<T> getPageByCriterionsAndOrders(Page<T> page, boolean isCache, Criterion[] criterions,List<Order> orders,List<SearchFilter> searchFilters) {
+		Criteria criteria = createCriteria(isCache, criterions);
+		for (Order order : orders) {
+			criteria.addOrder(order);
+		}
+		
+		criteria.setFirstResult(page.getFirstResult());
+		criteria.setMaxResults(page.getMaxResults());
+		List<T> list = criteria.list();
+		page.setList(list);
+		if(searchFilters == null || searchFilters.isEmpty()){
+			page.setTotalCount(this.countCriteriaResult(criteria));
+		}else{
+			page.setTotalCount(this.countFiltersResult(searchFilters, isCache));
+		}
+		return page;
+	}
+
+	private long countSqlResult(String hql, boolean isCache, Map<String, ?> values) {
+		String countHql = prepareCountHql(hql);
+		try {
+			Query query = this.getSession().createQuery(countHql);
+			query.setCacheable(isCache);
+			Long count = (Long) query.uniqueResult();
+			return count.longValue();
+		} catch (Exception e) {
+			throw new RuntimeException("HQL不能自动统计个数,该HQL语句是:" + countHql, e);
+		}
+
+	}
 	
+	private String prepareCountHql(String orgHql)
+	  {
+	    String fromHql = orgHql;
+
+	    fromHql = "from " + StringUtils.substringAfter(fromHql, "from");
+	    fromHql = StringUtils.substringBefore(fromHql, "order by");
+
+	    String countHql = "select count(*) " + fromHql;
+	    return countHql;
+	  }
+
+	private long countCriteriaResult(Criteria criteria) {
+		CriteriaImpl impl = (CriteriaImpl) criteria;
+
+		// 先把Projection、ResultTransformer、OrderBy取出来,清空三者后再执行Count操作
+		Projection projection = impl.getProjection();
+		ResultTransformer transformer = impl.getResultTransformer();
+
+		List<CriteriaImpl.OrderEntry> orderEntries = null;
+		try {
+			orderEntries = (List) ReflectionUtil.getFieldValue(impl, "orderEntries");
+			ReflectionUtil.setFieldValue(impl, "orderEntries", new ArrayList<Object>());
+		} catch (Exception e) {
+			throw new IllegalArgumentException("抛出的异常:" + e.getMessage());
+		}
+
+		// 执行Count查询
+		Long totalCountObject = (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
+		long totalCount = totalCountObject != null ? totalCountObject.longValue() : 0L;
+
+		// 将之前的Projection,ResultTransformer和OrderBy条件重新设回去
+		criteria.setProjection(projection);
+
+		if (projection == null) {
+			criteria.setResultTransformer(CriteriaSpecification.ROOT_ENTITY);
+		}
+
+		if (transformer != null) {
+			criteria.setResultTransformer(transformer);
+		}
+
+		try {
+			ReflectionUtil.setFieldValue(impl, "orderEntries", orderEntries);
+		} catch (Exception e) {
+			throw new IllegalArgumentException("抛出的异常:" + e.getMessage());
+		}
+
+		return totalCount;
+	}
+
+//	private long countFilterResult(SearchFilter searchFilter, boolean isCache) {
+//		Criterion criterion = buildCriterionBySearchFilter(searchFilter.getPropertyName(), searchFilter.getPropertyClass(), searchFilter.getMatchValue(), searchFilter.getMatchType());
+//		Criteria criteria = createCriteria(isCache, new Criterion[] { criterion });
+//		return countCriteriaResult(criteria);
+//	}
+
+	private long countFiltersResult(List<SearchFilter> searchFilters, boolean isCache) {
+		List<Criterion> list = new ArrayList<Criterion>();
+		for (SearchFilter searchFilter : searchFilters) {
+			Criterion criterion = buildCriterionBySearchFilter(searchFilter.getPropertyName(), searchFilter.getPropertyClass(), searchFilter.getMatchValue(), searchFilter.getMatchType());
+			list.add(criterion);
+		}
+		Criteria criteria = createCriteria(isCache, (Criterion[]) list.toArray(new Criterion[list.size()]));
+		return countCriteriaResult(criteria);
+	}
+
 	private List<T> getByCriterions(boolean isCache, Criterion[] criterions) {
 		return createCriteria(isCache, criterions).list();
 	}
-	
-	private List<T> getByCriterionsAndOrders(boolean isCache, Criterion[] criterions,List<Order> orders) {
+
+	private List<T> getByCriterionsAndOrders(boolean isCache, Criterion[] criterions, List<Order> orders) {
 		Criteria criteria = createCriteria(isCache, criterions);
-		for(Order order : orders){
+		for (Order order : orders) {
 			criteria.addOrder(order);
 		}
 		return criteria.list();
@@ -247,8 +562,7 @@ public class MyHibernateTemplate<T, P extends Serializable> {
 		}
 		return criteria;
 	}
-	
-	
+
 	private Criterion buildCriterionBySearchFilter(String propertyName, Class<?> propertyClass, Object propertyValue, MatchType matchType) {
 		Assert.hasText(propertyName, "propertyName不能为空");
 		Criterion criterion = null;

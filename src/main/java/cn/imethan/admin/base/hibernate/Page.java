@@ -11,9 +11,10 @@ import java.util.List;
  */
 public class Page<T> {
 	
-	private Integer pageNo;//页码
-	private Integer pageCount;//页记录数
-	private Integer totalCount;//总记录数
+	private Integer pageNo = 1;//页码
+	private Integer pageSize = 10;//页记录数
+	private Integer pageCount;//总页数
+	private Long totalCount;//总记录数
 	private List<T> list = new ArrayList<T>();//页信息列表
 	
 	public Integer getPageNo() {
@@ -22,16 +23,22 @@ public class Page<T> {
 	public void setPageNo(Integer pageNo) {
 		this.pageNo = pageNo;
 	}
+	public Integer getPageSize() {
+		return pageSize;
+	}
+	public void setPageSize(Integer pageSize) {
+		this.pageSize = pageSize;
+	}
 	public Integer getPageCount() {
 		return pageCount;
 	}
 	public void setPageCount(Integer pageCount) {
 		this.pageCount = pageCount;
 	}
-	public Integer getTotalCount() {
+	public Long getTotalCount() {
 		return totalCount;
 	}
-	public void setTotalCount(Integer totalCount) {
+	public void setTotalCount(Long totalCount) {
 		this.totalCount = totalCount;
 	}
 	public List<T> getList() {
@@ -39,6 +46,13 @@ public class Page<T> {
 	}
 	public void setList(List<T> list) {
 		this.list = list;
+	}
+	
+	public Integer getFirstResult(){
+		return (pageNo-1)*pageSize;
+	}
+	public Integer getMaxResults(){
+		return pageSize;
 	}
 }
 
