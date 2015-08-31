@@ -40,21 +40,17 @@ public class SearchFilter {
 	public static final String SEMICOLON_SEPARATOR = ";";
 	public static final String EMPTY_SEPARATOR = "";
 	private MatchType matchType = null;
-
 	private Object matchValue = null;
-
 	private Class<?> propertyClass = null;
-
 	private String[] propertyNames = null;
 
 	public SearchFilter() {
+		
 	}
 
 	public SearchFilter(String filterName, String filterValue) {
 		String firstPart = StringUtils.substringBefore(filterName, "_");
-
 		String matchTypeCode = StringUtils.substring(firstPart, 0, firstPart.length() - 1);
-
 		String propertyTypeCode = StringUtils.substring(firstPart, firstPart.length() - 1, firstPart.length());
 		try {
 			this.matchType = ((MatchType) Enum.valueOf(MatchType.class, matchTypeCode));
@@ -75,14 +71,15 @@ public class SearchFilter {
 			this.matchValue = filterValue;
 		} else if ((!filterValue.equals("")) && (filterValue.contains(";"))) {
 			this.matchValue = filterValue;
-		} else if ((!filterValue.equals("")) && (filterValue.contains("_")))
+		} else if ((!filterValue.equals("")) && (filterValue.contains("_"))){
 			this.matchValue = filterValue;
-		else
+		} else{
 			this.matchValue = ConvertUtil.convertStringToObject(filterValue, this.propertyClass);
+		}
 	}
 
 	public static List<SearchFilter> buildSearchParams(Map<String, Object> searchParams) {
-		List filterList = new ArrayList();
+		List<SearchFilter> filterList = new ArrayList<SearchFilter>();
 
 		for (Map.Entry entry : searchParams.entrySet()) {
 			String filterName = (String) entry.getKey();
