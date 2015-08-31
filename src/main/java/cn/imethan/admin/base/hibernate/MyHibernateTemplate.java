@@ -34,7 +34,7 @@ import cn.imethan.admin.base.hibernate.SearchFilter.MatchType;
  * @author Ethan Wong
  * @time 2015年8月29日下午10:39:57
  */
-public class MyHibernateTemplate<T, P extends Serializable> {
+public class MyHibernateTemplate<T, P extends Serializable> implements SimpleSearch<T> {
 
 	@Autowired
 	protected SessionFactory sessionFactory;
@@ -47,8 +47,8 @@ public class MyHibernateTemplate<T, P extends Serializable> {
 
 	public MyHibernateTemplate() {
 		clazz = ReflectionUtil.getClassGenricType(this.getClass(), 0);
-		entityName = hibernateTemplate.getSessionFactory().getClassMetadata(this.clazz).getEntityName();
-		idName = this.hibernateTemplate.getSessionFactory().getClassMetadata(this.clazz).getIdentifierPropertyName();
+//		entityName = this.hibernateTemplate.getSessionFactory().getClassMetadata(this.clazz).getEntityName();
+//		idName = this.hibernateTemplate.getSessionFactory().getClassMetadata(this.clazz).getIdentifierPropertyName();
 	}
 
 	/**
@@ -309,7 +309,7 @@ public class MyHibernateTemplate<T, P extends Serializable> {
 	 * @author Ethan
 	 * @datetime 2015年8月31日 下午10:20:50
 	 */
-	public Page<T> findPageByHql(Page<T> page, boolean isCache, String hql, Map<String, ?> values) {
+	public Page<T> getPageByHql(Page<T> page, boolean isCache, String hql, Map<String, ?> values) {
 		Assert.notNull(page, "page不能为空");
 		Query query = this.getSession().createQuery(hql).setProperties(values);
 		long totalCount = countSqlResult(hql, isCache, values);
@@ -622,5 +622,4 @@ public class MyHibernateTemplate<T, P extends Serializable> {
 		}
 		return criterion;
 	}
-
 }

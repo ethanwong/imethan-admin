@@ -22,7 +22,6 @@ public class IndexControl {
 	
     @RequestMapping("")
     public String indexOne(Model model) {
-    	userService.test();
     	System.out.println("------console----------");
     	return "console/index";
     }

@@ -127,9 +127,6 @@ public class User extends BaseEntity {
 		this.qq = qq;
 	}
 
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
-	}
+
 
 }

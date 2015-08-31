@@ -6,6 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import cn.imethan.admin.dao.security.UserDao;
+import cn.imethan.admin.dao.security.UserDaoImpl;
+import cn.imethan.admin.entity.security.User;
 
 /**
  * UserService.java
@@ -14,17 +16,21 @@ import cn.imethan.admin.dao.security.UserDao;
  * @time 2015年8月29日下午5:22:12
  */
 @Service
+@Transactional(readOnly = true)
 public class UserService {
 	
 	@Autowired
 	private UserDao userDao;
 	
-	@Transactional
-	public void test(){
+	@Transactional(readOnly = false)
+	public void save(User entity){
 		try {
-			userDao.test();
-			System.out.println("this is userService test method");
+			entity.setNickname("imethan");
+			entity.setUsername("ethanwong");
+			entity.setPassword("123456");
+			userDao.save(entity);
 			
+			System.out.println("******user:"+entity.toString());
 			
 //			int i = 10;
 //	        //数学异常: java.lang.ArithmeticException

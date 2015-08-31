@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.MappedSuperclass;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 /**
  * BaseEntity.java
  *
@@ -29,6 +31,11 @@ public class BaseEntity extends IdEntity{
 	}
 	public void setModifyTime(Date modifyTime) {
 		this.modifyTime = modifyTime;
+	}
+	
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
 	}
 	
 }
