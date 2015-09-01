@@ -20,7 +20,7 @@ import cn.imethan.common.entity.BaseEntity;
  */
 @Entity
 @Table(name="imethan_security_permission")
-@JsonIgnoreProperties(value={"resource"})
+@JsonIgnoreProperties(value={"menu"})
 public class Permission extends BaseEntity {
 	
 	private static final long serialVersionUID = 3002097053120526602L;
@@ -30,14 +30,14 @@ public class Permission extends BaseEntity {
 	private String permission;//权限
 	
 	@ManyToOne(cascade = {CascadeType.PERSIST},fetch = FetchType.LAZY)
-	@JoinColumn(name="resourceId")
-	private Resource resource = new Resource();//资源
+	@JoinColumn(name="menuId")
+	private Menu menu = new Menu();//资源
 	
-	public Resource getResource() {
-		return resource;
+	public Menu getMenu() {
+		return menu;
 	}
-	public void setResources(Resource resource) {
-		this.resource = resource;
+	public void setMenu(Menu menu) {
+		this.menu = menu;
 	}
 	public String getName() {
 		return name;

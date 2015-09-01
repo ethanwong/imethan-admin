@@ -27,9 +27,9 @@ import cn.imethan.common.entity.BaseEntity;
  * @time 2014年3月17日下午10:01:41
  */
 @Entity
-@Table(name="imethan_security_resource")
+@Table(name="imethan_security_menu")
 @JsonIgnoreProperties(value={"parent","roles","modifyTime","createTime","url"})
-public class Resource extends BaseEntity {
+public class Menu extends BaseEntity {
 	
 	private static final long serialVersionUID = 6701956302298630995L;
 	
@@ -54,7 +54,7 @@ public class Resource extends BaseEntity {
 	@Transient
 	private boolean open = true;//节点是否打开
 	@Transient
-	private String nodeType = "resource";//Ztree节点类型，resource和permission,在角色授权编辑功能使用到,默认是resource类型
+	private String nodeType = "menu";//Ztree节点类型，menu和permission,在角色授权编辑功能使用到,默认是menu类型
 	@Transient
 	private boolean isChecked;//节点是否选中
 	
@@ -74,10 +74,10 @@ public class Resource extends BaseEntity {
 		this.nodeType = nodeType;
 	}
 
-	public Resource(){
+	public Menu(){
 	}
 	
-	public Resource(Long id){
+	public Menu(Long id){
 		this.setId(id);
 	}
 	
@@ -116,27 +116,27 @@ public class Resource extends BaseEntity {
 	
 	@ManyToOne(cascade = {CascadeType.REFRESH},fetch = FetchType.LAZY)
 	@JoinColumn(name="pid")
-	private Resource parent;//父级
+	private Menu parent;//父级
 	
 	@OneToMany(cascade = CascadeType.REFRESH,fetch = FetchType.LAZY,mappedBy="parent")
 	@OrderBy("id")
-	private Set<Resource> childrens = new HashSet<Resource>();//子级
+	private Set<Menu> childrens = new HashSet<Menu>();//子级
 	
-	@OneToMany(cascade = CascadeType.REFRESH,fetch = FetchType.LAZY,mappedBy="resource")
+	@OneToMany(cascade = CascadeType.REFRESH,fetch = FetchType.LAZY,mappedBy="menu")
 	@OrderBy("id")
 	private Set<Permission> permissions = new HashSet<Permission>();//授权
 	
-	public Resource getParent() {
+	public Menu getParent() {
 		return parent;
 	}
-	public void setParent(Resource parent) {
+	public void setParent(Menu parent) {
 		this.parent = parent;
 	}
 	
-	public Set<Resource> getChildrens() {
+	public Set<Menu> getChildrens() {
 		return childrens;
 	}
-	public void setChildrens(Set<Resource> childrens) {
+	public void setChildrens(Set<Menu> childrens) {
 		this.childrens = childrens;
 	}
 	public Set<Permission> getPermissions() {

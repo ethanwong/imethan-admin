@@ -36,36 +36,8 @@
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-	<decorator:head></decorator:head>
-</head>
-  <!--
-  BODY TAG OPTIONS:
-  =================
-  Apply one or more of the following classes to get the
-  desired effect
-  |---------------------------------------------------------|
-  | SKINS         | skin-blue                               |
-  |               | skin-black                              |
-  |               | skin-purple                             |
-  |               | skin-yellow                             |
-  |               | skin-red                                |
-  |               | skin-green                              |
-  |---------------------------------------------------------|
-  |LAYOUT OPTIONS | fixed                                   |
-  |               | layout-boxed                            |
-  |               | layout-top-nav                          |
-  |               | sidebar-collapse                        |
-  |               | sidebar-mini                            |
-  |---------------------------------------------------------|
-  -->
-<body class="hold-transition skin-blue-light fixed">
-    <div class="wrapper">
-		<%@ include file="/WEB-INF/content/layout/header.jsp"%>
-		<%@ include file="/WEB-INF/content/layout/menu.jsp"%>
-		<decorator:body></decorator:body>
-		<%@ include file="/WEB-INF/content/layout/footer.jsp"%>
-	</div>
-	<!-- jQuery 2.1.4 -->
+    
+    <!-- jQuery 2.1.4 -->
     <script src="${root}/theme/plugins/jQuery/jQuery-2.1.4.min.js"></script>
     <!-- jQuery UI 1.11.4 -->
     <script src="${root}/theme/plugins/jQueryUI/jquery-ui.min.js"></script>
@@ -95,5 +67,40 @@
     <script src="${root}/theme/dist/js/pages/dashboard.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="${root}/theme/dist/js/demo.js"></script>
+    
+    <!-- ztree begin -->
+	<link rel="stylesheet" href="${root}/theme/other/jtree/css/zTreeStyle/zTreeStyle.css" type="text/css">
+	<script type="text/javascript" src="${root}/theme/other/jtree/js/jquery.ztree.all-3.5.js"></script>
+	<!-- ztree end -->
+    
+	<decorator:head></decorator:head>
+</head>
+  <!--
+  BODY TAG OPTIONS:
+  =================
+  Apply one or more of the following classes to get the
+  desired effect
+  |---------------------------------------------------------|
+  | SKINS         | skin-blue                               |
+  |               | skin-black                              |
+  |               | skin-purple                             |
+  |               | skin-yellow                             |
+  |               | skin-red                                |
+  |               | skin-green                              |
+  |---------------------------------------------------------|
+  |LAYOUT OPTIONS | fixed                                   |
+  |               | layout-boxed                            |
+  |               | layout-top-nav                          |
+  |               | sidebar-collapse                        |
+  |               | sidebar-mini                            |
+  |---------------------------------------------------------|
+  -->
+<body class="hold-transition skin-blue-light fixed">
+    <div class="wrapper">
+		<%@ include file="/WEB-INF/content/layout/header.jsp"%>
+		<%@ include file="/WEB-INF/content/layout/menu.jsp"%>
+		<decorator:body></decorator:body>
+		<%@ include file="/WEB-INF/content/layout/footer.jsp"%>
+	</div>
 </body>
 </html>

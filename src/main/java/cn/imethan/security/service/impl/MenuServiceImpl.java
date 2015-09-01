@@ -1,49 +1,52 @@
-/**
- * 
- */
 package cn.imethan.security.service.impl;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import cn.imethan.common.dto.ReturnDto;
 import cn.imethan.common.hibernate.SearchFilter;
-import cn.imethan.security.dao.ResourceDao;
-import cn.imethan.security.entity.Resource;
-import cn.imethan.security.service.ResourceService;
+import cn.imethan.security.dao.MenuDao;
+import cn.imethan.security.entity.Menu;
+import cn.imethan.security.service.MenuService;
 
 /**
- * ResourceServiceImpl.java
+ * MenuServiceImpl.java
  *
  * @author Ethan Wong
  * @time 2015年9月1日下午2:27:08
  */
 @Service
 @Transactional(readOnly = true)
-public class ResourceServiceImpl implements ResourceService {
+public class MenuServiceImpl implements MenuService {
+	
+	private Logger logger = Logger.getLogger(MenuServiceImpl.class); 
 	
 	@Autowired
-	private ResourceDao resourceDao;
+	private MenuDao resourceDao;
 	private ReturnDto returnDto = new ReturnDto(true,"操作成功");
 	
 	@Transactional(readOnly = false)
 	@Override
-	public ReturnDto saveOrModify(Resource entity) {
+	public ReturnDto saveOrModify(Menu entity) {
 		try {
 			resourceDao.save(entity);
 			returnDto.setEntity(entity);
 		} catch (Exception e) {
 			e.printStackTrace();
 			returnDto = new ReturnDto(false,"保存失败");
+			logger.error("保存失败", e.fillInStackTrace());
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 		}
 		return returnDto;
 	}
 
 	@Override
-	public Resource getById(Long id) {
+	public Menu getById(Long id) {
 		return resourceDao.getById(id);
 	}
 	
@@ -55,18 +58,20 @@ public class ResourceServiceImpl implements ResourceService {
 		} catch (Exception e) {
 			e.printStackTrace();
 			returnDto = new ReturnDto(false,"操作失败");
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			logger.error("删除失败", e.fillInStackTrace());
 		}
 		return returnDto;
 	}
 
 	@Override
-	public List<Resource> getRootResource() {
+	public List<Menu> getRootMenu() {
 		SearchFilter searchFilter = new SearchFilter("EQB_isRoot","true");
 		return resourceDao.getByFilter(searchFilter, false);
 	}
 
 	@Override
-	public List<Resource> getResourcePermissionForRoleInput(Long roleId) {
+	public List<Menu> getMenuPermissionForRoleInput(Long roleId) {
 		//获取选中的资源和授权信息
 //		Role role = roleRepository.findOne(roleId);
 //		

@@ -44,17 +44,17 @@ public class Role extends BaseEntity {
 	}
 
 	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-	@JoinTable(name="imethan_security_role_resource",joinColumns = { @JoinColumn(name ="roleId" )} ,inverseJoinColumns = { @JoinColumn(name = "resourceId")})
+	@JoinTable(name="imethan_security_role_menu",joinColumns = { @JoinColumn(name ="roleId" )} ,inverseJoinColumns = { @JoinColumn(name = "menuId")})
 	@OrderBy("id")
-	private Set<Resource> resources = new HashSet<Resource>();//资源
+	private Set<Menu> menus = new HashSet<Menu>();//资源
 	
-	public Set<Resource> getResources() {
-		return resources;
+	public Set<Menu> getMenus() {
+		return menus;
 	}
-	public void setResources(Set<Resource> resources) {
-		this.resources = resources;
+	public void setMenus(Set<Menu> menus) {
+		this.menus = menus;
 	}
-	
+
 	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinTable(name="imethan_security_role_permission",joinColumns = { @JoinColumn(name ="roleId" )} ,inverseJoinColumns = { @JoinColumn(name = "permissionId")})
 	@OrderBy("id")
