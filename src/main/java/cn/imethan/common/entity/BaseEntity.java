@@ -1,4 +1,4 @@
-package cn.imethan.admin.base.entity;
+package cn.imethan.common.entity;
 
 import java.util.Date;
 

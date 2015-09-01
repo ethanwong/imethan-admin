@@ -1,13 +1,12 @@
-package cn.imethan.admin.service.security;
+package cn.imethan.security.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
-import cn.imethan.admin.dao.security.UserDao;
-import cn.imethan.admin.dao.security.UserDaoImpl;
-import cn.imethan.admin.entity.security.User;
+import cn.imethan.security.dao.UserDao;
+import cn.imethan.security.entity.User;
 
 /**
  * UserService.java
@@ -25,21 +24,10 @@ public class UserService {
 	@Transactional(readOnly = false)
 	public void save(User entity){
 		try {
-			entity.setNickname("imethan");
-			entity.setUsername("ethanwong");
-			entity.setPassword("123456");
 			userDao.save(entity);
-			
-			System.out.println("******user:"+entity.toString());
-			
-//			int i = 10;
-//	        //数学异常: java.lang.ArithmeticException
-//	        int j = i / 0;
-//	        System.out.println(j); 
 		} catch (Exception e) {
-			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			e.printStackTrace();
-			System.out.println("--------Exception----------");
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 		}
 	}
 

@@ -1,4 +1,4 @@
-package cn.imethan.admin.base.hibernate;
+package cn.imethan.common.hibernate;
 
 import java.util.ArrayList;
 import java.util.List;

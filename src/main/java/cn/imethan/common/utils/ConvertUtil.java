@@ -1,10 +1,11 @@
-package cn.imethan.admin.base.hibernate;
+package cn.imethan.common.utils;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.beanutils.converters.DateConverter;
@@ -26,7 +27,6 @@ public class ConvertUtil {
 				list.add(PropertyUtils.getProperty(obj, propertyName));
 			}
 		} catch (Exception e) {
-			Iterator i$;
 			throw ReflectionUtil.convertReflectionExceptionToUnchecked(e);
 		}
 

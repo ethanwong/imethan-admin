@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import cn.imethan.admin.service.security.UserService;
+import cn.imethan.security.service.UserService;
 
 /**
  * IndexControl.java

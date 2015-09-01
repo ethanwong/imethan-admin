@@ -1,4 +1,4 @@
-package cn.imethan.admin.base.hibernate;
+package cn.imethan.common.hibernate;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -24,17 +24,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate4.HibernateTemplate;
 import org.springframework.util.Assert;
 
-import cn.imethan.admin.base.hibernate.SearchFilter.MatchType;
+import cn.imethan.common.hibernate.SearchFilter.MatchType;
+import cn.imethan.common.utils.ConvertUtil;
+import cn.imethan.common.utils.ReflectionUtil;
 
 /**
- * MyHibernateTemplate.java
+ * HibernateTemplateSupport.java
  * 
  * DAO实现类继承该类，实现CRUD操作
  *
  * @author Ethan Wong
  * @time 2015年8月29日下午10:39:57
  */
-public class MyHibernateTemplate<T, P extends Serializable> implements SimpleSearch<T> {
+public class HibernateTemplateSupport<T, P extends Serializable> implements CrudOperations<T,P> {
 
 	@Autowired
 	protected SessionFactory sessionFactory;
@@ -42,13 +44,9 @@ public class MyHibernateTemplate<T, P extends Serializable> implements SimpleSea
 	protected HibernateTemplate hibernateTemplate;
 
 	protected Class<T> clazz;//实体类
-	protected String  entityName;//实体名称
-	protected String idName;//ID名称
 
-	public MyHibernateTemplate() {
+	public HibernateTemplateSupport() {
 		clazz = ReflectionUtil.getClassGenricType(this.getClass(), 0);
-//		entityName = this.hibernateTemplate.getSessionFactory().getClassMetadata(this.clazz).getEntityName();
-//		idName = this.hibernateTemplate.getSessionFactory().getClassMetadata(this.clazz).getIdentifierPropertyName();
 	}
 
 	/**
@@ -78,27 +76,12 @@ public class MyHibernateTemplate<T, P extends Serializable> implements SimpleSea
 	// -------------------------------------------------------------------------
 	// 增加方法
 	// -------------------------------------------------------------------------
-
-	/**
-	 * 保存
-	 * 
-	 * @param entity 实体信息
-	 *
-	 * @author Ethan
-	 * @datetime 2015年8月31日 下午8:25:32
-	 */
+	@Override
 	public void save(T entity) {
 		this.getSession().save(entity);
 	}
-
-	/**
-	 * 保存或者更新
-	 * 
-	 * @param entity 实体信息
-	 *
-	 * @author Ethan
-	 * @datetime 2015年8月31日 下午8:26:14
-	 */
+	
+	@Override
 	public void saveOrUpdate(T entity) {
 		this.getSession().saveOrUpdate(entity);
 	}
@@ -106,40 +89,21 @@ public class MyHibernateTemplate<T, P extends Serializable> implements SimpleSea
 	// -------------------------------------------------------------------------
 	// 删除方法
 	// -------------------------------------------------------------------------
-
-	/**
-	 * 根据ID删除
-	 * 
-	 * @param id 实体ID
-	 *
-	 * @author Ethan
-	 * @datetime 2015年8月31日 下午8:26:28
-	 */
+	@Override
 	public void deleteById(P id) {
 		Assert.isNull(id, "不能删除id为空的记录");
 		this.hibernateTemplate.delete(this.getById(id));
 	}
 
-	/**
-	 * 删除
-	 * 
-	 * @param entity 实体信息
-	 *
-	 * @author Ethan
-	 * @datetime 2015年8月31日 下午8:26:40
-	 */
+	@Override
 	public void delete(T entity) {
 		Assert.isNull(entity, "不能删除entity为空的记录");
 		this.hibernateTemplate.delete(entity);
 	}
 	
-	/**
-	 * 删除全部
-	 *
-	 * @author Ethan
-	 * @datetime 2015年8月31日 下午10:28:42
-	 */
+	@Override
 	public void deleteAll(){
+		String entityName = this.hibernateTemplate.getSessionFactory().getClassMetadata(this.clazz).getEntityName();
 	    String DELETE_ALL = "delete from " + entityName;
 	    getSession().createQuery(DELETE_ALL);
 	  }
@@ -148,72 +112,29 @@ public class MyHibernateTemplate<T, P extends Serializable> implements SimpleSea
 	// 查询方法
 	// -------------------------------------------------------------------------
 
-	/**
-	 * 根据ID获取
-	 * 
-	 * @param id 实体ID
-	 * @return
-	 *
-	 * @author Ethan
-	 * @datetime 2015年8月31日 下午8:27:15
-	 */
+	@Override
 	public T getById(P id) {
 		return (T) this.getSession().get(clazz, id);
 	}
 	
-	/**
-	 * 根据ID列表获取
-	 * @param ids ID列表
-	 * @param isCache 是否缓存
-	 * @return
-	 *
-	 * @author Ethan
-	 * @datetime 2015年8月31日 下午10:25:49
-	 */
+	@Override
 	public List<T> getByIdList(Collection<P> ids, boolean isCache) {
+		String idName = this.hibernateTemplate.getSessionFactory().getClassMetadata(this.clazz).getIdentifierPropertyName();
 		return getByCriterions(isCache, new Criterion[] { Restrictions.in(idName, ids) });
 	}
 	
-
-	/**
-	 * 获取全部列表
-	 * 
-	 * @return
-	 *
-	 * @author Ethan
-	 * @datetime 2015年8月31日 下午8:30:05
-	 */
+	@Override
 	public List<T> getAll() {
 		return this.hibernateTemplate.loadAll(clazz);
 	}
 
-	/**
-	 * 根据过滤条件查询列表
-	 * 
-	 * @param searchFilter 过滤条件
-	 * @param isCache 是否缓存
-	 * @return
-	 *
-	 * @author Ethan
-	 * @datetime 2015年8月31日 下午8:30:21
-	 */
+	@Override
 	public List<T> getByFilter(SearchFilter searchFilter, boolean isCache) {
 		Criterion criterion = buildCriterionBySearchFilter(searchFilter.getPropertyName(), searchFilter.getPropertyClass(), searchFilter.getMatchValue(), searchFilter.getMatchType());
 		return getByCriterions(isCache, new Criterion[] { criterion });
 	}
 	
-	
-
-	/**
-	 * 根据过滤条件列表查询列表
-	 * 
-	 * @param searchFilters 过滤条件列表
-	 * @param isCache 是否缓存
-	 * @return
-	 *
-	 * @author Ethan
-	 * @datetime 2015年8月31日 下午8:31:37
-	 */
+	@Override
 	public List<T> getByFilters(List<SearchFilter> searchFilters, boolean isCache) {
 		List<Criterion> list = new ArrayList<Criterion>();
 		for (SearchFilter searchFilter : searchFilters) {
@@ -222,18 +143,8 @@ public class MyHibernateTemplate<T, P extends Serializable> implements SimpleSea
 		}
 		return getByCriterions(isCache, (Criterion[]) list.toArray(new Criterion[list.size()]));
 	}
-
-	/**
-	 * 根据过滤条件和排序条件查询列表
-	 * 
-	 * @param searchFilter 过滤条件
-	 * @param order 排序条件
-	 * @param isCache 是否缓存
-	 * @return
-	 *
-	 * @author Ethan
-	 * @datetime 2015年8月31日 下午8:32:27
-	 */
+	
+	@Override
 	public List<T> getByFilterAndOrder(SearchFilter searchFilter, Order order, boolean isCache) {
 		Criterion criterion = buildCriterionBySearchFilter(searchFilter.getPropertyName(), searchFilter.getPropertyClass(), searchFilter.getMatchValue(), searchFilter.getMatchType());
 		List<Order> orders = new ArrayList<Order>();
@@ -241,32 +152,13 @@ public class MyHibernateTemplate<T, P extends Serializable> implements SimpleSea
 		return getByCriterionsAndOrders(isCache, new Criterion[] { criterion }, orders);
 	}
 
-	/**
-	 * 根据过滤条件和排序条件列表查询列表
-	 * 
-	 * @param searchFilter 过滤条件
-	 * @param orders 排序条件
-	 * @param isCache 是否缓存
-	 * @return
-	 *
-	 * @author Ethan
-	 * @datetime 2015年8月31日 下午8:33:05
-	 */
+	@Override
 	public List<T> getByFilterAndOrders(SearchFilter searchFilter, List<Order> orders, boolean isCache) {
 		Criterion criterion = buildCriterionBySearchFilter(searchFilter.getPropertyName(), searchFilter.getPropertyClass(), searchFilter.getMatchValue(), searchFilter.getMatchType());
 		return getByCriterionsAndOrders(isCache, new Criterion[] { criterion }, orders);
 	}
 	
-	/**
-	 * 根据过滤条件列表和排序条件查询列表
-	 * @param searchFilters 过滤条件列表
-	 * @param order 排序条件
-	 * @param isCache 是否缓存
-	 * @return
-	 *
-	 * @author Ethan
-	 * @datetime 2015年8月31日 下午9:52:11
-	 */
+	@Override
 	public List<T> getByFiltersAndOrder(List<SearchFilter> searchFilters, Order order, boolean isCache) {
 		List<Criterion> list = new ArrayList<Criterion>();
 		for (SearchFilter searchFilter : searchFilters) {
@@ -277,18 +169,8 @@ public class MyHibernateTemplate<T, P extends Serializable> implements SimpleSea
 		orders.add(order);
 		return getByCriterionsAndOrders(isCache, (Criterion[]) list.toArray(new Criterion[list.size()]), orders);
 	}
-
-	/**
-	 * 根据过滤条件列表和排序条件列表查询列表
-	 * 
-	 * @param searchFilters 过滤条件列表
-	 * @param orders 排序条件列表
-	 * @param isCache 是否缓存
-	 * @return
-	 *
-	 * @author Ethan
-	 * @datetime 2015年8月31日 下午8:33:37
-	 */
+	
+	@Override
 	public List<T> getByFiltersAndOrders(List<SearchFilter> searchFilters, List<Order> orders, boolean isCache) {
 		List<Criterion> list = new ArrayList<Criterion>();
 		for (SearchFilter searchFilter : searchFilters) {
@@ -298,17 +180,7 @@ public class MyHibernateTemplate<T, P extends Serializable> implements SimpleSea
 		return getByCriterionsAndOrders(isCache, (Criterion[]) list.toArray(new Criterion[list.size()]), orders);
 	}
 	
-	/**
-	 * 根据HQL获取分页列表
-	 * @param page 分页信息
-	 * @param isCache 是否缓存
-	 * @param hql HQL语句
-	 * @param values 参数
-	 * @return
-	 *
-	 * @author Ethan
-	 * @datetime 2015年8月31日 下午10:20:50
-	 */
+	@Override
 	public Page<T> getPageByHql(Page<T> page, boolean isCache, String hql, Map<String, ?> values) {
 		Assert.notNull(page, "page不能为空");
 		Query query = this.getSession().createQuery(hql).setProperties(values);
@@ -321,29 +193,12 @@ public class MyHibernateTemplate<T, P extends Serializable> implements SimpleSea
 		return page;
 	}
 	
-	/**
-	 * 获取分页列表
-	 * @param page 分页信息
-	 * @param isCache 是否缓存
-	 * @return
-	 *
-	 * @author Ethan
-	 * @datetime 2015年8月31日 下午9:39:46
-	 */
+	@Override
 	public Page<T> getPage(Page<T> page, boolean isCache) {
 		return getPageByCriterions(page, isCache, new Criterion[0],null);
 	}
 	
-	/**
-	 * 根据过滤条件获取分页列表
-	 * @param page 分页信息
-	 * @param searchFilter 过滤条件
-	 * @param isCache 是否缓存
-	 * @return
-	 *
-	 * @author Ethan
-	 * @datetime 2015年8月31日 下午9:32:29
-	 */
+	@Override
 	public Page<T> getPageByFilter(Page<T> page,SearchFilter searchFilter, boolean isCache) {
 		Criterion criterion = buildCriterionBySearchFilter(searchFilter.getPropertyName(), searchFilter.getPropertyClass(), searchFilter.getMatchValue(), searchFilter.getMatchType());
 		List<SearchFilter> searchFilters = new ArrayList<SearchFilter>();
@@ -351,17 +206,7 @@ public class MyHibernateTemplate<T, P extends Serializable> implements SimpleSea
 		return this.getPageByCriterions(page, isCache, new Criterion[] { criterion },searchFilters);
 	}
 	
-	/**
-	 * 根据过滤条件和排序条件获取分页列表
-	 * @param page 分页信息
-	 * @param searchFilter 过滤条件
-	 * @param order 排序条件
-	 * @param isCache 是否缓存
-	 * @return
-	 *
-	 * @author Ethan
-	 * @datetime 2015年8月31日 下午9:45:06
-	 */
+	@Override
 	public Page<T> getPageByFilterAndOrder(Page<T> page,SearchFilter searchFilter,Order order, boolean isCache) {
 		Criterion criterion = buildCriterionBySearchFilter(searchFilter.getPropertyName(), searchFilter.getPropertyClass(), searchFilter.getMatchValue(), searchFilter.getMatchType());
 		List<Order> orders = new ArrayList<Order>();
@@ -369,33 +214,13 @@ public class MyHibernateTemplate<T, P extends Serializable> implements SimpleSea
 		return this.getPageByCriterionsAndOrders(page, isCache, new Criterion[] { criterion },orders,null);
 	}
 	
-	/**
-	 * 根据过滤条件和排序条件列表获取分页列表
-	 * @param page 分页信息
-	 * @param searchFilter 过滤条件
-	 * @param orders 排序条件列表
-	 * @param isCache 是否缓存
-	 * @return
-	 *
-	 * @author Ethan
-	 * @datetime 2015年8月31日 下午9:48:15
-	 */
+	@Override
 	public Page<T> getPageByFilterAndOrders(Page<T> page,SearchFilter searchFilter,List<Order> orders, boolean isCache) {
 		Criterion criterion = buildCriterionBySearchFilter(searchFilter.getPropertyName(), searchFilter.getPropertyClass(), searchFilter.getMatchValue(), searchFilter.getMatchType());
 		return this.getPageByCriterionsAndOrders(page, isCache, new Criterion[] { criterion },orders,null);
 	}
 	
-	/**
-	 * 根据过滤条件列表和排序条件列表获取分页列表
-	 * @param page 分页信息
-	 * @param searchFilters 过滤条件列表
-	 * @param orders 排序条件列表
-	 * @param isCache 是否缓存
-	 * @return
-	 *
-	 * @author Ethan
-	 * @datetime 2015年8月31日 下午9:49:51
-	 */
+	@Override
 	public Page<T> getPageByFiltersAndOrders(Page<T> page,List<SearchFilter> searchFilters,List<Order> orders, boolean isCache) {
 		List<Criterion> list = new ArrayList<Criterion>();
 		for (SearchFilter searchFilter : searchFilters) {
@@ -406,16 +231,7 @@ public class MyHibernateTemplate<T, P extends Serializable> implements SimpleSea
 		return this.getPageByCriterionsAndOrders(page, isCache, (Criterion[]) list.toArray(new Criterion[list.size()]),orders,null);
 	}
 	
-	/**
-	 * 根据过滤条件列表获取分页列表
-	 * @param page 分页信息
-	 * @param searchFilter 过滤条件
-	 * @param isCache 是否缓存
-	 * @return
-	 *
-	 * @author Ethan
-	 * @datetime 2015年8月31日 下午9:32:29
-	 */
+	@Override
 	public Page<T> getPageByFilters(Page<T> page,List<SearchFilter> searchFilters, boolean isCache) {
 		List<Criterion> list = new ArrayList<Criterion>();
 		for (SearchFilter searchFilter : searchFilters) {
@@ -443,6 +259,7 @@ public class MyHibernateTemplate<T, P extends Serializable> implements SimpleSea
 		
 		return page;
 	}
+	
 	private Page<T> getPageByCriterionsAndOrders(Page<T> page, boolean isCache, Criterion[] criterions,List<Order> orders,List<SearchFilter> searchFilters) {
 		Criteria criteria = createCriteria(isCache, criterions);
 		for (Order order : orders) {
@@ -474,16 +291,15 @@ public class MyHibernateTemplate<T, P extends Serializable> implements SimpleSea
 
 	}
 	
-	private String prepareCountHql(String orgHql)
-	  {
-	    String fromHql = orgHql;
+	private String prepareCountHql(String orgHql) {
+		String fromHql = orgHql;
 
-	    fromHql = "from " + StringUtils.substringAfter(fromHql, "from");
-	    fromHql = StringUtils.substringBefore(fromHql, "order by");
+		fromHql = "from " + StringUtils.substringAfter(fromHql, "from");
+		fromHql = StringUtils.substringBefore(fromHql, "order by");
 
-	    String countHql = "select count(*) " + fromHql;
-	    return countHql;
-	  }
+		String countHql = "select count(*) " + fromHql;
+		return countHql;
+	}
 
 	private long countCriteriaResult(Criteria criteria) {
 		CriteriaImpl impl = (CriteriaImpl) criteria;

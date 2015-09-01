@@ -1,4 +1,4 @@
-package cn.imethan.admin.base.hibernate;
+package cn.imethan.common.utils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;

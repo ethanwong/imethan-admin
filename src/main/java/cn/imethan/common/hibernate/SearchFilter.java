@@ -1,4 +1,4 @@
-package cn.imethan.admin.base.hibernate;
+package cn.imethan.common.hibernate;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.Assert;
+
+import cn.imethan.common.utils.ConvertUtil;
 
 /**
  * SearchFilter.java

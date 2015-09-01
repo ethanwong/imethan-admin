@@ -1,4 +1,4 @@
-package cn.imethan.admin.entity.security;
+package cn.imethan.security.entity;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,7 +12,8 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import cn.imethan.admin.base.entity.BaseEntity;
+
+import cn.imethan.common.entity.BaseEntity;
 
 /**
  * User.java

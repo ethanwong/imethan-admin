@@ -1,4 +1,4 @@
-package cn.imethan.admin.entity.security;
+package cn.imethan.security.entity;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,7 +19,7 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import com.sun.istack.internal.NotNull;
 
-import cn.imethan.admin.base.entity.BaseEntity;
+import cn.imethan.common.entity.BaseEntity;
 
 /**
  * Resource.java
