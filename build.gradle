@@ -39,7 +39,7 @@ dependencies {
     
     //hibernate begin
     compile 'org.hibernate:hibernate-core:4.3.11.Final'
-   compile "org.hibernate:hibernate-validator:5.1.0.Final"
+    compile "org.hibernate:hibernate-validator:5.1.0.Final"
     //hibernate end
 	
 	//mysql jdbc driver 

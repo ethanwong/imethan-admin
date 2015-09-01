@@ -14,7 +14,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import com.sun.istack.internal.NotNull;
@@ -177,8 +176,5 @@ public class Resource extends BaseEntity {
 	public void setRoot(boolean isRoot) {
 		this.isRoot = isRoot;
 	}
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
-	}
+
 }

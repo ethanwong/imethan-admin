@@ -1,8 +1,9 @@
-package cn.imethan.security.dao;
+package cn.imethan.security.dao.impl;
 
 import org.springframework.stereotype.Repository;
 
 import cn.imethan.common.hibernate.HibernateTemplateSupport;
+import cn.imethan.security.dao.UserDao;
 import cn.imethan.security.entity.User;
 
 /**

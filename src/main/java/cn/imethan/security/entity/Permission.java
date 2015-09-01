@@ -8,7 +8,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import cn.imethan.common.entity.BaseEntity;
@@ -58,8 +57,5 @@ public class Permission extends BaseEntity {
 	public void setPermission(String permission) {
 		this.permission = permission;
 	}
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
-	}
+
 }

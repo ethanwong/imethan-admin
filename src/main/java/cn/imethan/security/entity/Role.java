@@ -13,7 +13,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import cn.imethan.common.entity.BaseEntity;
@@ -78,11 +77,6 @@ public class Role extends BaseEntity {
 	}
 	public void setIntro(String intro) {
 		this.intro = intro;
-	}
-	
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
 	}
 
 }
