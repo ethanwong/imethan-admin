@@ -11,9 +11,9 @@
            http://www.springframework.org/schema/mvc
            http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd"
 	default-lazy-init="true">
-	
+
 	<!-- 默认访问跳转到首页 -->
-    <mvc:view-controller path="/" view-name="forward:/login" />
+	<mvc:view-controller path="/" view-name="forward:/login" />
 
 	<!-- 配置静态资源，直接映射到对应的文件夹，不被DispatcherServlet处理 -->
 	<mvc:resources mapping="/theme/**" location="/theme/" />
@@ -21,34 +21,33 @@
 	<mvc:resources mapping="/WEB-INF/content/base/error/**" location="/WEB-INF/content/base/error/" />
 
 	<!-- 自动扫描且只扫描@Controller -->
-	<context:component-scan base-package="cn.imethan"	use-default-filters="false">
-		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
-		<context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice" />
+	<context:component-scan base-package="cn.imethan"
+		use-default-filters="false">
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+		<context:include-filter type="annotation"
+			expression="org.springframework.web.bind.annotation.ControllerAdvice" />
 	</context:component-scan>
 	
-<!-- 	<mvc:interceptors> -->
-<!-- 		<mvc:interceptor> -->
-<!-- 			<mvc:mapping path="/console/**"/> -->
-<!-- 			<mvc:exclude-mapping path="/theme/**"/> -->
-<!-- 			<mvc:exclude-mapping path="/upload/**"/> -->
-<!-- 			<bean class="com.the3.web.interceptor.ConsoleInterceptor" /> -->
-<!-- 		</mvc:interceptor> -->
-<!-- 	</mvc:interceptors> -->
-	
-	<mvc:annotation-driven
-		content-negotiation-manager="contentNegotiationManager"
-		enableMatrixVariables="true">
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<mvc:exclude-mapping path="/theme/**" />
+			<mvc:exclude-mapping path="/upload/**" />
+			<bean class="cn.imethan.security.interceptor.CommonInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+
+	<mvc:annotation-driven content-negotiation-manager="contentNegotiationManager" enableMatrixVariables="true">
 		<mvc:message-converters register-defaults="true">
-			<bean
-				class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
+			<bean class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
 			<!-- 将StringHttpMessageCOnverter的默认编码设为UTF-8 -->
 			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
 				<property name="supportedMediaTypes" value="text/plain;charset=UTF-8" />
 			</bean>
 			<!-- json 响应的 content-type 是 application/json，而 IE 10 以前的浏览器对于这个类型是作为文件下载的 -->
 			<!-- 解决方法是只要将返回响应的 content-type 改为text/plain 即可 -->
-			<bean
-				class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+			<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
 				<property name="supportedMediaTypes" value="text/plain;charset=UTF-8" />
 			</bean>
 		</mvc:message-converters>
@@ -65,17 +64,14 @@
 		</property>
 	</bean>
 
-	<bean
-		class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
 		<property name="contentNegotiationManager" ref="contentNegotiationManager" />
 		<property name="viewResolvers">
 			<list>
 				<bean class="org.springframework.web.servlet.view.BeanNameViewResolver" />
 				<!-- jsp视图解析器 -->
-				<bean
-					class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-					<property name="viewClass"
-						value="org.springframework.web.servlet.view.JstlView" />
+				<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+					<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
 					<property name="prefix" value="/WEB-INF/content/" />
 					<property name="suffix" value=".jsp" />
 					<property name="order" value="1" />
@@ -90,8 +86,9 @@
 	</bean>
 
 	<!-- 上传拦截，如最大上传值及最小上传值 -->
-	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-	<!--  one of the properties available; the maximum file size in bytes -->
-	<property name="maxUploadSize" value="1000000" />
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- one of the properties available; the maximum file size in bytes -->
+		<property name="maxUploadSize" value="1000000" />
 	</bean>
 </beans> 

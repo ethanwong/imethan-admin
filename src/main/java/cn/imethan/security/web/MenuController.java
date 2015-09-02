@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import cn.imethan.common.utils.JsonUtils;
+import cn.imethan.common.utils.JsonUtil;
 import cn.imethan.security.entity.Menu;
 import cn.imethan.security.service.MenuService;
 
@@ -34,11 +34,11 @@ public class MenuController {
     
 	@ResponseBody
 	@RequestMapping(value="json",method = {RequestMethod.POST})
-	public String json(){
+	public List<Menu> json(){
 		List<Menu> menus = menuService.getRootMenu();
-		String json = JsonUtils.writeValueAsString(menus);
+		String json = JsonUtil.writeValueAsString(menus);
 		System.out.println("----------menu------json:"+json);
-		return json;
+		return menus;
 	}
 
 }

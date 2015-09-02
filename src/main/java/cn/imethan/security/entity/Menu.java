@@ -14,8 +14,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sun.istack.internal.NotNull;
 
 import cn.imethan.common.entity.BaseEntity;
@@ -114,15 +113,15 @@ public class Menu extends BaseEntity {
 		this.parentId = parentId;
 	}
 	
-	@ManyToOne(cascade = {CascadeType.REFRESH},fetch = FetchType.LAZY)
+	@ManyToOne(cascade = {CascadeType.REFRESH},fetch = FetchType.EAGER)
 	@JoinColumn(name="pid")
 	private Menu parent;//父级
 	
-	@OneToMany(cascade = CascadeType.REFRESH,fetch = FetchType.LAZY,mappedBy="parent")
+	@OneToMany(cascade = CascadeType.REFRESH,fetch = FetchType.EAGER,mappedBy="parent")
 	@OrderBy("id")
 	private Set<Menu> childrens = new HashSet<Menu>();//子级
 	
-	@OneToMany(cascade = CascadeType.REFRESH,fetch = FetchType.LAZY,mappedBy="menu")
+	@OneToMany(cascade = CascadeType.REFRESH,fetch = FetchType.EAGER,mappedBy="menu")
 	@OrderBy("id")
 	private Set<Permission> permissions = new HashSet<Permission>();//授权
 	

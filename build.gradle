@@ -12,8 +12,8 @@ jar {
 
 repositories {
     mavenCentral()
-    maven { url "http://repository.sonatype.org/content/groups/forge/"}
     maven { url "http://repo.spring.io/libs-snapshot" }
+    maven { url "http://repository.sonatype.org/content/groups/forge/"}
     maven { url "http://maven.oschina.net/content/groups/public/" }
     maven { url "http://repo2.maven.org/maven2/" }
 }
@@ -22,7 +22,7 @@ dependencies {
 	
 	//Spring begin
 	compile 'org.springframework:spring-context:4.0.2.RELEASE'
-	compile 'org.springframework:spring-test:4.0.2.RELEASE'
+	testCompile 'org.springframework:spring-test:3.2.14.RELEASE'
 	//compile 'org.springframework.security:spring-security-web:4.0.2.RELEASE'
     compile 'org.springframework:spring-webmvc:4.0.2.RELEASE'
     compile 'org.springframework:spring-orm:4.0.2.RELEASE'
@@ -33,9 +33,6 @@ dependencies {
     compile 'org.aspectj:aspectjrt:1.6.11'
     compile 'org.aspectj:aspectjweaver:1.6.11'
     compile 'cglib:cglib:2.1_3'
-    
-
-    
     
     //hibernate begin
     compile 'org.hibernate:hibernate-core:4.3.11.Final'
@@ -72,12 +69,10 @@ dependencies {
 	compile 'com.fasterxml.jackson.core:jackson-core:2.1.0'
 	compile 'com.fasterxml.jackson.core:jackson-databind:2.1.0'
 	compile 'com.fasterxml.jackson.core:jackson-annotations:2.1.0'
-	compile 'org.codehaus.jackson:com.springsource.org.codehaus.jackson.mapper:1.4.3'
-	compile 'org.codehaus.jackson:com.springsource.org.codehaus.jackson:1.4.3'
 	//JSON end
     
     //sitemesh begin
-    compile 'opensymphony:sitemesh:2.4.2'
+    compile 'opensymphony:sitemesh:2.4.1'
     //sitemesh end
     
     compile 'com.google.guava:guava:16.0.1'

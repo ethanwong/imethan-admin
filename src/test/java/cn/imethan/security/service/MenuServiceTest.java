@@ -12,7 +12,7 @@ import org.springframework.test.context.transaction.TransactionConfiguration;
 import cn.imethan.security.entity.Menu;
 
 /**
- * ResourceServiceTest.java
+ * MenuServiceTest.java
  *
  * @author Ethan Wong
  * @time 2015年9月1日下午2:49:09
@@ -20,10 +20,10 @@ import cn.imethan.security.entity.Menu;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:/main/applicationContext.xml"})
 @TransactionConfiguration(transactionManager="transactionManager",defaultRollback=false)  
-public class ResourceServiceTest {
+public class MenuServiceTest {
 	
 	@Autowired
-	private MenuService resourceService;
+	private MenuService menuService;
 	
 	@Test
 	public void testSaveOrModify(){
@@ -32,12 +32,12 @@ public class ResourceServiceTest {
 		entity.setModule("sss");
 		entity.setUrl("1111");
 		entity.setIntro("111");
-		resourceService.saveOrModify(entity);
+		menuService.saveOrModify(entity);
 	}
 	
 	@Test
 	public void testGetRootResource(){
-		List<Menu> list = resourceService.getRootMenu();
+		List<Menu> list = menuService.getRootMenu();
 		System.out.println("list:"+list);
 	}
 
