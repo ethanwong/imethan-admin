@@ -17,6 +17,15 @@ public class Page<T> {
 	private Long totalCount;//总记录数
 	private List<T> list = new ArrayList<T>();//页信息列表
 	
+	public Page(){
+		
+	}
+	
+	public Page(Integer pageNo,Integer pageSize){
+		this.pageNo = pageNo;
+		this.pageSize = pageSize;
+	}
+	
 	public Integer getPageNo() {
 		return pageNo;
 	}
