@@ -19,10 +19,10 @@ public interface RoleService{
 	/**
 	 * 保存或更新
 	 * @param entity
-	 * @param resourcePermission
+	 * @param menuPermission
 	 * @return
 	 */
-	public ReturnDto saveOrModify(Role entity,String resourcePermission);
+	public ReturnDto saveOrUpdate(Role entity,String menuPermission);
 	
 	/**
 	 * 获取分页列表

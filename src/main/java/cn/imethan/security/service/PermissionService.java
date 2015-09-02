@@ -14,11 +14,11 @@ import cn.imethan.security.entity.Permission;
 public interface PermissionService{
 	
 	/**
-	 * 根据resourceId获取授权列表
-	 * @param resourceId
+	 * 根据menuId获取授权列表
+	 * @param menuId
 	 * @return
 	 */
-	List<Permission> getByResourceId(Long resourceId);
+	List<Permission> getByMenuId(Long menuId);
 	
 	/**
 	 * 根据ID获取
@@ -39,7 +39,7 @@ public interface PermissionService{
 	 * @param permission
 	 * @return
 	 */
-	ReturnDto saveOrModify(Permission permission);
+	ReturnDto saveOrUpdate(Permission permission);
 
 }
 

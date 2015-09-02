@@ -25,10 +25,10 @@ import cn.imethan.security.service.MenuService;
 public class MenuServiceImpl implements MenuService {
 	
 	private Logger logger = Logger.getLogger(MenuServiceImpl.class); 
+	private ReturnDto returnDto = new ReturnDto(true,"操作成功");
 	
 	@Autowired
 	private MenuDao resourceDao;
-	private ReturnDto returnDto = new ReturnDto(true,"操作成功");
 	
 	@Transactional(readOnly = false)
 	@Override
