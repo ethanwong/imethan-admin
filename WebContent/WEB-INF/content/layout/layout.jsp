@@ -112,5 +112,6 @@
 	</div>
 	<!-- AdminLTE App -->
 	<script src="${root}/theme/dist/js/app.js"></script>
+	<script src="${root}/theme/other/js/imethan.js"></script>
 </body>
 </html>
