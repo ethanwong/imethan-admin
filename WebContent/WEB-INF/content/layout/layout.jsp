@@ -16,7 +16,7 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="${root}/theme/other/font-awesome-4.4.0/css/font-awesome.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="${root}/theme/dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="${root}/theme/dist/css/AdminLTE.css">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
 <%--     <link rel="stylesheet" href="${root}/theme/dist/css/skins/_all-skins.min.css"> --%>
@@ -61,8 +61,6 @@
     <script src="${root}/theme/plugins/slimScroll/jquery.slimscroll.min.js"></script>
     <!-- FastClick -->
     <script src="${root}/theme/plugins/fastclick/fastclick.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="${root}/theme/dist/js/app.min.js"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="${root}/theme/dist/js/pages/dashboard.js"></script>
     <!-- AdminLTE for demo purposes -->
@@ -72,6 +70,16 @@
 	<link rel="stylesheet" href="${root}/theme/other/jtree/css/zTreeStyle/zTreeStyle.css" type="text/css">
 	<script type="text/javascript" src="${root}/theme/other/jtree/js/jquery.ztree.all-3.5.js"></script>
 	<!-- ztree end -->
+    
+    <!-- jqgrid begin-->
+    <script type="text/ecmascript" src="${root}/theme/other/jqGrid/grid.locale-cn.js"></script>
+    <script type="text/ecmascript" src="${root}/theme/other/jqGrid/jquery.jqGrid.min.js"></script>
+    <link href="${root}/theme/other/jqGrid/ui.jqgrid-bootstrap.css" rel="stylesheet" type="text/css"  />
+	<!-- jqgrid end-->
+	
+    <link href="${root}/theme/other/css/imethan.css" rel="stylesheet" type="text/css"  />
+    
+    
     
 	<decorator:head></decorator:head>
 </head>
@@ -102,5 +110,7 @@
 		<decorator:body></decorator:body>
 		<%@ include file="/WEB-INF/content/layout/footer.jsp"%>
 	</div>
+	<!-- AdminLTE App -->
+	<script src="${root}/theme/dist/js/app.js"></script>
 </body>
 </html>

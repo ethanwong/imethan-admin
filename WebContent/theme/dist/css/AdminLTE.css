@@ -324,7 +324,7 @@ a:focus {
   font-weight: 300;
 }
 .content-header > .breadcrumb {
-  float: right;
+  float: left;
   background: transparent;
   margin-top: 0;
   margin-bottom: 0;

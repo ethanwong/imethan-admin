@@ -321,8 +321,17 @@ function _init() {
         if ($(window).width() > (screenSizes.sm - 1)) {
           if ($("body").hasClass('sidebar-collapse')) {
             $("body").removeClass('sidebar-collapse').trigger('expanded.pushMenu');
+            
+            
+            //设置jqGrid自适应宽度
+            $("#jqGrid").jqGrid( 'setGridWidth', ($(".ui-jqgrid").width()*1-$(".sidebar-menu").width()*1));
+            
           } else {
             $("body").addClass('sidebar-collapse').trigger('collapsed.pushMenu');
+            
+            //设置jqGrid自适应宽度 
+            $("#jqGrid").jqGrid( 'setGridWidth', ($(".ui-jqgrid").width()*1+$(".sidebar-menu").width()*1));
+            
           }
         }
         //Handle sidebar push menu for small screens
@@ -700,6 +709,15 @@ function _init() {
  * @usage $("#todo-widget").todolist( options );
  */
 (function ($) {
+	
+	
+	//resize to fit page size
+	$(window).on('resize.jqGrid', function () {
+		$("#jqGrid").jqGrid( 'setGridWidth', $(".content").width()-20 );
+    })
+	
+    //trigger window resize to make the grid get the correct size
+	$(window).triggerHandler('resize.jqGrid');
 
   'use strict';
 

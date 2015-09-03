@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.imethan.common.dto.JqGridPageDto;
 import cn.imethan.common.dto.ReturnDto;
 import cn.imethan.common.hibernate.Page;
 import cn.imethan.common.hibernate.SearchFilter;
@@ -39,13 +40,14 @@ public class UserController {
 
 	@ResponseBody
 	@RequestMapping(value = "json", method = { RequestMethod.POST, RequestMethod.GET })
-	public Page<User> json(@RequestParam("page") Integer pageNo, @RequestParam("rows") Integer pageSize) {
+	public JqGridPageDto<User> json(@RequestParam("page") Integer pageNo,@RequestParam("rows") Integer pageSize) {
 		List<SearchFilter> filters = new ArrayList<SearchFilter>();
 
 		Page<User> page = new Page<User>(pageNo, pageSize);
 		page = userService.getPage(filters, page);
-
-		return page;
+		System.out.println("-------------page:"+page.getList());
+		
+		return new JqGridPageDto<User>(page);
 	}
 
 	@ResponseBody

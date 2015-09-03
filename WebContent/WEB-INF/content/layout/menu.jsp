@@ -29,7 +29,7 @@
       <li class="header">MAIN NAVIGATION</li>
       <li class="">
         <a href="${root}/console">
-          <i class="fa fa-dashboard"></i> <span>用户首页</span> <small class="label pull-right bg-green">new</small>
+          <i class="fa fa-dashboard"></i> <span>用户首页</span>
         </a>
       </li>
       
@@ -45,7 +45,7 @@
       <li class="treeview active">
         <a href="#">
           <i class="fa fa-users"></i>
-          <span>权限配置</span>
+          <span>权限配置</span><b class="arrow pull-right fa fa-angle-left"></b>
         </a>
         <ul class="treeview-menu">
           <li class="active"><a href="${root}/security/user"><i class="fa fa-circle-o"></i> 用户管理</a></li>
@@ -58,7 +58,7 @@
       <li class="treeview">
         <a href="#">
           <i class="fa fa-folder"></i>
-          <span>基础页面</span>
+          <span>基础页面</span><b class="arrow pull-right fa fa-angle-left"></b>
         </a>
         <ul class="treeview-menu">
           <li><a href="${root}/theme/"><i class="fa fa-circle-o"></i> 404错误</a></li>

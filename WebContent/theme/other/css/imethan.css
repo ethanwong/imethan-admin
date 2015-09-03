@@ -1,0 +1,6 @@
+th {
+  font-weight: normal;
+}
+.ui-jqgrid .ui-jqgrid-btable tbody tr.jqgrow td{
+	text-align: left !important;
+}
