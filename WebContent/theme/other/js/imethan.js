@@ -9,4 +9,6 @@
     //trigger window resize to make the grid get the correct size
 	$(window).triggerHandler('resize.jqGrid');
 	
+//	$("#jqGrid")
+	
 }(jQuery));

@@ -28,6 +28,28 @@
 				</div>
 			</div>
 		</section>
+		
+		<div class="modal fade" id="deleteConfirmModal">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title">删除确认</h4>
+					</div>
+					<div class="modal-body">
+						确定要删除吗？
+					</div>
+					<div class="modal-footer">
+						<button  type="button" class="btn btn-defaul" data-dismiss="modal">关闭</button>
+						<button id="deleteConfirmModalClick" type="button" class="btn btn-danger" data-dismiss="modal">删除</button>
+					</div>
+				</div>
+			</div>
+		</div>	
+		
+
 	</div>
 	
 	<script type="text/javascript">
@@ -42,10 +64,10 @@
 			colModel: [	
 			           	{ name: 'nickname',  width: 150, align: "center" },
 			           	{ name: 'username',  width: 150, align: "center" },
-			           	{ name: 'roles', width: 150, align: "center"},
+			           	{ name: 'roles', width: 150, align: "center",formatter:operationRoles },
 						{ name: 'password', width: 150, align: "center" },
 						{ name: 'createTime', width: 150, align: "center"},
-						{ name: 'id', width: 200, align: "center"}
+						{ name: 'id', width: 200, align: "center",formatter:operation}
 					  ],
             height: 250,
             rowNum: 10,
@@ -56,8 +78,51 @@
 			rownumbers : true,
  			viewrecords: true,
  			multiselect : true
-        });
+        }).closest(".ui-jqgrid-bdiv").css({ 'overflow-x' : 'hidden' });
+        
+		function operationRoles(cellvalue, options, rowObject){
+			var rolenames = "";
+			$.each(cellvalue, function(i, item) {
+				if(i != 0){
+					rolenames += ",";
+				}
+				rolenames += item.name;
+			});
+			return rolenames;
+		};
+		
+		function operation(cellvalue, options, rowObject) {
+			var modifyOperation = "<a id='operation1' href='javascript:;' onclick='modifyUser("+cellvalue+")' >修改</a>";
+			var deleteOPeration = "<a id='operation2' href='javascript:;' onclick='deleteUser("+cellvalue+")' >删除</a>";
+			return modifyOperation + " " + deleteOPeration;
+		};
+        
+        
     });
+	
+	function deleteUser(){
+		$('#deleteConfirmModal').modal({
+		 	 keyboard: true
+		});
+		$("#deleteConfirmModalClick").click(function(){
+			console.log("------------delete----------");
+			
+// 			$('#deleteConfirmModal').modal('toggle');
+			
+// 			$.ajax({
+// 				url:"${root}/console/security/user/delete/"+id,
+// 				type:"POST",
+// 				dateType:"json",
+// 				success:function(data){
+// 					var result = eval("(" + data + ")");
+// 					//加载用户列表
+// 					$('#list').trigger('reloadGrid');
+// 					showMsg("success",result.message);
+// 				}
+// 			});
+		});
+	};
+	
 	</script>
 </body>
 </html>

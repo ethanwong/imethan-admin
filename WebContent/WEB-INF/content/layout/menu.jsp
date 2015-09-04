@@ -45,13 +45,13 @@
       <li class="treeview active">
         <a href="#">
           <i class="fa fa-users"></i>
-          <span>权限配置</span><b class="arrow pull-right fa fa-angle-left"></b>
+          <span>权限管理</span><b class="arrow pull-right fa fa-angle-left"></b>
         </a>
         <ul class="treeview-menu">
           <li class="active"><a href="${root}/security/user"><i class="fa fa-circle-o"></i> 用户管理</a></li>
           <li><a href="${root}/security/role"><i class="fa fa-circle-o"></i> 角色管理</a></li>
-          <li><a href="${root}/theme/pages/layout/fixed.html"><i class="fa fa-circle-o"></i> 权限配置</a></li>
-          <li><a href="${root}/theme/pages/layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> 资源管理</a></li>
+          <li><a href="${root}/security/menu"><i class="fa fa-circle-o"></i> 菜单管理</a></li>
+          <li><a href="${root}/security/permission"><i class="fa fa-circle-o"></i> 授权管理</a></li>
         </ul>
       </li>
       
