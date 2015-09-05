@@ -2,6 +2,7 @@
 <%@ include file="/WEB-INF/content/base/taglibs.jsp"%>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator"%>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/page" prefix="page"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="security"%>
 <!DOCTYPE html>
 <html>
 <head>

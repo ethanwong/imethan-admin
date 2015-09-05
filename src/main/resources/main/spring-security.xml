@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/security
+		http://www.springframework.org/schema/security/spring-security.xsd">
+
+	<!-- 配置不过滤的资源（静态资源及登录相关） -->
+	<http pattern="/theme/**" security="none" />
+	<http pattern="/upload/**" security="none" />
+
+	<http use-expressions="false" entry-point-ref="authenticationEntryPoint" >
+
+		<!-- 登录过滤 -->
+		<intercept-url pattern="/login" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<intercept-url pattern="/**" access="ROLE_USER" />
+		<form-login login-page='/login' default-target-url="/console" always-use-default-target="true"  />
+		<remember-me />
+		<csrf />
+		<!-- 注销过滤 -->
+		<custom-filter ref="customLogoutFilter" position="LOGOUT_FILTER" />
+		<!-- 权限过滤 -->
+		<access-denied-handler ref="accessDeniedHandler"/>
+		
+		<!-- 会话过滤 -->
+		<session-management invalid-session-url="/login?error=max">
+			<concurrency-control max-sessions="1"  error-if-maximum-exceeded="true"  />
+		</session-management>
+	</http>
+	
+	<!-- 注销过滤 -->
+	<beans:bean id="customLogoutFilter" class="cn.imethan.common.security.CustomLogoutFilter">
+		<!-- 处理退出的虚拟url -->
+		<beans:property name="filterProcessesUrl" value="/logout" />
+		<!-- 退出处理成功后的默认显示url -->
+		<beans:constructor-arg index="0" value="/login?logout" />
+		<beans:constructor-arg index="1">
+			<!-- 退出成功后的handler列表 -->
+			<beans:array>
+				<beans:bean id="securityContextLogoutHandler"
+					class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler" />
+				<!-- 加入了开发人员自定义的退出成功处理 -->
+				<beans:bean id="customLogoutSuccessHandler"
+					class="cn.imethan.common.security.CustomLogoutHandler" />
+			</beans:array>
+		</beans:constructor-arg>
+	</beans:bean>
+
+
+	<beans:bean id="authenticationEntryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+		<beans:constructor-arg value="/login"/>
+	</beans:bean>
+	
+	<beans:bean id="accessDeniedHandler" class="org.springframework.security.web.access.AccessDeniedHandlerImpl">
+		<beans:property name="errorPage" value="/WEB-INF/content/base/error/403.jsp" />
+	</beans:bean>
+
+
+	<beans:bean name="bcryptEncoder"
+		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+
+	<authentication-manager erase-credentials="false"
+		alias="authenticationManager">
+		<authentication-provider>
+			<password-encoder ref="bcryptEncoder" />
+			<user-service>
+				<user name="ethan"
+					password="$2a$10$HOz1fu6Arb1yc/uDHdfmJ.YL64rkvwTSxX.mYXN.1eWu3V0KSBtGO"
+					authorities="ROLE_USER, ROLE_ADMIN" />
+				<user name="bob" password="4e7421b1b8765d8f9406d87e7cc6aa784c4ab97f"
+					authorities="ROLE_USER" />
+			</user-service>
+		</authentication-provider>
+	</authentication-manager>
+
+</beans:beans>

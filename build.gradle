@@ -23,13 +23,17 @@ dependencies {
 	//Spring begin
 	compile 'org.springframework:spring-context:4.0.2.RELEASE'
 	testCompile 'org.springframework:spring-test:3.2.14.RELEASE'
-	//compile 'org.springframework.security:spring-security-web:4.0.2.RELEASE'
     compile 'org.springframework:spring-webmvc:4.0.2.RELEASE'
     compile 'org.springframework:spring-orm:4.0.2.RELEASE'
     compile 'org.springframework:spring-aop:4.0.2.RELEASE'
     compile 'org.springframework:spring-aspects:4.0.2.RELEASE'
     //Spring end
     
+    //Spring security begin
+	compile 'org.springframework.security:spring-security-web:4.0.2.RELEASE'
+	compile 'org.springframework.security:spring-security-config:4.0.2.RELEASE'
+    //Spring security end
+     
     compile 'org.aspectj:aspectjrt:1.6.11'
     compile 'org.aspectj:aspectjweaver:1.6.11'
     compile 'cglib:cglib:2.1_3'

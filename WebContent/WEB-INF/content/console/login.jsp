@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/content/base/taglibs.jsp"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="security"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
   <head>
@@ -29,24 +30,36 @@
   <body class="hold-transition login-page">
     <div class="login-box">
       <div class="login-logo">
-        <a href="../../index2.html"><b>ImEthan</b>Admin</a>
+        <a href="${root}/login"><b>ImEthan</b>Admin</a>
       </div><!-- /.login-logo -->
       <div class="login-box-body">
+      <c:if test="${param.error != null}"> ·
+<p>
+Invalid username and password.
+</p>
+</c:if>
+<c:if test="${param.logout != null}"> ¸
+<p>
+You have been logged out.
+</p>
+</c:if>
+
         <p class="login-box-msg">Sign in to start your session</p>
-        <form action="../../index2.html" method="post">
+        <form action="${root}/login" method="post">
+        	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/> 
           <div class="form-group has-feedback">
-            <input type="email" class="form-control" placeholder="Email">
+            <input type="text" class="form-control" placeholder="Username" name="username">
             <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
           </div>
           <div class="form-group has-feedback">
-            <input type="password" class="form-control" placeholder="Password">
+            <input type="password" class="form-control" placeholder="Password" name="password">
             <span class="glyphicon glyphicon-lock form-control-feedback"></span>
           </div>
           <div class="row">
             <div class="col-xs-8">
               <div class="checkbox icheck">
                 <label>
-                  <input type="checkbox"> Remember Me
+               	 <input id="_spring_security_remember_me" name="_spring_security_remember_me" type="checkbox" value="true"/> Remember Me
                 </label>
               </div>
             </div><!-- /.col -->

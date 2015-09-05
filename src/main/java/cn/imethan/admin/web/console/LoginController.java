@@ -17,6 +17,11 @@ public class LoginController {
 	public String login(){
 		return "console/login";
 	}
+	
+	@RequestMapping("logout")
+	public String loginout(){
+		return "console/login";
+	}
 
 }
 
