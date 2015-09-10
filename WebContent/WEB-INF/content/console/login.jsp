@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/content/base/taglibs.jsp"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="security"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
@@ -33,18 +33,17 @@
         <a href="${root}/login"><b>ImEthan</b>Admin</a>
       </div><!-- /.login-logo -->
       <div class="login-box-body">
-      <c:if test="${param.error != null}"> ·
-<p>
-Invalid username and password.
-</p>
-</c:if>
-<c:if test="${param.logout != null}"> ¸
-<p>
-You have been logged out.
-</p>
-</c:if>
-
-        <p class="login-box-msg">Sign in to start your session</p>
+        <p class="login-box-msg">
+	        <c:if test="${param.error != null}">
+				Invalid username and password.
+			</c:if>
+			<c:if test="${param.logout != null}">
+				You have been logged out.
+			</c:if>
+			<c:if test="${param.error == null && param.logout == null}">
+				Sign in to start your session
+			</c:if>
+        </p>
         <form action="${root}/login" method="post">
         	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/> 
           <div class="form-group has-feedback">
@@ -75,8 +74,8 @@ You have been logged out.
 <!--           <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign in using Google+</a> -->
 <!--         </div>/.social-auth-links -->
 
-        <a href="#">I forgot my password</a><br>
-        <a href="register.html" class="text-center">Register a new membership</a>
+<!--         <a href="#">I forgot my password</a><br> -->
+<!--         <a href="register.html" class="text-center">Register a new membership</a> -->
 
       </div><!-- /.login-box-body -->
     </div><!-- /.login-box -->

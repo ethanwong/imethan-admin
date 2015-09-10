@@ -20,7 +20,7 @@ import cn.imethan.security.service.PermissionService;
  * @author Ethan Wong
  * @time 2015年9月2日上午9:24:59
  */
-@Service
+@Service("permissionService")
 @Transactional(readOnly = true)
 public class PermissionServiceImpl implements PermissionService {
 	
@@ -67,6 +67,11 @@ public class PermissionServiceImpl implements PermissionService {
 			e.printStackTrace();
 		}
 		return returnDto;
+	}
+
+	@Override
+	public Iterable<Permission> getAll() {
+		return permissionDao.getAll();
 	}
 
 }

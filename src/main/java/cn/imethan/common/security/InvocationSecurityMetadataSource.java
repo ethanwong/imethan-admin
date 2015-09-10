@@ -1,0 +1,88 @@
+package cn.imethan.common.security;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import org.springframework.security.access.ConfigAttribute;
+import org.springframework.security.access.SecurityConfig;
+import org.springframework.security.web.FilterInvocation;
+import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
+import org.springframework.util.AntPathMatcher;
+
+import cn.imethan.security.entity.Permission;
+import cn.imethan.security.service.PermissionService;
+
+/**
+ * InvocationSecurityMetadataSource.java
+ *
+ * @author Ethan Wong
+ * @time 2015年9月10日下午11:43:00
+ */
+public class InvocationSecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
+	
+	private PermissionService permissionService;
+	private static Map<String, Collection<ConfigAttribute>> resourceMap = null;
+	private AntPathMatcher urlMatcher = new AntPathMatcher();
+
+	public InvocationSecurityMetadataSource(PermissionService permissionService) {
+		this.permissionService = permissionService;
+		this.loadResourceDefine();
+	}
+	
+	private void loadResourceDefine() {		
+		if(resourceMap == null) {
+            resourceMap = new HashMap<String, Collection<ConfigAttribute>>();
+//            Iterable<Permission> authorityList = this.permissionService.getAll();
+//            for (Permission permission : authorityList) {
+//            	Collection<ConfigAttribute> configAttributes = new ArrayList<ConfigAttribute>();
+//                ConfigAttribute configAttribute = new SecurityConfig(permission.getPrefixedName());
+//                configAttributes.add(configAttribute);
+//                resourceMap.put(permission.getMenu().getUrl(), configAttributes);
+//            }
+        }
+	}
+
+	public Collection<ConfigAttribute> getAllConfigAttributes() {
+		return null;
+	}
+
+	public Collection<ConfigAttribute> getAttributes(Object object)
+			throws IllegalArgumentException {
+		String requestURL = ((FilterInvocation) object).getRequestUrl();
+		if(requestURL.indexOf("?") != -1) {
+			requestURL = requestURL.substring(0, requestURL.indexOf("?"));
+        }
+		
+		if (resourceMap == null) {
+			this.loadResourceDefine();
+		}
+		Iterator<String> iterator = resourceMap.keySet().iterator();
+		while (iterator.hasNext()) {
+			String resRUL = iterator.next();
+			if (urlMatcher.match(resRUL, requestURL)) {
+				return resourceMap.get(resRUL);
+			}
+		}
+		return null;
+	}
+	
+	public static void reFresh() {
+		resourceMap = null;
+	}
+
+	public boolean supports(Class<?> arg0) {
+		return true;
+	}
+
+	public PermissionService getPermissionService() {
+		return permissionService;
+	}
+
+	public void setPermissionService(PermissionService permissionService) {
+		this.permissionService = permissionService;
+	}
+
+}

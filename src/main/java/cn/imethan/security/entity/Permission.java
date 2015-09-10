@@ -7,6 +7,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import cn.imethan.common.entity.BaseEntity;
@@ -24,9 +25,16 @@ public class Permission extends BaseEntity {
 	
 	private static final long serialVersionUID = 3002097053120526602L;
 	
+	public static final String AUTHORITY_PREFIX = "ROLE_";
+	
 	private String name;//权限名称，格式：“资源名称:操作”，形如：“channel:new”
 	private String intro;//描述
 	private String permission;//权限
+	
+	@Transient
+	public String getPrefixedName() {
+		return AUTHORITY_PREFIX + name;
+	}
 	
 	@ManyToOne(cascade = {CascadeType.PERSIST},fetch = FetchType.LAZY)
 	@JoinColumn(name="menuId")

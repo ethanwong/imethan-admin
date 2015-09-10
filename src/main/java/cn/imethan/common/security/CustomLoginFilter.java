@@ -5,6 +5,4 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
 	
 
-	
-
 }

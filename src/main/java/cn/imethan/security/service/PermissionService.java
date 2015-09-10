@@ -41,6 +41,8 @@ public interface PermissionService{
 	 */
 	ReturnDto saveOrUpdate(Permission permission);
 
+	Iterable<Permission> getAll();
+
 }
 
 
