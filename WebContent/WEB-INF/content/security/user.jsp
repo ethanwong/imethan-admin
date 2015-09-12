@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/content/base/taglibs.jsp"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,13 +15,20 @@
 		</section>
 		<section class="content">
 			<div class="box">
+					<sec:authentication property="principal" />
+<%-- 				<sec:accesscontrollist hasPermission="1,2" domainObject="${someObject}"> --%>
+<!-- 					This will be shown if the user has all of the permissions represented by the values "1" or "2" on the given object. -->
+<%-- 				</sec:accesscontrollist> --%>
+
 				<div class="box-header" style="padding-bottom: 0px;">
-					<button class="btn btn-default btn-flat">增加</button>
-					<button class="btn btn-primary btn-flat">修改</button>
-					<button class="btn btn-success btn-flat">查看</button>
-<!-- 					<button class="btn btn-warning btn-flat">删除</button> -->
-<!-- 					<button class="btn btn-info btn-flat">查看</button> -->
-					<button class="btn btn-danger btn-flat">删除</button>
+					<sec:authorize access="hasRole('ROLE_添加用户')">
+						<button class="btn btn-default btn-flat">增加</button>
+						<button class="btn btn-primary btn-flat">修改</button>
+						<button class="btn btn-success btn-flat">查看</button>
+	<!-- 					<button class="btn btn-warning btn-flat">删除</button> -->
+	<!-- 					<button class="btn btn-info btn-flat">查看</button> -->
+						<button class="btn btn-danger btn-flat">删除</button>
+	                </sec:authorize>
                 </div>
                 <div class="box-body">
 				    <table id="jqGrid"></table>

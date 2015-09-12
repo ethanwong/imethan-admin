@@ -11,11 +11,15 @@
 	<!-- Spring listener -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-		<param-value>classpath*:/main/applicationContext.xml,classpath*:/main/spring-security.xml
-		</param-value>
+		<param-value>classpath*:/main/applicationContext-main.xml</param-value>
 	</context-param>
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>
+			org.springframework.security.web.session.HttpSessionEventPublisher
+		</listener-class>
 	</listener>
 	
 	<!-- Encoding filter  -->
@@ -55,11 +59,7 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 	
-	<listener>
-		<listener-class>
-			org.springframework.security.web.session.HttpSessionEventPublisher
-		</listener-class>
-	</listener>
+
      
      <session-config>
   		<!-- web.xml expects the session timeout in minutes: -->

@@ -207,7 +207,7 @@
          <li class="dropdown user user-menu">
            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
              <img src="${root}/theme/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-             <span class="hidden-xs">Alexander Pierce</span>
+             <span class="hidden-xs"><sec:authentication property="principal.username" /></span>
            </a>
            <ul class="dropdown-menu">
              <!-- User image -->
