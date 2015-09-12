@@ -32,6 +32,7 @@ dependencies {
     //Spring security begin
 	compile 'org.springframework.security:spring-security-web:4.0.2.RELEASE'
 	compile 'org.springframework.security:spring-security-config:4.0.2.RELEASE'
+	compile 'org.springframework.security:spring-security-taglibs:3.2.8.RELEASE'
     //Spring security end
      
     compile 'org.aspectj:aspectjrt:1.6.11'

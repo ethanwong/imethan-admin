@@ -27,6 +27,8 @@ public class SecurityAccessDecisionManager implements AccessDecisionManager {
 		while (iterator.hasNext()) {
 			ConfigAttribute configAttribute = iterator.next();
 			String needPermission = configAttribute.getAttribute();
+			System.out.println("SecurityAccessDecisionManager haveAuthorities:"+authentication.getAuthorities());
+			System.out.println("SecurityAccessDecisionManager needPermission:"+needPermission);
 			for (GrantedAuthority grantedAuthority : authentication.getAuthorities()) {
 				if (needPermission.equals(grantedAuthority.getAuthority())) {
 					return;
@@ -43,12 +45,7 @@ public class SecurityAccessDecisionManager implements AccessDecisionManager {
 
 	@Override
 	public boolean supports(Class<?> clazz) {
-		// TODO Auto-generated method stub
 		return true;
 	}
-	
-	
 
 }
-
-

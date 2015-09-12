@@ -1,5 +1,11 @@
 package cn.imethan.common.security;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -9,14 +15,6 @@ import cn.imethan.security.entity.Permission;
 import cn.imethan.security.entity.Role;
 import cn.imethan.security.entity.User;
 import cn.imethan.security.service.UserService;
-
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 /**
  * UserLoginService.java
@@ -59,7 +57,7 @@ public class UserLoginService implements UserDetailsService {
 		Set<GrantedAuthority> authSet = new HashSet<GrantedAuthority>();
 		for (Role role : user.getRoles()) {
 			for (Permission permission : role.getPermissions()) {
-				System.out.println("permission name:" + permission.getName());
+				System.out.println("UserDetailsService permission name:" + permission.getName());
 				authSet.add(new SimpleGrantedAuthority(permission.getName()));
 			}
 		}

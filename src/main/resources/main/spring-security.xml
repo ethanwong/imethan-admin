@@ -9,17 +9,21 @@
 	<!-- 配置不过滤的资源（静态资源及登录相关） -->
 	<http pattern="/theme/**" security="none" />
 	<http pattern="/upload/**" security="none" />
-
-	<http entry-point-ref="authenticationEntryPoint" >
+	
+	<global-method-security secured-annotations="enabled"/>
+	
+	<debug/>
+	
+	<http entry-point-ref="authenticationEntryPoint" use-expressions="true" auto-config="false" >
+		<!-- 没有权限处理过滤 -->
+		<access-denied-handler ref="accessDeniedHandler"/>
 		<!-- 登录过滤 -->
-		<intercept-url pattern="/login" access="IS_AUTHENTICATED_ANONYMOUSLY" />
-		<custom-filter ref="customLoginFilter" position="FORM_LOGIN_FILTER" />
+		<custom-filter position="FORM_LOGIN_FILTER" ref="customLoginFilter" />
 		<remember-me />
 		<csrf />
 		<!-- 注销过滤 -->
-		<custom-filter ref="customLogoutFilter" position="LOGOUT_FILTER" />
-		<!-- 权限过滤 -->
-		<access-denied-handler ref="accessDeniedHandler"/>
+		<custom-filter position="LOGOUT_FILTER" ref="customLogoutFilter"/>
+
 	    <!-- 认证过滤器, 动态加载数据库中的URL与权限的关系 -->
         <custom-filter before="FILTER_SECURITY_INTERCEPTOR" ref="securityFilter" />
 		<!-- 会话过滤 -->
@@ -45,7 +49,7 @@
     <beans:bean name="accessDecisionManager" class="cn.imethan.common.security.SecurityAccessDecisionManager"/>
     
     <beans:bean name="securityMetadataSource" class="cn.imethan.common.security.InvocationSecurityMetadataSource">
-    	<beans:constructor-arg name="permissionService" ref="permissionService"/>
+    	<beans:constructor-arg name="sessionFactory" ref="sessionFactory"/>
     </beans:bean>
 	
 	<!-- 登录过滤 -->
@@ -54,6 +58,7 @@
         <beans:property name="authenticationSuccessHandler">
             <!-- 自定义登录成功后的处理handler -->
             <beans:bean class="cn.imethan.common.security.CustomLoginHandler">
+                <beans:property name="alwaysUseDefaultTargetUrl" value="true" />
                 <beans:property name="defaultTargetUrl" value="/console" />
             </beans:bean>
         </beans:property>
@@ -81,7 +86,7 @@
 		</beans:constructor-arg>
 	</beans:bean>
 	
-	<beans:bean id="accessDeniedHandler" class="org.springframework.security.web.access.AccessDeniedHandlerImpl">
+	<beans:bean id="accessDeniedHandler" class="cn.imethan.common.security.AccessDeniedHandlerImpl">
 		<beans:property name="errorPage" value="/WEB-INF/content/base/error/403.jsp" />
 	</beans:bean>
 
