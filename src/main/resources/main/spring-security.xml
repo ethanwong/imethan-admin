@@ -19,18 +19,35 @@
 		<access-denied-handler ref="accessDeniedHandler"/>
 		<!-- 登录过滤 -->
 		<custom-filter position="FORM_LOGIN_FILTER" ref="customLoginFilter" />
-		<remember-me />
+<!-- 		<form-login login-page="/login"  login-processing-url="/console" always-use-default-target="true"/> -->
 		<csrf />
 		<!-- 注销过滤 -->
 		<custom-filter position="LOGOUT_FILTER" ref="customLogoutFilter"/>
 
 	    <!-- 认证过滤器, 动态加载数据库中的URL与权限的关系 -->
         <custom-filter before="FILTER_SECURITY_INTERCEPTOR" ref="securityFilter" />
+        
+<!--         <remember-me /> -->
+        
+<!--         <custom-filter position="REMEMBER_ME_FILTER" ref="rememberMeFilter" /> -->
 		<!-- 会话过滤 -->
 <!-- 		<session-management invalid-session-url="/login?error=max"> -->
 <!-- 			<concurrency-control max-sessions="1"  error-if-maximum-exceeded="true"  /> -->
 <!-- 		</session-management> -->
 	</http>
+	
+	<beans:bean id="rememberMeFilter" class="org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter">
+		<beans:constructor-arg name="rememberMeServices" ref="rememberMeServices"/>
+		<beans:constructor-arg name="authenticationManager" ref="authenticationManager"/>
+		<beans:property name="authenticationSuccessHandler" ref="authenticationSuccessHandler"/>
+	</beans:bean>
+	<beans:bean id="rememberMeServices" class="org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices">
+		<beans:constructor-arg name="userDetailsService" ref="userLoginService"/>
+		<beans:constructor-arg name="key" value="springRocks"/>
+	</beans:bean>
+	<beans:bean id="rememberMeAuthenticationProvider" class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
+		<beans:constructor-arg name="key" value="springRocks"/>
+	</beans:bean>
 	
 	<beans:bean id="authenticationEntryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
 		<beans:constructor-arg value="/login"/>
@@ -56,20 +73,19 @@
 	<beans:bean id="customLoginFilter" class="cn.imethan.common.security.CustomLoginFilter">
 		
         <beans:property name="authenticationManager" ref="authenticationManager" />
-        <beans:property name="authenticationSuccessHandler">
-            <!-- 自定义登录成功后的处理handler -->
-            <beans:bean class="cn.imethan.common.security.CustomLoginHandler">
-                <beans:property name="alwaysUseDefaultTargetUrl" value="true" />
-                <beans:property name="defaultTargetUrl" value="/console" />
-            </beans:bean>
-        </beans:property>
+        <beans:property name="authenticationSuccessHandler" ref="authenticationSuccessHandler"/>
         <beans:property name="authenticationFailureHandler">
             <beans:bean class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
                 <!-- 登录失败后的默认Url -->
                 <beans:property name="defaultFailureUrl" value="/login?error" />
             </beans:bean>
         </beans:property>
-    </beans:bean>    
+    </beans:bean>   
+      <!-- 自定义登录成功后的处理handler -->
+    <beans:bean id="authenticationSuccessHandler" class="cn.imethan.common.security.CustomLoginHandler">
+		<beans:property name="alwaysUseDefaultTargetUrl" value="true" />
+		<beans:property name="defaultTargetUrl" value="/console" />
+    </beans:bean> 
 	
 	<!-- 注销过滤 -->
 	<beans:bean id="customLogoutFilter" class="cn.imethan.common.security.CustomLogoutFilter">
@@ -94,7 +110,7 @@
 
 	<beans:bean name="bcryptEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 
-	<authentication-manager  alias="authenticationManager">
+	<authentication-manager  alias="authenticationManager" erase-credentials="false">
 		<!-- 
 		<authentication-provider>
 			<password-encoder ref="bcryptEncoder" />

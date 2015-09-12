@@ -6,5 +6,6 @@
 
 	<import resource="classpath*:main/applicationContext.xml" />
 	<import resource="classpath*:main/spring-security.xml" />
+<!-- 	<import resource="classpath*:main/spring-security-test.xml" /> -->
 	
 </beans>

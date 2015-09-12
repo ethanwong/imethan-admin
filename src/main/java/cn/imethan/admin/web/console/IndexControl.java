@@ -1,5 +1,7 @@
 package cn.imethan.admin.web.console;
 
+import org.springframework.security.authentication.RememberMeAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -18,7 +20,7 @@ public class IndexControl {
 
 	@RequestMapping("")
 	public String indexOne(Model model) {
-		System.out.println("------console----------");
+		System.out.println("------console----------isRememberMeAuthenticated:"+isRememberMeAuthenticated());
 
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String username = "";
@@ -30,5 +32,19 @@ public class IndexControl {
 		System.out.println("username:"+username);
 
 		return "console/index";
+	}
+	
+	/**
+	 * 判断用户是否从Remember Me Cookie自动登录
+	 * 
+	 * @return
+	 */
+	private boolean isRememberMeAuthenticated() {
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication == null) {
+			return false;
+		}
+		return RememberMeAuthenticationToken.class.isAssignableFrom(authentication.getClass());
 	}
 }

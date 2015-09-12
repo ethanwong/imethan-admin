@@ -23,7 +23,8 @@
               <div class="small-box bg-aqua">
                 <div class="inner">
                   <h3>150</h3>
-                  <p>New Orders</p>
+                  <p> <sec:authorize access="isRememberMe()">嘿，你记住我了</sec:authorize>
+                  </p>
                 </div>
                 <div class="icon">
                   <i class="ion ion-bag"></i>

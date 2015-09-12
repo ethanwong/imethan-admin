@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/content/base/taglibs.jsp"%>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="security"%>
 <!DOCTYPE html>
 <html>
   <head>
@@ -34,6 +33,7 @@
       </div><!-- /.login-logo -->
       <div class="login-box-body">
         <p class="login-box-msg">
+        <sec:authorize access="isRememberMe()">嘿，你记住我了</sec:authorize>
 	        <c:if test="${param.error != null}">
 				Invalid username and password.
 			</c:if>
@@ -58,7 +58,8 @@
             <div class="col-xs-8">
               <div class="checkbox icheck">
                 <label>
-               	 <input id="_spring_security_remember_me" name="_spring_security_remember_me" type="checkbox" value="true"/> Remember Me
+                	<input type="checkbox" id="remember-me" name="remember-me"/>
+                	Remember Me
                 </label>
               </div>
             </div><!-- /.col -->
