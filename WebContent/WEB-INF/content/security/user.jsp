@@ -16,13 +16,6 @@
 		<section class="content">
 			<div class="box">
 					<sec:authentication property="principal" />
-<%-- 				<sec:accesscontrollist hasPermission="1,2" domainObject="${someObject}"> --%>
-<!-- 					This will be shown if the user has all of the permissions represented by the values "1" or "2" on the given object. -->
-<%-- 				</sec:accesscontrollist> --%>
-
-					
-
-					
 
 				<div class="box-header" style="padding-bottom: 0px;">
 					<sec:authorize ifAnyGranted="添加用户">

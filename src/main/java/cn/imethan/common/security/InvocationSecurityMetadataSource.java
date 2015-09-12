@@ -44,9 +44,9 @@ public class InvocationSecurityMetadataSource implements FilterInvocationSecurit
             resourceMap = new HashMap<String, Collection<ConfigAttribute>>();
             Iterable<Permission> authorityList = this.getAllPermissionList();
             for (Permission permission : authorityList) {
-            	System.out.println("InvocationSecurityMetadataSource permission:"+permission.getName());
+            	System.out.println("InvocationSecurityMetadataSource permission:"+permission.getPrefixedName());
             	Collection<ConfigAttribute> configAttributes = new ArrayList<ConfigAttribute>();
-                ConfigAttribute configAttribute = new SecurityConfig(permission.getName());
+                ConfigAttribute configAttribute = new SecurityConfig(permission.getPrefixedName());
                 configAttributes.add(configAttribute);
                 resourceMap.put(permission.getMenu().getUrl(), configAttributes);
             }
@@ -84,8 +84,5 @@ public class InvocationSecurityMetadataSource implements FilterInvocationSecurit
 	public boolean supports(Class<?> arg0) {
 		return true;
 	}
-
-
-
 
 }

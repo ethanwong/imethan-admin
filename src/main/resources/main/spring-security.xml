@@ -54,6 +54,7 @@
 	
 	<!-- 登录过滤 -->
 	<beans:bean id="customLoginFilter" class="cn.imethan.common.security.CustomLoginFilter">
+		
         <beans:property name="authenticationManager" ref="authenticationManager" />
         <beans:property name="authenticationSuccessHandler">
             <!-- 自定义登录成功后的处理handler -->
