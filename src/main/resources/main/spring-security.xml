@@ -19,23 +19,27 @@
 		<access-denied-handler ref="accessDeniedHandler"/>
 		<!-- 登录过滤 -->
 		<custom-filter position="FORM_LOGIN_FILTER" ref="customLoginFilter" />
-<!-- 		<form-login login-page="/login"  login-processing-url="/console" always-use-default-target="true"/> -->
 		<csrf />
 		<!-- 注销过滤 -->
 		<custom-filter position="LOGOUT_FILTER" ref="customLogoutFilter"/>
-
 	    <!-- 认证过滤器, 动态加载数据库中的URL与权限的关系 -->
         <custom-filter before="FILTER_SECURITY_INTERCEPTOR" ref="securityFilter" />
-        
-<!--         <remember-me /> -->
-        
-<!--         <custom-filter position="REMEMBER_ME_FILTER" ref="rememberMeFilter" /> -->
-		<!-- 会话过滤 -->
-<!-- 		<session-management invalid-session-url="/login?error=max"> -->
-<!-- 			<concurrency-control max-sessions="1"  error-if-maximum-exceeded="true"  /> -->
-<!-- 		</session-management> -->
+        <!-- 记住我过滤，暂时未生效 -->
+        <custom-filter position="REMEMBER_ME_FILTER" ref="rememberMeFilter"   />
+		<!-- 会话管理过滤 -->
+		<session-management session-authentication-strategy-ref="sas" invalid-session-url="/login?error=invalid" />
+		<!-- 会话并发过滤 -->
+		<custom-filter position="CONCURRENT_SESSION_FILTER" ref="concurrencyFilter" />
 	</http>
 	
+	<beans:bean id="authenticationEntryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+		<beans:constructor-arg value="/login"/>
+	</beans:bean>
+	<beans:bean id="accessDeniedHandler" class="cn.imethan.common.security.AccessDeniedHandlerImpl">
+		<beans:property name="errorPage" value="/WEB-INF/content/base/error/403.jsp" />
+	</beans:bean>
+	
+	<!-- remeberMe begin -->
 	<beans:bean id="rememberMeFilter" class="org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter">
 		<beans:constructor-arg name="rememberMeServices" ref="rememberMeServices"/>
 		<beans:constructor-arg name="authenticationManager" ref="authenticationManager"/>
@@ -48,12 +52,9 @@
 	<beans:bean id="rememberMeAuthenticationProvider" class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
 		<beans:constructor-arg name="key" value="springRocks"/>
 	</beans:bean>
-	
-	<beans:bean id="authenticationEntryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
-		<beans:constructor-arg value="/login"/>
-	</beans:bean>	
+	<!-- remeberMe end -->
 
-	<!-- 认证过滤器 -->
+	<!-- SecurityFilter begin -->
 	<beans:bean id="securityFilter" class="cn.imethan.common.security.SecurityFilter">
         <!-- 用户拥有的权限 -->
         <beans:property name="authenticationManager" ref="authenticationManager" />
@@ -62,32 +63,63 @@
 		<!-- 资源与权限对应关系 -->
 		<beans:property name="securityMetadataSource" ref="securityMetadataSource" />
     </beans:bean>
-    
     <beans:bean name="accessDecisionManager" class="cn.imethan.common.security.SecurityAccessDecisionManager"/>
-    
     <beans:bean name="securityMetadataSource" class="cn.imethan.common.security.InvocationSecurityMetadataSource">
     	<beans:constructor-arg name="sessionFactory" ref="sessionFactory"/>
     </beans:bean>
+    <!-- SecurityFilter end -->    
 	
-	<!-- 登录过滤 -->
+	<!-- LoginFilter begin-->
 	<beans:bean id="customLoginFilter" class="cn.imethan.common.security.CustomLoginFilter">
-		
+		<beans:property name="sessionAuthenticationStrategy" ref="sas" />
+        <beans:property name="rememberMeServices" ref="rememberMeServices"/>
         <beans:property name="authenticationManager" ref="authenticationManager" />
         <beans:property name="authenticationSuccessHandler" ref="authenticationSuccessHandler"/>
-        <beans:property name="authenticationFailureHandler">
-            <beans:bean class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
-                <!-- 登录失败后的默认Url -->
-                <beans:property name="defaultFailureUrl" value="/login?error" />
-            </beans:bean>
-        </beans:property>
+        <beans:property name="authenticationFailureHandler" ref="authenticationFailureHandler"/>
     </beans:bean>   
-      <!-- 自定义登录成功后的处理handler -->
+    <!-- 自定义登录成功后的处理handler -->
     <beans:bean id="authenticationSuccessHandler" class="cn.imethan.common.security.CustomLoginHandler">
 		<beans:property name="alwaysUseDefaultTargetUrl" value="true" />
 		<beans:property name="defaultTargetUrl" value="/console" />
-    </beans:bean> 
+    </beans:bean>
+     <beans:bean id="authenticationFailureHandler" class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+         <!-- 登录失败后的默认Url -->
+         <beans:property name="defaultFailureUrl" value="/login?error" />
+     </beans:bean>
+    <!-- LoginFilter end-->
+
+    
+    <!-- session filter begin -->
+    <beans:bean id="concurrencyFilter" class="org.springframework.security.web.session.ConcurrentSessionFilter">
+		<beans:constructor-arg name="sessionRegistry" ref="sessionRegistry" />
+		<beans:constructor-arg name="expiredUrl" value="/login?error=session-expired" />
+		<beans:property name="logoutHandlers">
+			<beans:array>
+				<beans:ref bean="securityContextLogoutHandler"/>
+				<beans:ref bean="customLogoutSuccessHandler"/>
+			</beans:array>
+		</beans:property>
+	</beans:bean>
+	<beans:bean id="sas" class="org.springframework.security.web.authentication.session.CompositeSessionAuthenticationStrategy">
+		<beans:constructor-arg>
+			<beans:list>
+				<beans:bean class="org.springframework.security.web.authentication.session.ConcurrentSessionControlAuthenticationStrategy">
+					<beans:constructor-arg ref="sessionRegistry" />
+					<beans:property name="maximumSessions" value="1" />
+					<beans:property name="exceptionIfMaximumExceeded" value="true" />
+				</beans:bean>
+				<beans:bean class="org.springframework.security.web.authentication.session.SessionFixationProtectionStrategy">
+				</beans:bean>
+				<beans:bean class="org.springframework.security.web.authentication.session.RegisterSessionAuthenticationStrategy">
+					<beans:constructor-arg ref="sessionRegistry" />
+				</beans:bean>
+			</beans:list>
+		</beans:constructor-arg>
+	</beans:bean>
+	<beans:bean id="sessionRegistry" class="org.springframework.security.core.session.SessionRegistryImpl" />
+    <!-- session filter end -->
 	
-	<!-- 注销过滤 -->
+	<!-- LogoutFilter begin -->
 	<beans:bean id="customLogoutFilter" class="cn.imethan.common.security.CustomLogoutFilter">
 		<!-- 处理退出的虚拟url -->
 		<beans:property name="filterProcessesUrl" value="/logout" />
@@ -96,36 +128,37 @@
 		<beans:constructor-arg index="1">
 			<!-- 退出成功后的handler列表 -->
 			<beans:array>
-				<beans:bean id="securityContextLogoutHandler" class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler" />
+				<beans:ref bean="securityContextLogoutHandler"/>
 				<!-- 加入了开发人员自定义的退出成功处理 -->
-				<beans:bean id="customLogoutSuccessHandler" class="cn.imethan.common.security.CustomLogoutHandler" />
+				<beans:ref bean="customLogoutSuccessHandler"/>
+				<beans:ref bean="cookieClearingLogoutHandler"/>
 			</beans:array>
 		</beans:constructor-arg>
 	</beans:bean>
-	
-	<beans:bean id="accessDeniedHandler" class="cn.imethan.common.security.AccessDeniedHandlerImpl">
-		<beans:property name="errorPage" value="/WEB-INF/content/base/error/403.jsp" />
-	</beans:bean>
+	<beans:bean id="customLogoutSuccessHandler" class="cn.imethan.common.security.CustomLogoutHandler" />
+	<beans:bean id="securityContextLogoutHandler" class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler" />
+	<beans:bean id="cookieClearingLogoutHandler" class="org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler">
+    	<beans:constructor-arg name="cookiesToClear" value="remember-me" />
+    </beans:bean>
+	<!-- LogoutFilter end -->
 
-
+	<!-- authentication-manage begin -->
 	<beans:bean name="bcryptEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
-
 	<authentication-manager  alias="authenticationManager" erase-credentials="false">
-		<!-- 
+		<!-- 测试 -->
 		<authentication-provider>
 			<password-encoder ref="bcryptEncoder" />
 			<user-service>
-				<user name="ethan" password="$2a$10$HOz1fu6Arb1yc/uDHdfmJ.YL64rkvwTSxX.mYXN.1eWu3V0KSBtGO"
-					authorities="ROLE_USER, ROLE_ADMIN" />
-				<user name="bob" password="4e7421b1b8765d8f9406d87e7cc6aa784c4ab97f" authorities="ROLE_USER" />
+				<user name="test" password="$2a$10$HOz1fu6Arb1yc/uDHdfmJ.YL64rkvwTSxX.mYXN.1eWu3V0KSBtGO"
+					authorities="ROLE_添加用户, ROLE_角色管理" />
 			</user-service>
 		</authentication-provider>
-		-->
+		
 		<authentication-provider user-service-ref="userLoginService">
 			<password-encoder ref="bcryptEncoder" />
 		</authentication-provider>
 	</authentication-manager>
-	
 	<beans:bean name="userLoginService" class="cn.imethan.common.security.UserLoginService"/>
-
+	<!-- authentication-manage end -->
+	
 </beans:beans>
