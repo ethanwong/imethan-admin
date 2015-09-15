@@ -1,4 +1,4 @@
-package cn.imethan.common.security;
+package cn.imethan.common.security.handle;
 
 import java.io.IOException;
 
@@ -13,6 +13,8 @@ import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.util.StringUtils;
+
+import cn.imethan.common.security.service.UserInfo;
 
 /**
  * CustomLoginHandler.java
@@ -40,7 +42,6 @@ public class CustomLoginHandler extends SavedRequestAwareAuthenticationSuccessHa
 
 		if (savedRequest == null) {
 			super.onAuthenticationSuccess(request, response, authentication);
-			
 
 			return;
 		}

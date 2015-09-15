@@ -1,4 +1,4 @@
-package cn.imethan.common.security;
+package cn.imethan.common.security.filter;
 
 /**
  * CustomLogoutFilter.java

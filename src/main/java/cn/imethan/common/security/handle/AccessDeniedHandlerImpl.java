@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-package cn.imethan.common.security;
+package cn.imethan.common.security.handle;
 
 import java.io.IOException;
 
