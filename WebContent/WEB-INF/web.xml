@@ -59,13 +59,6 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 	
-
-     
-     <session-config>
-  		<!-- web.xml expects the session timeout in minutes: -->
-	  <session-timeout>30</session-timeout>
-	</session-config>
-	
      <!-- Spring 刷新Introspector防止内存泄露 -->
      <listener>
          <listener-class>
@@ -87,8 +80,6 @@
 		<servlet-name>springServlet</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
-	
-	
      
 	<!-- Sitemesh filter -->
 	<filter>
@@ -100,6 +91,11 @@
 	  <filter-name>sitemesh</filter-name>
 	  <url-pattern>/*</url-pattern>
 	</filter-mapping>
+	
+  	<!-- web.xml expects the session timeout in minutes: -->
+	<session-config>
+	  <session-timeout>30</session-timeout>
+	</session-config>
 	
 	<error-page>
 		<exception-type>java.lang.Throwable</exception-type>

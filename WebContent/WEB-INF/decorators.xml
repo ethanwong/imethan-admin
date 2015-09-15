@@ -5,6 +5,7 @@
 	<!-- 排除装饰页面 -->
 	<excludes>
 		<pattern>/login**</pattern>
+		<pattern>/index.jsp</pattern>
 	</excludes>
 
 	<!-- 后台菜单装饰页 -->

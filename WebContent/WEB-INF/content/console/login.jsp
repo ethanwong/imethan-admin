@@ -44,7 +44,7 @@
 				Sign in to start your session
 			</c:if>
         </p>
-        <form action="${root}/login" method="post">
+        <form action="${root}/security-login" method="post">
         	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/> 
           <div class="form-group has-feedback">
             <input type="text" class="form-control" placeholder="Username" name="username">
