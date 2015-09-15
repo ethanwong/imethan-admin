@@ -1,11 +1,5 @@
 package cn.imethan.common.security;
 
-/**
- * CustomLoginHandler.java
- *
- * @author Ethan Wong
- * @time 2015年9月4日下午10:45:57
- */
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -20,6 +14,12 @@ import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.util.StringUtils;
 
+/**
+ * CustomLoginHandler.java
+ *
+ * @author Ethan Wong
+ * @time 2015年9月4日下午10:45:57
+ */
 public class CustomLoginHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
 	private RequestCache requestCache = new HttpSessionRequestCache();
@@ -40,6 +40,7 @@ public class CustomLoginHandler extends SavedRequestAwareAuthenticationSuccessHa
 
 		if (savedRequest == null) {
 			super.onAuthenticationSuccess(request, response, authentication);
+			
 
 			return;
 		}
