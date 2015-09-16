@@ -40,6 +40,7 @@
 	<beans:bean id="authenticationEntryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
 		<beans:constructor-arg value="/login"/>
 	</beans:bean>
+	
 	<!-- 没有访问权限的处理 -->
 	<beans:bean id="accessDeniedHandler" class="cn.imethan.common.security.handle.AccessDeniedHandlerImpl">
 		<beans:property name="errorPage" value="/WEB-INF/content/base/error/403.jsp" />
@@ -52,8 +53,8 @@
 		<beans:property name="authenticationSuccessHandler" ref="authenticationSuccessHandler"/>
 	</beans:bean>
 	<beans:bean id="rememberMeServices" class="org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices">
-		<beans:constructor-arg name="userDetailsService" ref="userLoginService"/>
 		<beans:constructor-arg name="key" value="springRocks"/>
+		<beans:constructor-arg name="userDetailsService" ref="userLoginService"/>
 	</beans:bean>
 	<beans:bean id="rememberMeAuthenticationProvider" class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
 		<beans:constructor-arg name="key" value="springRocks"/>
@@ -77,7 +78,7 @@
 	
 	<!-- LoginFilter begin-->
 	<beans:bean id="customLoginFilter" class="cn.imethan.common.security.filter.CustomLoginFilter">
-		<beans:property name="filterProcessesUrl" value="/security-login"/>
+		<beans:property name="filterProcessesUrl" value="/securitylogin"/>
 		<beans:property name="sessionAuthenticationStrategy" ref="sas" />
         <beans:property name="rememberMeServices" ref="rememberMeServices"/>
         <beans:property name="authenticationManager" ref="authenticationManager" />
@@ -160,10 +161,12 @@
 					authorities="ROLE_添加用户, ROLE_角色管理" />
 			</user-service>
 		</authentication-provider>-->
-		
+		<!-- 用户登录校验登录信息是否合法 -->
 		<authentication-provider user-service-ref="userLoginService">
 			<password-encoder ref="bcryptEncoder" />
 		</authentication-provider>
+		<!-- 记住登录校验cookie的信息是否合法 -->
+		<authentication-provider ref="rememberMeAuthenticationProvider"/>
 	</authentication-manager>
 	<beans:bean name="userLoginService" class="cn.imethan.common.security.service.UserLoginService"/>
 	<!-- authentication-manage end -->

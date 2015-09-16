@@ -33,7 +33,7 @@
       </div><!-- /.login-logo -->
       <div class="login-box-body">
         <p class="login-box-msg">
-        <sec:authorize access="isRememberMe()">嘿，你记住我了</sec:authorize>
+        	<sec:authorize access="isRememberMe()">嘿，你记住我了</sec:authorize>
 	        <c:if test="${param.error != null}">
 				Invalid username and password.
 			</c:if>
@@ -44,7 +44,7 @@
 				Sign in to start your session
 			</c:if>
         </p>
-        <form action="${root}/security-login" method="post">
+        <form action="${root}/securitylogin" method="post">
         	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/> 
           <div class="form-group has-feedback">
             <input type="text" class="form-control" placeholder="Username" name="username">
@@ -58,7 +58,7 @@
             <div class="col-xs-8">
               <div class="checkbox icheck">
                 <label>
-                	<input type="checkbox" id="remember-me" name="remember-me"/>
+                	<input type="checkbox" id="remember-me" name="remember-me" value="true"/>
                 	Remember Me
                 </label>
               </div>

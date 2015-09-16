@@ -233,10 +233,10 @@
              <!-- Menu Footer-->
              <li class="user-footer">
                <div class="pull-left">
-                 <a href="#" class="btn btn-default btn-flat">Profile</a>
+                 <a href="#" class="btn btn-default btn-flat" >Profile</a>
                </div>
                <div class="pull-right">
-                 <a href="${root}/logout" class="btn btn-default btn-flat">Sign out</a>
+                 <a href="${root}/logout" class="btn btn-default btn-flat" id="logout">Sign out</a>
                </div>
              </li>
            </ul>
@@ -248,4 +248,18 @@
        </ul>
      </div>
    </nav>
+   <script type="text/javascript">
+   		//主动退出删除客户端的remember-cookie
+   		$("#logout").click(function (){
+   			console.log("delete cookie remember-me");
+   			delCookie("remember-me");
+   		});
+   		
+   		function delCookie(name){//为了删除指定名称的cookie，可以将其过期时间设定为一个过去的时间
+   		   var date = new Date();
+   		   date.setTime(date.getTime() - 10000);
+   		   document.cookie = name + "=a; expires=" + date.toGMTString();
+   		}
+   </script>
 </header>
+

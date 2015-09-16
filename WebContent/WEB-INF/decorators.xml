@@ -5,6 +5,7 @@
 	<!-- 排除装饰页面 -->
 	<excludes>
 		<pattern>/login**</pattern>
+		<pattern>/logout**</pattern>
 		<pattern>/index.jsp</pattern>
 	</excludes>
 

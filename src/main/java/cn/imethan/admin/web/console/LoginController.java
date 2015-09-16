@@ -14,20 +14,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @time 2015年8月29日下午1:54:07
  */
 @Controller
-@RequestMapping("/login")
+@RequestMapping("")
 public class LoginController {
 
-	@RequestMapping(value = "",method = {RequestMethod.POST,RequestMethod.GET})
+	@RequestMapping(value = "/login",method = {RequestMethod.POST,RequestMethod.GET})
 	public String login() {
 		System.out.println("----------login---------------isRememberMeAuthenticated:"+isRememberMeAuthenticated());
 
 		return "console/login";
 	}
 
-	@RequestMapping("logout")
-	public String loginout() {
-		return "console/login";
-	}
+//	@RequestMapping("/logout")
+//	public String loginout() {
+//		return "console/login";
+//	}
 
 	/**
 	 * 判断用户是否从Remember Me Cookie自动登录
