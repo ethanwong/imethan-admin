@@ -1,10 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project-modules id="moduleCoreId" project-version="2.0">
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
 	<wb-module deploy-name="imethan-admin">
 		<property name="context-root" value="imethan-admin"/>
 		<wb-resource deploy-path="/WEB-INF/classes" source-path="src/main/resources"/>
 		<wb-resource deploy-path="/WEB-INF/classes" source-path="src/main/java"/>
-		<wb-resource deploy-path="/" source-path="WebContent"/>
 		<dependent-module deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/ETHAN/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context-support/4.0.2.RELEASE/e63913dc1c0014dbe69edf14876d3b05c7c14d20/spring-context-support-4.0.2.RELEASE.jar">
 			<dependency-type>uses</dependency-type>
 		</dependent-module>

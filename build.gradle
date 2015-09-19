@@ -1,23 +1,10 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
-apply plugin: 'war' 
-apply plugin: 'eclipse-wtp'
+apply plugin: 'war'
 
 def projectName = "imethan-admin"
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.7
-//源码结构
-sourceSets {
-    main {
-        java {
-            srcDir 'src/main/java'
-        }
-        resources {
-            srcDir 'src/main/resources'
-        }
-    }
-}
-webAppDirName = 'WebContent'// 设置 WebApp 根目录
 
 repositories {
     mavenCentral()
@@ -114,12 +101,4 @@ dependencies {
 
 test {
     systemProperties 'property': 'value'
-}
-
-uploadArchives {
-    repositories {
-       flatDir {
-           dirs 'repos'
-       }
-    }
 }
