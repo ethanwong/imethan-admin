@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+						http://www.springframework.org/schema/context
+						http://www.springframework.org/schema/context/spring-context-3.2.xsd
+						http://www.springframework.org/schema/task
+						http://www.springframework.org/schema/task/spring-task-3.2.xsd">
+
+	<description>quartz分布式配置文件</description>
+
+	<context:annotation-config />
+
+	<!-- 任务配置 -->
+	<bean id="jobDetail"
+		class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="cn.imethan.admin.quartz.job.TestJob" />
+		<property name="durability" value="true" />
+		<!-- <property name="requestsRecovery" value="true" /> -->
+	</bean>
+
+	<!-- 触发器 -->
+<!-- 	<bean id="jobDetailTrigger" class="cn.imethan.admin.quartz.common.PersistableCronTriggerFactoryBean"> -->
+	<bean id="jobDetailTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="jobDetail" />
+		<property name="cronExpression">
+			<value>0/5 * * * * ?</value>
+		</property>
+		<property name="timeZone">
+			<value>GMT+8:00</value>
+		</property>
+	</bean>
+
+	<!-- 任务调度配置 -->
+	<bean id="quartzScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="configLocation" value="classpath:/quartz/quartz.properties" />
+		<property name="dataSource" ref="myDataSource" />
+		<property name="transactionManager" ref="myTxManager" />
+
+		<!-- This name is persisted as SCHED_NAME in db. for local testing could 
+			change to unique name to avoid collision with dev server -->
+		<property name="schedulerName" value="quartzScheduler" />
+
+		<property name="startupDelay" value="5" />
+
+		<!-- Will update database cron triggers to what is in this jobs file on 
+			each deploy. Replaces all previous trigger and job data that was in the database. 
+			YMMV -->
+		<property name="overwriteExistingJobs" value="true" />
+		<property name="autoStartup" value="true" />
+		<property name="applicationContextSchedulerContextKey" value="applicationContext" />
+		<property name="jobFactory">
+			<bean class="cn.imethan.admin.quartz.common.AutowiringSpringBeanJobFactory" />
+		</property>
+
+		<!-- NOTE: Must add both the jobDetail and trigger to the scheduler! -->
+		<property name="triggers">
+			<list>
+				<ref bean="jobDetailTrigger" />
+			</list>
+		</property>
+		<property name="jobDetails">
+			<list>
+				<ref bean="jobDetail" />
+			</list>
+		</property>
+	</bean>
+</beans>

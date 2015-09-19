@@ -32,7 +32,7 @@ public class Role extends BaseEntity {
 	private String name;//角色名称
 	private String intro;//描述
 	
-	@ManyToMany(cascade = {CascadeType.PERSIST}, mappedBy = "roles", fetch = FetchType.LAZY)
+	@ManyToMany(cascade = {CascadeType.PERSIST}, mappedBy = "roles", fetch = FetchType.EAGER)
 	private Set<User> users = new HashSet<User>();//用户集合
     
 	public Set<User> getUsers() {
@@ -42,7 +42,7 @@ public class Role extends BaseEntity {
 		this.users = users;
 	}
 
-	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	@JoinTable(name="imethan_security_role_menu",joinColumns = { @JoinColumn(name ="roleId" )} ,inverseJoinColumns = { @JoinColumn(name = "menuId")})
 	@OrderBy("id")
 	private Set<Menu> menus = new HashSet<Menu>();//资源
@@ -54,7 +54,7 @@ public class Role extends BaseEntity {
 		this.menus = menus;
 	}
 
-	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	@JoinTable(name="imethan_security_role_permission",joinColumns = { @JoinColumn(name ="roleId" )} ,inverseJoinColumns = { @JoinColumn(name = "permissionId")})
 	@OrderBy("id")
 	private Set<Permission> permissions = new HashSet<Permission>();//授权
