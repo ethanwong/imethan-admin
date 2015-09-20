@@ -91,7 +91,6 @@ public class HibernateTemplateSupport<T, P extends Serializable> implements Crud
 	// -------------------------------------------------------------------------
 	@Override
 	public void deleteById(P id) {
-		Assert.isNull(id, "不能删除id为空的记录");
 		this.hibernateTemplate.delete(this.getById(id));
 	}
 

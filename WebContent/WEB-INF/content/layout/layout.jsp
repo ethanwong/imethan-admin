@@ -69,6 +69,7 @@
     <!-- ztree begin -->
 	<link rel="stylesheet" href="${root}/theme/other/jtree/css/zTreeStyle/zTreeStyle.css" type="text/css">
 	<script type="text/javascript" src="${root}/theme/other/jtree/js/jquery.ztree.all-3.5.js"></script>
+	<script type="text/javascript" src="${root}/theme/other/jtree/js/jquery.ztree.core-3.5.js"></script>
 	<!-- ztree end -->
     
     <!-- jqgrid begin-->
@@ -78,9 +79,13 @@
 	<!-- jqgrid end-->
 	
     <link href="${root}/theme/other/css/imethan.css" rel="stylesheet" type="text/css"  />
-    
-    
-    
+    <!-- jquery-validation begin-->
+	<script src="${root}/theme/other/jquery-validation-1.14.0/jquery.form.js"></script>
+    <script src="${root}/theme/other/jquery-validation-1.14.0/jquery.validate.min.js"></script>
+	<script src="${root}/theme/other/jquery-validation-1.14.0/jquery.metadata.js"></script>
+	<script src="${root}/theme/other/jquery-validation-1.14.0/additional-methods.js"></script>
+	<script src="${root}/theme/other/jquery-validation-1.14.0/messages_zh.min.js"></script>
+    <!-- jquery-validation end-->
 	<decorator:head></decorator:head>
 </head>
   <!--
@@ -113,5 +118,26 @@
 	<!-- AdminLTE App -->
 	<script src="${root}/theme/dist/js/app.js"></script>
 	<script src="${root}/theme/other/js/imethan.js"></script>
+	
+	<!-- deleteConfirmModal -->
+	<div class="modal fade" id="deleteConfirmModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title">删除确认</h4>
+				</div>
+				<div class="modal-body">
+					确定要删除吗？
+				</div>
+				<div class="modal-footer">
+					<button  type="button" class="btn btn-defaul" data-dismiss="modal">关闭</button>
+					<button id="deleteConfirmModalClick" type="button" class="btn btn-danger" data-dismiss="modal">删除</button>
+				</div>
+			</div>
+		</div>
+	</div>	
 </body>
 </html>

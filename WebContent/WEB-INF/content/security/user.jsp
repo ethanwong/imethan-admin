@@ -34,25 +34,7 @@
 			</div>
 		</section>
 		
-		<div class="modal fade" id="deleteConfirmModal">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-						<h4 class="modal-title">删除确认</h4>
-					</div>
-					<div class="modal-body">
-						确定要删除吗？
-					</div>
-					<div class="modal-footer">
-						<button  type="button" class="btn btn-defaul" data-dismiss="modal">关闭</button>
-						<button id="deleteConfirmModalClick" type="button" class="btn btn-danger" data-dismiss="modal">删除</button>
-					</div>
-				</div>
-			</div>
-		</div>	
+
 		
 
 	</div>
@@ -105,27 +87,8 @@
         
     });
 	
-	function deleteUser(){
-		$('#deleteConfirmModal').modal({
-		 	 keyboard: true
-		});
-		$("#deleteConfirmModalClick").click(function(){
-			console.log("------------delete----------");
-			
-// 			$('#deleteConfirmModal').modal('toggle');
-			
-// 			$.ajax({
-// 				url:"${root}/console/security/user/delete/"+id,
-// 				type:"POST",
-// 				dateType:"json",
-// 				success:function(data){
-// 					var result = eval("(" + data + ")");
-// 					//加载用户列表
-// 					$('#list').trigger('reloadGrid');
-// 					showMsg("success",result.message);
-// 				}
-// 			});
-		});
+	function deleteUser(url){
+		deleteOne(url);
 	};
 	
 	</script>

@@ -18,9 +18,9 @@
           <div class="row">
             <div class="col-md-4">
             	<a id="addRootMenu" class="btn btn-primary margin-bottom">增加一级</a>
-            	<a id="addRootMenu" class="btn btn-primary margin-bottom">增加二级</a>
-            	<a id="addRootMenu" class="btn btn-primary margin-bottom">修改</a>
-            	<a id="addRootMenu" class="btn btn-danger margin-bottom">删除</a>
+            	<a id="addSecondMenu" class="btn btn-primary margin-bottom">增加二级</a>
+            	<a id="modifyMenu" class="btn btn-primary margin-bottom">修改</a>
+            	<a id="deleteMenu" class="btn btn-danger margin-bottom">删除</a>
 				<div class="box box-solid">
 					<div class="box-header with-border"><h3 class="box-title">菜单列表</h3></div>
 					<div class="box-body">
@@ -75,7 +75,7 @@
 	
 	
 	<!-- 添加菜单 -->
-	<div class="modal fade" id="inputMenu">
+	<div class="modal fade" id="menu-input-modal">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -90,7 +90,7 @@
 						<input type="hidden" id="menu-parentId" name="parentId" value="">
 						<input type="hidden" id="menu-isRoot" name="root" value="true">
 						<div class="form-group">
-							<label for="exampleInputTitle">Name</label>
+							<label for="menu-name">Name</label>
 							<input type="text" class="form-control required" id="menu-name" placeholder="Enter name" name="name" >
 						</div>
 						<div class="form-group">
@@ -108,14 +108,15 @@
 					</form>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default pull-left" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-primary" id="saveMenu">保存</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<button type="button" class="btn btn-primary" id="menu-input-modal-button-save">保存</button>
 				</div>
 			</div>
 		</div>
 	</div>
 
 	<script type="text/javascript">
+		
 		//ztree参数设置
 		var setting = {
 				view: {
@@ -146,19 +147,28 @@
 			});
 		};
 		
-		//点击节点事件
+		//点击菜单树节点事件
 		function clickNode(event, treeId, treeNode){
 			console.log("event:"+event);
 			console.log("treeId:"+treeId);
 			console.log("treeNode:"+treeNode);
 			console.log("treeNode name:"+treeNode.name);
+			console.log("treeNode id:"+treeNode.id);
+			
 			//加载资源信息
 			if(treeNode.root==true){
 				
 			}else{
 				
 			}
-	
+		};
+		
+		//获取选中节点
+		function getSelectNode(){
+			var treeObj = $.fn.zTree.getZTreeObj("menu-tree");
+			var nodes = treeObj.getSelectedNodes();
+			var node = nodes[0];
+			return node;
 		};
 		
 		$(document).ready(function() {
@@ -167,15 +177,54 @@
 			
 			//添加一级菜单
 			$("#addRootMenu").click(function() {
-				
-				showWarn("消息提示展现");
-				
-				$('#inputMenu').modal();
+				$('#menu-input-modal').modal();
 				$("#menu-isRoot").val("true");
 			});
+			
+			
+			
+			//添加二级菜单
+			$("#addSecondMenu").click(function() {
+				var node = getSelectNode();
+				if(node==undefined || node.root!=true){
+					showWarn("请选择一级菜单");
+				}else{
+					$('#menu-input-modal').modal();
+					$("#menu-isRoot").val("false");
+				}
+			});
+			
+			//修改菜单
+			$("#modifyMenu").click(function(){
+				var node = getSelectNode();
+				if(node==undefined){
+					showWarn("请选择菜单");
+				}else{
+					$('#menu-input-modal').modal();
+	 				console.log("----------------nodes:"+node);
+	 				console.log("----------------nodes:"+node.root);
+	 				console.log("----------------nodes:"+node.name);
+	 				console.log("----------------nodes:"+node.id);
+				}
+			});	
+			
+			//删除菜单
+			$("#deleteMenu").click(function(){
+				var node = getSelectNode();
+				if(node==undefined){
+					showWarn("请选择菜单");
+				}else{
+					//确定删除的提示
+					var url= "${root}/security/menu/delete/"+node.id;
+					deleteOne(url);
+// 					var treeObj = $.fn.zTree.getZTreeObj("menu-tree");
+// 					treeObj.refresh();
+					initZtree();//初始化菜单ztree
+				}
+			});			
+			
 			//保存菜单
-			$('#saveMenu').click(function(){
-				
+			$('#menu-input-modal-button-save').click(function(){
 				if($("#menu-input-form").valid()){
 					
 					var id = $("#menu-id").val();
@@ -191,30 +240,28 @@
 						type:"POST",
 						dateType:"json",
 						success:function(msg){
-// 							showMsg("success","操作成功");
+							showWarn("添加成功");	
 							//初始化ztree
 							
 							initZtree();//初始化菜单ztree
+// 							var treeObj = $.fn.zTree.getZTreeObj("menu-tree");
+// 							treeObj.refresh();
 							
 							//清除操作表单
 							if(id == ""){
-								$("#name").val("");
-								$("#module").val("");
-								$("#url").val("");
-								$("#intro").val("");
+								$("#menu-name").val("");
+								$("#menu-module").val("");
+								$("#menu-url").val("");
+								$("#menu-intro").val("");
 							}
 							
-							$('#inputMenu').modal('toggle');
+							$('#menu-input-modal').modal('toggle');
 						},
 						error:function(){
-							showMsg("error","操作失败");
+							showError("添加失败");	
 						}
 					});
 				}
-				
-
-				
-				
 			});
 		});
 	</script>

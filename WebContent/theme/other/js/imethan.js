@@ -37,3 +37,25 @@ function showError(message){
 	}, 2000);
 	
 };
+
+//删除
+function deleteOne(url){
+	$('#deleteConfirmModal').modal({
+	 	 keyboard: true
+	});
+	$("#deleteConfirmModalClick").click(function(){
+		$('#deleteConfirmModal').modal('toggle');
+		
+		console.log("------deleteOne--------------")
+		
+		$.ajax({
+			url:url,
+			type:"POST",
+			dateType:"json",
+			success:function(data){
+				var result = eval("(" + data + ")");
+				showWarn(result.message);
+			}
+		});
+	});
+};
