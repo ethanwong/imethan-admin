@@ -7,52 +7,33 @@
 <title>menu</title>
 </head>
 <body>
-      <!-- Content Wrapper. Contains page content -->
       <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
         <section class="content-header">
-          <h1>
-            <small>菜单管理</small>
-          </h1>
-          <ol class="breadcrumb" style="float: left;">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-            <li class="active">Mailbox</li>
-          </ol>
-        </section>
-
+			<small><i class="fa fa-home"></i> 权限配置 > 菜单管理</small>
+			<span style="padding-left: 20px;" id="warn-message"></span>
+		</section>
+		<div id="showmessage"></div>        
         <!-- Main content -->
         <section class="content">
           <div class="row">
-            <div class="col-md-3">
-            	<a  id="addMenu" class="btn btn-primary btn-block margin-bottom">增加一级菜单</a>
-              	<p></p>
+            <div class="col-md-4">
+            	<a id="addRootMenu" class="btn btn-primary margin-bottom">增加一级</a>
+            	<a id="addRootMenu" class="btn btn-primary margin-bottom">增加二级</a>
+            	<a id="addRootMenu" class="btn btn-primary margin-bottom">修改</a>
+            	<a id="addRootMenu" class="btn btn-danger margin-bottom">删除</a>
 				<div class="box box-solid">
-					<div class="box-header with-border"><h3 class="box-title">Labels</h3></div>
+					<div class="box-header with-border"><h3 class="box-title">菜单列表</h3></div>
 					<div class="box-body">
 						<div id="menu-tree" class="ztree"></div>
 					</div>
 					<div class="box-footer clearfix"></div>
 				</div>
-              <div class="box box-solid">
-                <div class="box-header with-border">
-                  <h3 class="box-title">Labels</h3>
-                  <div class="box-tools">
-                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                  </div>
-                </div>
-                <div class="box-body no-padding">
-                  <ul class="nav nav-pills nav-stacked">
-                    <li><a href="#"><i class="fa fa-circle-o text-red"></i> Important</a></li>
-                    <li><a href="#"><i class="fa fa-circle-o text-yellow"></i> Promotions</a></li>
-                    <li><a href="#"><i class="fa fa-circle-o text-light-blue"></i> Social</a></li>
-                  </ul>
-                </div><!-- /.box-body -->
-              </div><!-- /.box -->
             </div><!-- /.col -->
-            <div class="col-md-9">
+            <div class="col-md-8">
+            	<a id="addRootMenu" class="btn btn-danger margin-bottom">删除</a>
               <div class="box box-primary">
                 <div class="box-header with-border">
-                  <h3 class="box-title">Inbox</h3>
+                  <h3 class="box-title">菜单授权</h3>
                   <div class="box-tools pull-right">
                     <div class="has-feedback">
                       <input type="text" class="form-control input-sm" placeholder="Search Mail">
@@ -75,38 +56,25 @@
                       <div class="btn-group">
                         <button class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></button>
                         <button class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></button>
-                      </div><!-- /.btn-group -->
-                    </div><!-- /.pull-right -->
+                      </div>
+                    </div>
                   </div>
                   <div class="table-responsive mailbox-messages">
                     
-                  </div><!-- /.mail-box-messages -->
-                </div><!-- /.box-body -->
-                <div class="box-footer no-padding">
-                  <div class="mailbox-controls">
-                    <!-- Check all button -->
-                    <button class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
-                    <div class="btn-group">
-                      <button class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
-                      <button class="btn btn-default btn-sm"><i class="fa fa-reply"></i></button>
-                      <button class="btn btn-default btn-sm"><i class="fa fa-share"></i></button>
-                    </div><!-- /.btn-group -->
-                    <button class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
-                    <div class="pull-right">
-                      1-50/200
-                      <div class="btn-group">
-                        <button class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></button>
-                        <button class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></button>
-                      </div><!-- /.btn-group -->
-                    </div><!-- /.pull-right -->
                   </div>
+                </div>
+                <div class="box-footer no-padding">
+					
                 </div>
               </div><!-- /. box -->
             </div><!-- /.col -->
+
           </div><!-- /.row -->
         </section><!-- /.content -->
       </div><!-- /.content-wrapper -->
-
+	
+	
+	<!-- 添加菜单 -->
 	<div class="modal fade" id="inputMenu">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -117,36 +85,34 @@
 					<h4 class="modal-title">增加菜单</h4>
 				</div>
 				<div class="modal-body">
-					<form id="input-form" role="form" action="${root}/console/security/resource/save" method="post">
-						<input type="hidden" id="id" name="id" value="">
-						<input type="hidden" id="parentId" name="parentId" value="">
-						<input type="hidden" id="isRoot" name="root" value="true">
+					<form id="menu-input-form" role="form" action="${root}/security/menu/save" method="post">
+						<input type="hidden" id="menu-id" name="id" value="">
+						<input type="hidden" id="menu-parentId" name="parentId" value="">
+						<input type="hidden" id="menu-isRoot" name="root" value="true">
 						<div class="form-group">
 							<label for="exampleInputTitle">Name</label>
-							<input type="text" class="form-control required" id="name" placeholder="Enter name" name="name" >
+							<input type="text" class="form-control required" id="menu-name" placeholder="Enter name" name="name" >
 						</div>
 						<div class="form-group">
 							<label for="exampleInputTitle">Module</label>
-							<input type="text" class="form-control required" id="module" placeholder="Enter module" name="module" >
+							<input type="text" class="form-control required" id="menu-module" placeholder="Enter module" name="module" >
 						</div>
 						<div class="form-group">
 							<label for="exampleInputTitle">Url</label>
-							<input type="text" class="form-control required" id="url" placeholder="Enter url" name="url" >
+							<input type="text" class="form-control required" id="menu-url" placeholder="Enter url" name="url" >
 						</div>
 						<div class="form-group">
 							<label for="exampleInputDescribe">Intro</label>
-							<textarea class="form-control required" rows="3" id="intro" placeholder="Enter intro" name="intro" ></textarea>
+							<textarea class="form-control required" rows="3" id="menu-intro" placeholder="Enter intro" name="intro" ></textarea>
 						</div>
 					</form>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default pull-left" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-primary">保存</button>
+					<button type="button" class="btn btn-primary" id="saveMenu">保存</button>
 				</div>
 			</div>
-			<!-- /.modal-content -->
 		</div>
-		<!-- /.modal-dialog -->
 	</div>
 
 	<script type="text/javascript">
@@ -197,12 +163,58 @@
 		
 		$(document).ready(function() {
 			
-			initZtree();//初始化ztree
-	
-			$("#addMenu").click(function() {
-				$('#inputMenu').modal();
+			initZtree();//初始化菜单ztree
+			
+			//添加一级菜单
+			$("#addRootMenu").click(function() {
 				
-			// $('#inputMenu').modal('toggle');
+				showWarn("消息提示展现");
+				
+				$('#inputMenu').modal();
+				$("#menu-isRoot").val("true");
+			});
+			//保存菜单
+			$('#saveMenu').click(function(){
+				
+				if($("#menu-input-form").valid()){
+					
+					var id = $("#menu-id").val();
+					var name = $("#menu-name").val();
+					var module = $("#menu-module").val();
+					var url = $("#menu-url").val();
+					var intro = $("#menu-intro").val();
+					var root = $("#menu-isRoot").val();
+					var parentId = $("#menu-parentId").val();
+					
+					$.ajax({
+						url:"${root}/security/menu/save?name="+name+"&module="+module+"&url="+url+"&intro="+intro+"&root="+root+"&id="+id+"&parentId="+parentId,
+						type:"POST",
+						dateType:"json",
+						success:function(msg){
+// 							showMsg("success","操作成功");
+							//初始化ztree
+							
+							initZtree();//初始化菜单ztree
+							
+							//清除操作表单
+							if(id == ""){
+								$("#name").val("");
+								$("#module").val("");
+								$("#url").val("");
+								$("#intro").val("");
+							}
+							
+							$('#inputMenu').modal('toggle');
+						},
+						error:function(){
+							showMsg("error","操作失败");
+						}
+					});
+				}
+				
+
+				
+				
 			});
 		});
 	</script>

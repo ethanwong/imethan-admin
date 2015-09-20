@@ -11,6 +11,7 @@
 	<!-- 配置不过滤的资源（静态资源及登录相关） -->
 	<http pattern="/theme/**" security="none" />
 	<http pattern="/upload/**" security="none" />
+	<http pattern="/security/**" security="none" />
 	
 	<global-method-security secured-annotations="enabled"/>
 	
