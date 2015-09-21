@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.imethan.common.dto.ReturnDto;
@@ -76,5 +77,13 @@ public class MenuController {
 	public ReturnDto delete(Model model, @PathVariable Long id, ServletRequest request) {
 		return menuService.deleteById(id);
 	}
+	
+    @ModelAttribute
+    public void getModel(@RequestParam(value = "id", required = false) Long id, ServletRequest request, Model model) throws Exception {
+        if (id != null) {
+            Menu menu = menuService.getById(id);
+            model.addAttribute("menu", menu);
+        }
+    }
 
 }

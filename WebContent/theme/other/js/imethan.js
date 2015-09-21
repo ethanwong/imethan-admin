@@ -44,10 +44,6 @@ function deleteOne(url){
 	 	 keyboard: true
 	});
 	$("#deleteConfirmModalClick").click(function(){
-		$('#deleteConfirmModal').modal('toggle');
-		
-		console.log("------deleteOne--------------")
-		
 		$.ajax({
 			url:url,
 			type:"POST",
@@ -58,4 +54,16 @@ function deleteOne(url){
 			}
 		});
 	});
+};
+
+//Modal提示信息
+function showWarnModal(msg){
+	$('#warnConfirmModal').modal({
+	 	 keyboard: true
+	});
+	$("#warnConfirmModal").find('.modal-body').html(msg);
+	setTimeout(function(){
+		$('#warnConfirmModalClick').click();
+	}, 1000);
+	
 };
