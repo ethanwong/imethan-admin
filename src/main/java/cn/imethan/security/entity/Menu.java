@@ -56,7 +56,17 @@ public class Menu extends BaseEntity {
 	private String nodeType = "menu";//Ztree节点类型，menu和permission,在角色授权编辑功能使用到,默认是menu类型
 	@Transient
 	private boolean isChecked;//节点是否选中
+	@Transient
+	private String url2;//ztree中设置url的值默认会进行url跳转，所以更改为url2参数来取值
 	
+	public String getUrl2() {
+		url2 = url;
+		return url2;
+	}
+	public void setUrl2(String url2) {
+		this.url2 = url2;
+	}
+
 	public boolean isChecked() {
 		return isChecked;
 	}
@@ -113,15 +123,15 @@ public class Menu extends BaseEntity {
 		this.parentId = parentId;
 	}
 	
-	@ManyToOne(cascade = {CascadeType.REFRESH},fetch = FetchType.EAGER)
+	@ManyToOne(cascade = {CascadeType.REFRESH},fetch = FetchType.LAZY)
 	@JoinColumn(name="pid")
 	private Menu parent;//父级
 	
-	@OneToMany(cascade = CascadeType.REFRESH,fetch = FetchType.EAGER,mappedBy="parent")
+	@OneToMany(cascade = CascadeType.REFRESH,fetch = FetchType.LAZY,mappedBy="parent")
 	@OrderBy("id")
 	private Set<Menu> childrens = new HashSet<Menu>();//子级
 	
-	@OneToMany(cascade = CascadeType.REFRESH,fetch = FetchType.EAGER,mappedBy="menu")
+	@OneToMany(cascade = CascadeType.REFRESH,fetch = FetchType.LAZY,mappedBy="menu")
 	@OrderBy("id")
 	private Set<Permission> permissions = new HashSet<Permission>();//授权
 	

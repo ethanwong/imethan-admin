@@ -30,38 +30,23 @@
 				</div>
             </div><!-- /.col -->
             <div class="col-md-8">
+            	<a id="addRootMenu" class="btn btn-info margin-bottom">一键授权</a>
+            	<a id="addRootMenu" class="btn btn-info margin-bottom">添加授权</a>
+            	<a id="addRootMenu" class="btn btn-info margin-bottom">修改</a>
             	<a id="addRootMenu" class="btn btn-danger margin-bottom">删除</a>
               <div class="box box-primary">
                 <div class="box-header with-border">
-                  <h3 class="box-title">菜单授权</h3>
+                  <h3 class="box-title">授权管理</h3>
                   <div class="box-tools pull-right">
                     <div class="has-feedback">
-                      <input type="text" class="form-control input-sm" placeholder="Search Mail">
-                      <span class="glyphicon glyphicon-search form-control-feedback"></span>
+<!--                       <input type="text" class="form-control input-sm" placeholder="Search Mail"> -->
+<!--                       <span class="glyphicon glyphicon-search form-control-feedback"></span> -->
                     </div>
                   </div><!-- /.box-tools -->
                 </div><!-- /.box-header -->
                 <div class="box-body no-padding">
-                  <div class="mailbox-controls">
-                    <!-- Check all button -->
-                    <button class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
-                    <div class="btn-group">
-                      <button class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
-                      <button class="btn btn-default btn-sm"><i class="fa fa-reply"></i></button>
-                      <button class="btn btn-default btn-sm"><i class="fa fa-share"></i></button>
-                    </div><!-- /.btn-group -->
-                    <button class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
-                    <div class="pull-right">
-                      1-50/200
-                      <div class="btn-group">
-                        <button class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></button>
-                        <button class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></button>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="table-responsive mailbox-messages">
-                    
-                  </div>
+					<table id="jqGrid"></table>
+    				<div id="jqGridPager"></div>
                 </div>
                 <div class="box-footer no-padding">
 					
@@ -74,7 +59,7 @@
       </div><!-- /.content-wrapper -->
 	
 	
-	<!-- 添加菜单 -->
+	<!-- 添加菜单modal开始 -->
 	<div class="modal fade" id="menu-input-modal">
 		<div class="modal-dialog">
 			<div class="modal-content">
@@ -89,31 +74,19 @@
 						<input type="hidden" id="menu-id" name="id" value="">
 						<input type="hidden" id="menu-parentId" name="parentId" value="">
 						<input type="hidden" id="menu-isRoot" name="root" value="true">
-						<div class="form-group">
-							<label for="menu-name">Name</label>
-							<input type="text" class="form-control required" id="menu-name" placeholder="Enter name" name="name" >
-						</div>
-						<div class="form-group">
-							<label for="exampleInputTitle">Module</label>
-							<input type="text" class="form-control required" id="menu-module" placeholder="Enter module" name="module" >
-						</div>
-						<div class="form-group">
-							<label for="exampleInputTitle">Url</label>
-							<input type="text" class="form-control required" id="menu-url" placeholder="Enter url" name="url" >
-						</div>
-						<div class="form-group">
-							<label for="exampleInputDescribe">Intro</label>
-							<textarea class="form-control required" rows="3" id="menu-intro" placeholder="Enter intro" name="intro" ></textarea>
-						</div>
+						
+						<div id="menu-input-form-content"></div>
+						
 					</form>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-primary" id="menu-input-modal-button-save">保存</button>
+					<button type="button" class="btn btn-primary" id="menu-input-modal-button-save" data-dismiss="modal">保存</button>
 				</div>
 			</div>
 		</div>
 	</div>
+	<!-- 添加菜单modal结束 -->
 
 	<script type="text/javascript">
 		
@@ -149,18 +122,48 @@
 		
 		//点击菜单树节点事件
 		function clickNode(event, treeId, treeNode){
-			console.log("event:"+event);
-			console.log("treeId:"+treeId);
-			console.log("treeNode:"+treeNode);
+// 			console.log("event:"+event);
+// 			console.log("treeId:"+treeId);
+// 			console.log("treeNode:"+treeNode);
 			console.log("treeNode name:"+treeNode.name);
 			console.log("treeNode id:"+treeNode.id);
 			
-			//加载资源信息
-			if(treeNode.root==true){
-				
-			}else{
-				
-			}
+			$("#jqGrid").jqGrid('setGridParam', {
+				url : '${root}/security/permission/json/'+treeNode.id+'/'+treeNode.root
+			}).trigger("reloadGrid");
+		};
+		
+		//初始化授权信息
+		function initPermission(menuId,isRoot){
+	        $("#jqGrid").jqGrid({
+	            url: '${root}/security/permission/json/'+menuId+"/"+isRoot,
+	            mtype: "POST",
+				styleUI : 'Bootstrap',
+	            datatype: "json",
+				rowList: [10, 20, 30],
+				colNames: ['授权名称','URL','操作'],
+				colModel: [	
+				           	{ name: 'name',width:'100', align: "center" },
+							{ name: 'url', width:'100',align: "center"},
+							{ name: 'id',  width:'100',align: "center",formatter:operation}
+						  ],
+	            height: 250,
+	            rowNum: 10,
+	            rowList: [10, 20, 30],
+	            pager: "#jqGridPager",
+				autowidth : true,
+				autoheight : true,
+				rownumbers : false,
+	 			viewrecords: true,
+	 			multiselect : true
+	        }).closest(".ui-jqgrid-bdiv").css({ 'overflow-x' : 'hidden' });
+		}
+		
+		
+		function operation(cellvalue, options, rowObject) {
+			var modifyOperation = "<a id='operation1' href='javascript:;' onclick='modifyUser("+cellvalue+")' >修改</a>";
+			var deleteOPeration = "<a id='operation2' href='javascript:;' onclick='deleteUser("+cellvalue+")' >删除</a>";
+			return modifyOperation + " " + deleteOPeration;
 		};
 		
 		//获取选中节点
@@ -172,16 +175,42 @@
 		};
 		
 		$(document).ready(function() {
+			//初始化授权列表
+			initPermission(0,true);
 			
 			initZtree();//初始化菜单ztree
+			
+			//添加菜单和修改菜单的表单内容
+			var menuInputFormContent = 
+						"<div class='form-group'>"+
+							"<label for='menu-name'>Name</label>"+
+							"<input type='text' class='form-control required' id='menu-name' placeholder='Enter name' name='name' >"+
+						"</div>"+
+						"<div class='form-group'>"+
+							"<label for='exampleInputTitle'>Module</label>"+
+							"<input type='text' class='form-control required' id='menu-module' placeholder='Enter module' name='module' >"+
+						"</div>"+
+						"<div class='form-group'>"+
+							"<label for='exampleInputTitle'>Url</label>"+
+							"<input type='text' class='form-control required' id='menu-url' placeholder='Enter url' name='url' >"+
+						"</div>"+
+						"<div class='form-group'>"+
+							"<label for='exampleInputDescribe'>Intro</label>"+
+							"<textarea class='form-control required' rows='3' id='menu-intro' placeholder='Enter intro' name='intro' ></textarea>"+
+						"</div>";
 			
 			//添加一级菜单
 			$("#addRootMenu").click(function() {
 				$('#menu-input-modal').modal();
+				//填充表单内容
+				$("#menu-input-form-content").html(menuInputFormContent);
 				$("#menu-isRoot").val("true");
+				
+				$('#menu-input-modal').find(".modal-title").html("添加一级菜单");
+				//清空表单内容
+				//$('#menu-input-form').clearForm();
+				
 			});
-			
-			
 			
 			//添加二级菜单
 			$("#addSecondMenu").click(function() {
@@ -189,8 +218,12 @@
 				if(node==undefined || node.root!=true){
 					showWarn("请选择一级菜单");
 				}else{
+					$('#menu-input-modal').find(".modal-title").html("添加二级菜单");
 					$('#menu-input-modal').modal();
+					//填充表单内容
+					$("#menu-input-form-content").html(menuInputFormContent);
 					$("#menu-isRoot").val("false");
+					$("#menu-parentId").val(node.id);
 				}
 			});
 			
@@ -200,11 +233,18 @@
 				if(node==undefined){
 					showWarn("请选择菜单");
 				}else{
+					$('#menu-input-modal').find(".modal-title").html("修改菜单");
 					$('#menu-input-modal').modal();
-	 				console.log("----------------nodes:"+node);
-	 				console.log("----------------nodes:"+node.root);
-	 				console.log("----------------nodes:"+node.name);
-	 				console.log("----------------nodes:"+node.id);
+					$("#menu-input-form-content").html(menuInputFormContent);
+					
+					$("#menu-id").val(node.id);
+					$("#menu-name").val(node.name);
+					$("#menu-module").val(node.module);
+					$("#menu-url").val(node.url2);
+					$("#menu-intro").val(node.intro);
+					$("#menu-isRoot").val(node.root);
+					$("#menu-parentId").val(node.parentId);
+
 				}
 			});	
 			
@@ -216,10 +256,24 @@
 				}else{
 					//确定删除的提示
 					var url= "${root}/security/menu/delete/"+node.id;
-					deleteOne(url);
-// 					var treeObj = $.fn.zTree.getZTreeObj("menu-tree");
-// 					treeObj.refresh();
-					initZtree();//初始化菜单ztree
+					$('#deleteConfirmModal').modal();
+					$("#deleteConfirmModalClick").click(function(){
+						$.ajax({
+							url:url,
+							type:"POST",
+							dateType:"json",
+							success:function(data){
+								var result = eval("(" + data + ")");
+								initZtree();//初始化菜单ztree
+								if(result.success){
+									showWarn(result.message);
+								}else{
+									showError(result.message);
+								}
+								
+							}
+						});
+					});
 				}
 			});			
 			
@@ -241,21 +295,7 @@
 						dateType:"json",
 						success:function(msg){
 							showWarn("添加成功");	
-							//初始化ztree
-							
 							initZtree();//初始化菜单ztree
-// 							var treeObj = $.fn.zTree.getZTreeObj("menu-tree");
-// 							treeObj.refresh();
-							
-							//清除操作表单
-							if(id == ""){
-								$("#menu-name").val("");
-								$("#menu-module").val("");
-								$("#menu-url").val("");
-								$("#menu-intro").val("");
-							}
-							
-							$('#menu-input-modal').modal('toggle');
 						},
 						error:function(){
 							showError("添加失败");	

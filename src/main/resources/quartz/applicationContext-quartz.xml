@@ -22,7 +22,6 @@
 	</bean>
 
 	<!-- 触发器 -->
-<!-- 	<bean id="jobDetailTrigger" class="cn.imethan.admin.quartz.common.PersistableCronTriggerFactoryBean"> -->
 	<bean id="jobDetailTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="jobDetail" />
 		<property name="cronExpression">

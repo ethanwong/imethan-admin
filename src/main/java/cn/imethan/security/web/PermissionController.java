@@ -1,5 +1,6 @@
 package cn.imethan.security.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletRequest;
@@ -13,9 +14,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import cn.imethan.common.dto.JqGridPageDto;
 import cn.imethan.common.dto.ReturnDto;
+import cn.imethan.common.hibernate.Page;
+import cn.imethan.common.hibernate.SearchFilter;
 import cn.imethan.security.entity.Menu;
 import cn.imethan.security.entity.Permission;
 import cn.imethan.security.service.MenuService;
@@ -42,11 +47,26 @@ public class PermissionController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "json/{resourceId}", method = { RequestMethod.GET, RequestMethod.POST })
-	public List<Permission> json(ServletRequest rquest, @PathVariable Long menuId) {
-		List<Permission> list = permissionService.getByMenuId(menuId);
-		return list;
+	@RequestMapping(value = "json/{menuId}/{isRoot}", method = { RequestMethod.GET, RequestMethod.POST })
+	public JqGridPageDto<Permission> json(ServletRequest rquest, @PathVariable Long menuId,@PathVariable Boolean isRoot,
+			@RequestParam("page") Integer pageNo,@RequestParam("rows") Integer pageSize) {
+		List<SearchFilter> filters = new ArrayList<SearchFilter>();
+		if(isRoot){
+//			menuService.getById(menuId).getChildrens();
+			List<Long> rootMenuChildIdList = menuService.getRootMenuChildIdList(menuId);
+			System.out.println("-------------rootMenuChildIdList:"+rootMenuChildIdList);
+			
+			SearchFilter searchFilter = new SearchFilter("INL_menu.id",
+					rootMenuChildIdList.toString().replace("[", "").trim().replace("]", "").trim());
+			filters.add(searchFilter);
+		}else{
+			SearchFilter searchFilter = new SearchFilter("EQL_menu.id",menuId.toString());
+			filters.add(searchFilter);
+		}
 
+		Page<Permission> page = new Page<Permission>(pageNo, pageSize);
+		page = permissionService.getPage(filters, page);
+		return new JqGridPageDto<Permission>(page);
 	}
 
 	@ResponseBody
