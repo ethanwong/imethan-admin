@@ -30,10 +30,10 @@
 				</div>
             </div><!-- /.col -->
             <div class="col-md-8">
-            	<a id="addRootMenu" class="btn btn-info margin-bottom">一键授权</a>
-            	<a id="addRootMenu" class="btn btn-info margin-bottom">添加授权</a>
-            	<a id="addRootMenu" class="btn btn-info margin-bottom">修改</a>
-            	<a id="addRootMenu" class="btn btn-danger margin-bottom">删除</a>
+            	<a id="quickAddPermission" class="btn btn-info margin-bottom">一键授权</a>
+            	<a id="addPermission" class="btn btn-info margin-bottom">添加授权</a>
+            	<a id="modifyPermission" class="btn btn-info margin-bottom">修改</a>
+            	<a id="deletePermission" class="btn btn-danger margin-bottom">删除</a>
               <div class="box box-primary">
                 <div class="box-header with-border">
                   <h3 class="box-title">授权管理</h3>
@@ -87,7 +87,34 @@
 		</div>
 	</div>
 	<!-- 添加菜单modal结束 -->
-
+	<!-- 添加授权modal开始 -->
+	<div class="modal fade" id="permission-input-modal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title">添加授权</h4>
+				</div>
+				<div class="modal-body">
+					<form id="permission-input-form" role="form" action="${root}/security/permission/save" method="post">
+						<input type="hidden" id="permission-id" name="id" value="">
+						<input type="hidden" id="permission-menu-id" name="menu.id" value="">
+						
+						<div id="permission-input-form-content">
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<button type="button" class="btn btn-primary" id="permission-input-modal-button-save" data-dismiss="modal">保存</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 添加授权modal结束 -->
+	
 	<script type="text/javascript">
 		
 		//ztree参数设置
@@ -141,11 +168,12 @@
 				styleUI : 'Bootstrap',
 	            datatype: "json",
 				rowList: [10, 20, 30],
-				colNames: ['授权名称','URL','操作'],
-				colModel: [	
+				colNames: ['','','授权名称','URL','操作'],
+				colModel: [	{name : 'id',key:true,hidden:true},
+							{name : 'menuId',hidden:true},
 				           	{ name: 'name',width:'100', align: "center" },
 							{ name: 'url', width:'100',align: "center"},
-							{ name: 'id',  width:'100',align: "center",formatter:operation}
+							{ name: '',  width:'100',align: "center",formatter:operation}
 						  ],
 	            height: 250,
 	            rowNum: 10,
@@ -161,8 +189,9 @@
 		
 		
 		function operation(cellvalue, options, rowObject) {
-			var modifyOperation = "<a id='operation1' href='javascript:;' onclick='modifyUser("+cellvalue+")' >修改</a>";
-			var deleteOPeration = "<a id='operation2' href='javascript:;' onclick='deleteUser("+cellvalue+")' >删除</a>";
+			console.log("cellvalue:"+rowObject.id);
+			var modifyOperation = "<a id='operation1' href='javascript:;' onclick='' >修改</a>";
+			var deleteOPeration = "<a id='operation2' href='javascript:;' onclick='' >删除</a>";
 			return modifyOperation + " " + deleteOPeration;
 		};
 		
@@ -256,21 +285,14 @@
 				}else{
 					//确定删除的提示
 					var url= "${root}/security/menu/delete/"+node.id;
-					$('#deleteConfirmModal').modal();
-					$("#deleteConfirmModalClick").click(function(){
+					setDeleteModal().bind('click',function(){
 						$.ajax({
 							url:url,
 							type:"POST",
 							dateType:"json",
-							success:function(data){
-								var result = eval("(" + data + ")");
+							success:function(msg){
+								showMessage(msg);
 								initZtree();//初始化菜单ztree
-								if(result.success){
-									showWarn(result.message);
-								}else{
-									showError(result.message);
-								}
-								
 							}
 						});
 					});
@@ -294,7 +316,7 @@
 						type:"POST",
 						dateType:"json",
 						success:function(msg){
-							showWarn("添加成功");	
+							showMessage(msg);
 							initZtree();//初始化菜单ztree
 						},
 						error:function(){
@@ -302,8 +324,105 @@
 						}
 					});
 				}
+			});			
+			
+			//一键增加授权
+			$("#quickAddPermission").click(function(){
+				showWarn("功能待开发");
 			});
+			
+			var permissionInputFormContent = ""+
+			  "<div class='form-group'>"+
+			   " <label for='exampleInputEmail1'>Name</label>"+
+			   " <input type='text' class='form-control required' id='permission-name' name='name' placeholder='Enter name' value=''>"+
+			  "</div>"+
+			  "<div class='form-group'>"+
+			  "  <label for='exampleInputEmail1'>Url</label>"+
+			  "  <input type='text' class='form-control required' id='permission-url' name='url' placeholder='Enter url' value=''>"+
+			  "</div>";
+			  
+			//添加授权
+			$("#addPermission").click(function(){
+				var node = getSelectNode();
+				if(node==undefined){
+					showWarn("请选择菜单");
+				}else{
+					$('#permission-input-modal').modal();
+					$("#permission-input-form-content").html(permissionInputFormContent);
+					$("#permission-menu-id").val(node.id);
+					
+				}
+			});
+			
+			//保存授权
+			$("#permission-input-modal-button-save").click(function(){
+				if($("#permission-input-form").valid()){
+					var id = $("#permission-id").val();
+					var menuId = $("#permission-menu-id").val();
+					var name = $("#permission-name").val();
+					var url = $("#permission-url").val();
+					
+					$.ajax({
+						url:"${root}/security/permission/save?name="+name+"&url="+url+"&menu.id="+menuId+"&id="+id,
+						type:"POST",
+						dateType:"json",
+						success:function(msg){
+							showMessage(msg);
+							var node = getSelectNode();
+							$("#jqGrid").jqGrid('setGridParam', {
+								url : '${root}/security/permission/json/'+node.id+'/'+node.root
+							}).trigger("reloadGrid");
+							
+						},
+						error:function(){
+							showError("添加失败");	
+						}
+					});
+				}
+			});
+			
+			//修改授权
+			$("#modifyPermission").click(function(){
+				var rowid = $("#jqGrid").jqGrid('getGridParam','selrow');
+				var data = $("#jqGrid").jqGrid('getRowData', rowid);
+				console.log("----data.id:"+data.id);
+				
+				$('#permission-input-modal').modal();
+				$("#permission-input-form-content").html(permissionInputFormContent);
+				$("#permission-id").val(data.id);
+				$("#permission-menu-id").val(data.menuId);
+				$("#permission-name").val(data.name);
+				$("#permission-url").val(data.url);
+			});
+			
+			//删除授权
+			$("#deletePermission").click(function(){
+				var rowid = $("#jqGrid").jqGrid('getGridParam','selrow');
+				if(rowid == undefined){
+					showWarn("请选择授权");
+				}else{
+					
+					var url= "${root}/security/permission/delete/"+rowid;
+					
+					setDeleteModal().bind('click',function(){
+						$.ajax({
+							url:url,
+							type:"POST",
+							dateType:"json",
+							success:function(msg){
+								showMessage(msg);
+								$("#jqGrid").trigger("reloadGrid");
+							},
+							error:function(){
+								showError("删除失败");	
+							}
+						});
+					});
+				}
+			});
+			
 		});
+		
 	</script>
 	
 </body>

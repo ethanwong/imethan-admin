@@ -55,6 +55,26 @@ public interface PermissionService{
 	 * @datetime 2015年9月21日 下午11:24:38
 	 */
 	Page<Permission> getPage(List<SearchFilter> filters, Page<Permission> page);
+	
+	/**
+	 * 授权名称是否已经存在
+	 * @param name
+	 * @return
+	 *
+	 * @author Ethan
+	 * @datetime 2015年9月23日 下午10:10:33
+	 */
+	public boolean isNameExists(String name);
+
+	/**
+	 * 授权url是否已经存在
+	 * @param url
+	 * @return
+	 *
+	 * @author Ethan
+	 * @datetime 2015年9月23日 下午10:10:52
+	 */
+	public boolean isUrlExists(String url);
 
 }
 

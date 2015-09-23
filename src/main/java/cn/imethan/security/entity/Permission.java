@@ -31,7 +31,15 @@ public class Permission extends BaseEntity {
 	private String url;//授权URL
 	private String intro;//描述
 	private String permission;//备用字段，shiro框架使用的授权，格式：“资源名称:操作”，形如：“channel:new”
+	@Transient
+	private Long menuId;
 	
+	public Long getMenuId() {
+		return this.getMenu().getId();
+	}
+	public void setMenuId(Long menuId) {
+		this.menuId = menuId;
+	}
 	public String getUrl() {
 		return url;
 	}

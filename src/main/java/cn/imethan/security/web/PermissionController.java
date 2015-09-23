@@ -48,21 +48,24 @@ public class PermissionController {
 
 	@ResponseBody
 	@RequestMapping(value = "json/{menuId}/{isRoot}", method = { RequestMethod.GET, RequestMethod.POST })
-	public JqGridPageDto<Permission> json(ServletRequest rquest, @PathVariable Long menuId,@PathVariable Boolean isRoot,
-			@RequestParam("page") Integer pageNo,@RequestParam("rows") Integer pageSize) {
+	public JqGridPageDto<Permission> json(ServletRequest rquest, @PathVariable Long menuId, @PathVariable Boolean isRoot, @RequestParam("page") Integer pageNo, @RequestParam("rows") Integer pageSize) {
+
 		List<SearchFilter> filters = new ArrayList<SearchFilter>();
-		if(isRoot){
-//			menuService.getById(menuId).getChildrens();
-			List<Long> rootMenuChildIdList = menuService.getRootMenuChildIdList(menuId);
-			System.out.println("-------------rootMenuChildIdList:"+rootMenuChildIdList);
-			
-			SearchFilter searchFilter = new SearchFilter("INL_menu.id",
-					rootMenuChildIdList.toString().replace("[", "").trim().replace("]", "").trim());
-			filters.add(searchFilter);
+		if (menuId == 0l) {
+
 		}else{
-			SearchFilter searchFilter = new SearchFilter("EQL_menu.id",menuId.toString());
-			filters.add(searchFilter);
+			if (isRoot) {
+				List<Long> rootMenuChildIdList = menuService.getRootMenuChildIdList(menuId);
+				rootMenuChildIdList.add(menuId);
+
+				SearchFilter searchFilter = new SearchFilter("INL_menu.id", rootMenuChildIdList.toString().replace("[", "").trim().replace("]", "").trim());
+				filters.add(searchFilter);
+			} else {
+				SearchFilter searchFilter = new SearchFilter("EQL_menu.id", menuId.toString());
+				filters.add(searchFilter);
+			}
 		}
+
 
 		Page<Permission> page = new Page<Permission>(pageNo, pageSize);
 		page = permissionService.getPage(filters, page);
@@ -78,7 +81,7 @@ public class PermissionController {
 
 	@ResponseBody
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public ReturnDto save(@ModelAttribute("permission") Permission permission, BindingResult result, ServletRequest request) {
+	public ReturnDto save(@ModelAttribute("permission") Permission permission, BindingResult result, Model model, ServletRequest request) {
 
 		String menuId = request.getParameter("menuId");
 
@@ -106,5 +109,14 @@ public class PermissionController {
 	public ReturnDto delete(Model model, @PathVariable Long id, ServletRequest request) {
 		return permissionService.deleteById(id);
 	}
+
+	// @ModelAttribute
+	// public void getModel(@RequestParam(value = "id", required = false) Long
+	// id, ServletRequest request, Model model) throws Exception {
+	// if (id != null) {
+	// Permission permission = permissionService.getById(id);
+	// model.addAttribute("permission", permission);
+	// }
+	// }
 
 }

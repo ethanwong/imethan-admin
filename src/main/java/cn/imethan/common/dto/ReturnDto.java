@@ -1,7 +1,5 @@
 package cn.imethan.common.dto;
 
-import java.io.Serializable;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
@@ -11,10 +9,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * @param <S>
  * @time 2014年3月8日下午10:29:21
  */
-public class ReturnDto implements Serializable {
-	
-	private static final long serialVersionUID = -5166483670926027917L;
-	
+public class ReturnDto {
 	private boolean isSuccess = true;
 	private String message = "Succeed";
 	private Object entity;
