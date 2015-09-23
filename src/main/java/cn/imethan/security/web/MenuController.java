@@ -43,6 +43,7 @@ public class MenuController {
 	@RequestMapping(value = "json", method = { RequestMethod.POST })
 	public List<Menu> json() {
 		List<Menu> menus = menuService.getRootMenu();
+		System.out.println("----------menu------size:" + menus.size());
 		String json = JsonUtil.writeValueAsString(menus);
 		System.out.println("----------menu------json:" + json);
 		return menus;

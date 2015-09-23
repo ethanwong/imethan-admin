@@ -36,35 +36,17 @@
             	<a id="addRootMenu" class="btn btn-danger margin-bottom">删除</a>
               <div class="box box-primary">
                 <div class="box-header with-border">
-                  <h3 class="box-title">菜单授权</h3>
+                  <h3 class="box-title">授权管理</h3>
                   <div class="box-tools pull-right">
                     <div class="has-feedback">
-                      <input type="text" class="form-control input-sm" placeholder="Search Mail">
-                      <span class="glyphicon glyphicon-search form-control-feedback"></span>
+<!--                       <input type="text" class="form-control input-sm" placeholder="Search Mail"> -->
+<!--                       <span class="glyphicon glyphicon-search form-control-feedback"></span> -->
                     </div>
                   </div><!-- /.box-tools -->
                 </div><!-- /.box-header -->
                 <div class="box-body no-padding">
-                  <div class="mailbox-controls">
-                    <!-- Check all button -->
-                    <button class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i></button>
-                    <div class="btn-group">
-                      <button class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
-                      <button class="btn btn-default btn-sm"><i class="fa fa-reply"></i></button>
-                      <button class="btn btn-default btn-sm"><i class="fa fa-share"></i></button>
-                    </div><!-- /.btn-group -->
-                    <button class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
-                    <div class="pull-right">
-                      1-50/200
-                      <div class="btn-group">
-                        <button class="btn btn-default btn-sm"><i class="fa fa-chevron-left"></i></button>
-                        <button class="btn btn-default btn-sm"><i class="fa fa-chevron-right"></i></button>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="table-responsive mailbox-messages">
-                    
-                  </div>
+					<table id="jqGrid"></table>
+    				<div id="jqGridPager"></div>
                 </div>
                 <div class="box-footer no-padding">
 					
@@ -140,18 +122,48 @@
 		
 		//点击菜单树节点事件
 		function clickNode(event, treeId, treeNode){
-			console.log("event:"+event);
-			console.log("treeId:"+treeId);
-			console.log("treeNode:"+treeNode);
+// 			console.log("event:"+event);
+// 			console.log("treeId:"+treeId);
+// 			console.log("treeNode:"+treeNode);
 			console.log("treeNode name:"+treeNode.name);
 			console.log("treeNode id:"+treeNode.id);
 			
-			//加载资源信息
-			if(treeNode.root==true){
-				
-			}else{
-				
-			}
+			$("#jqGrid").jqGrid('setGridParam', {
+				url : '${root}/security/permission/json/'+treeNode.id+'/'+treeNode.root
+			}).trigger("reloadGrid");
+		};
+		
+		//初始化授权信息
+		function initPermission(menuId,isRoot){
+	        $("#jqGrid").jqGrid({
+	            url: '${root}/security/permission/json/'+menuId+"/"+isRoot,
+	            mtype: "POST",
+				styleUI : 'Bootstrap',
+	            datatype: "json",
+				rowList: [10, 20, 30],
+				colNames: ['授权名称','URL','操作'],
+				colModel: [	
+				           	{ name: 'name',width:'100', align: "center" },
+							{ name: 'url', width:'100',align: "center"},
+							{ name: 'id',  width:'100',align: "center",formatter:operation}
+						  ],
+	            height: 250,
+	            rowNum: 10,
+	            rowList: [10, 20, 30],
+	            pager: "#jqGridPager",
+				autowidth : true,
+				autoheight : true,
+				rownumbers : false,
+	 			viewrecords: true,
+	 			multiselect : true
+	        }).closest(".ui-jqgrid-bdiv").css({ 'overflow-x' : 'hidden' });
+		}
+		
+		
+		function operation(cellvalue, options, rowObject) {
+			var modifyOperation = "<a id='operation1' href='javascript:;' onclick='modifyUser("+cellvalue+")' >修改</a>";
+			var deleteOPeration = "<a id='operation2' href='javascript:;' onclick='deleteUser("+cellvalue+")' >删除</a>";
+			return modifyOperation + " " + deleteOPeration;
 		};
 		
 		//获取选中节点
@@ -163,6 +175,8 @@
 		};
 		
 		$(document).ready(function() {
+			//初始化授权列表
+			initPermission(0,true);
 			
 			initZtree();//初始化菜单ztree
 			
@@ -251,7 +265,12 @@
 							success:function(data){
 								var result = eval("(" + data + ")");
 								initZtree();//初始化菜单ztree
-								showWarn("删除成功");
+								if(result.success){
+									showWarn(result.message);
+								}else{
+									showError(result.message);
+								}
+								
 							}
 						});
 					});
