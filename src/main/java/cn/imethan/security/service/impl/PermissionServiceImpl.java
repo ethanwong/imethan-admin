@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import cn.imethan.common.dto.ReturnDto;
-import cn.imethan.common.hibernate.Page;
 import cn.imethan.common.hibernate.SearchFilter;
 import cn.imethan.security.dao.PermissionDao;
 import cn.imethan.security.entity.Permission;
@@ -33,7 +32,7 @@ public class PermissionServiceImpl implements PermissionService {
 
 	@Override
 	public List<Permission> getByMenuId(Long menuId) {
-		SearchFilter searchFilter = new SearchFilter("EQL_menu.id",menuId.toString());
+		SearchFilter searchFilter = new SearchFilter("EQL_menuId",menuId.toString());
 		return permissionDao.getByFilter(searchFilter, false);
 	}
 
@@ -73,11 +72,6 @@ public class PermissionServiceImpl implements PermissionService {
 	@Override
 	public Iterable<Permission> getAll() {
 		return permissionDao.getAll();
-	}
-
-	@Override
-	public Page<Permission> getPage(List<SearchFilter> filters, Page<Permission> page) {
-		return permissionDao.getPageByFilters(page, filters, false);
 	}
 
 }

@@ -18,8 +18,8 @@ import cn.imethan.common.utils.ConvertUtil;
  */
 public class SearchFilter {
 
-	public enum MatchType {//GTOREQ, LTOREQ,
-		EQ, NE,  LE ,LT,GE, GT,  LIKE, NOTLIKE, ISNULL, NOTNULL, ISEMPTY, NOTEMPTY, IN, NOTIN, BETWEEN, NOTBETWEEN;
+	public enum MatchType {
+		EQ, NE, GT, GE, LT, LE, GTOREQ, LTOREQ, LIKE, NOTLIKE, ISNULL, NOTNULL, ISEMPTY, NOTEMPTY, IN, NOTIN, BETWEEN, NOTBETWEEN;
 	}
 
 	public enum PropertyType {

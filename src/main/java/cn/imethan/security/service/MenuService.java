@@ -48,16 +48,6 @@ public interface MenuService {
 	 */
 	public List<Menu> getMenuPermissionForRoleInput(Long roleId);
 	
-	/**
-	 * 获取一级菜单的子菜单ID列表
-	 * @param menuId
-	 * @return
-	 *
-	 * @author Ethan
-	 * @datetime 2015年9月21日 下午11:39:56
-	 */
-	public List<Long> getRootMenuChildIdList(Long menuId);
-	
 	
 }
 

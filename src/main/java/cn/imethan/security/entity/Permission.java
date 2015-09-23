@@ -27,17 +27,9 @@ public class Permission extends BaseEntity {
 	
 	public static final String AUTHORITY_PREFIX = "ROLE_";
 	
-	private String name;//权限名称
-	private String url;//授权URL
+	private String name;//权限名称，格式：“资源名称:操作”，形如：“channel:new”
 	private String intro;//描述
-	private String permission;//备用字段，shiro框架使用的授权，格式：“资源名称:操作”，形如：“channel:new”
-	
-	public String getUrl() {
-		return url;
-	}
-	public void setUrl(String url) {
-		this.url = url;
-	}
+	private String permission;//权限
 	
 	@Transient
 	public String getPrefixedName() {

@@ -54,10 +54,6 @@ public class MenuServiceImpl implements MenuService {
 	@Override
 	public ReturnDto deleteById(Long id) {
 		try {
-			Menu menu = this.getById(id);
-			if(menu.getChildrens() != null && !menu.getChildrens().isEmpty()){
-				return new ReturnDto(false,"清先删除二级菜单"); 
-			}
 			resourceDao.deleteById(id);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -127,12 +123,6 @@ public class MenuServiceImpl implements MenuService {
 //		}
 //		return resources;
 		return null;
-	}
-
-	@Override
-	public List<Long> getRootMenuChildIdList(Long menuId) {
-		
-		return resourceDao.getRootMenuChildIdList(menuId);
 	}
 
 }

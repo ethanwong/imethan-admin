@@ -3,8 +3,6 @@ package cn.imethan.security.service;
 import java.util.List;
 
 import cn.imethan.common.dto.ReturnDto;
-import cn.imethan.common.hibernate.Page;
-import cn.imethan.common.hibernate.SearchFilter;
 import cn.imethan.security.entity.Permission;
 
 /**
@@ -44,17 +42,6 @@ public interface PermissionService{
 	ReturnDto saveOrUpdate(Permission permission);
 
 	Iterable<Permission> getAll();
-	
-	/**
-	 * 获取分页列表
-	 * @param filters
-	 * @param page
-	 * @return
-	 *
-	 * @author Ethan
-	 * @datetime 2015年9月21日 下午11:24:38
-	 */
-	Page<Permission> getPage(List<SearchFilter> filters, Page<Permission> page);
 
 }
 
