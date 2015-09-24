@@ -1,5 +1,6 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: 'idea'
 apply plugin: 'war'
 
 def projectName = "imethan-admin"
@@ -102,3 +103,10 @@ dependencies {
 test {
     systemProperties 'property': 'value'
 }
+
+// tag::wrapper[]
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.11'
+}
+// end::wrapper[]
+
