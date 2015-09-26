@@ -43,12 +43,12 @@ public class RoleServiceImpl implements RoleService {
 	@Autowired
 	private PermissionDao permissionDao;
 	
-	private Map<String,Object> parseResourcePermission(String resourcePermission){
+	private Map<String,Object> parseMenuPermission(String menuPermission){
 		Map<String,Object> map = new HashMap<String,Object>();
 		Set<Menu> menuSet = new HashSet<Menu>();
 		Set<Permission> permissionSet = new HashSet<Permission>();
 		
-		String[] list = StringUtils.split(resourcePermission, ",");
+		String[] list = StringUtils.split(menuPermission, ",");
 
 		for(String temp : list){
 //			 type:resource id:1
@@ -58,7 +58,7 @@ public class RoleServiceImpl implements RoleService {
 			String type = tempSplits[0];
 			String id = tempSplits[1];
 			Long idLong = Long.parseLong(id);
-			if(type.equals("resource")){
+			if(type.equals("menu")){
 				Menu resource = menuDao.getById(idLong);
 				menuSet.add(resource);
 			}
@@ -67,7 +67,7 @@ public class RoleServiceImpl implements RoleService {
 				permissionSet.add(permission);
 			}
 		}
-		map.put("resourceSet", menuSet);
+		map.put("menuSet", menuSet);
 		map.put("permissionSet", permissionSet);
 		
 		return map;
@@ -77,9 +77,12 @@ public class RoleServiceImpl implements RoleService {
 	@Override
 	public ReturnDto saveOrUpdate(Role entity, String menuPermission) {
 		try {
-			Map<String,Object> result = this.parseResourcePermission(menuPermission);
+			System.out.println();
+			long beginTime = System.currentTimeMillis();
+			Map<String,Object> result = this.parseMenuPermission(menuPermission);
+			System.out.println("end time:"+(System.currentTimeMillis()-beginTime));
 			if(!result.isEmpty()){
-				if(result.get("resourceSet") !=null ){
+				if(result.get("menuSet") !=null ){
 					Set<Menu> resourceSet = (Set<Menu>) result.get("menuSet");
 					entity.setMenus(resourceSet);
 				}

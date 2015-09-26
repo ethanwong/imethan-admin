@@ -92,8 +92,8 @@ function setGeneralModal(title,htmlContent,buttonClass,buttonName,formId){
 				htmlContent +
 				"</div>"+
 				"<div class='modal-footer'>"+
-				"	<button  type='button' class='btn btn-defaul' data-dismiss='modal'>关闭</button>"+
-				"	<button id='generalConfirmModalClick' type='button' class='btn "+buttonClass+"' >"+buttonName+"</button>"+
+				"	<button  type='button' class='btn btn-defaul btn-flat' data-dismiss='modal'>关闭</button>"+
+				"	<button id='generalConfirmModalClick' type='button' class='btn btn-flat "+buttonClass+"' >"+buttonName+"</button>"+
 				"</div>"+
 			"</div>"+
 		"</div>"+
@@ -181,7 +181,7 @@ function showError(message,place){
 	
 	$("#"+showmessageId).attr("class","message error");
 	$('#'+showmessageId).html("<i class='icon fa fa-ban'></i> "+message);
-	$("#"+showmessageId).css("display","block");
+	$("#"+showmessageId).css("display","inline");
 	
 	
 	setTimeout(function(){
@@ -206,7 +206,7 @@ function showSuccess(message,place){
 	
 	$("#"+showmessageId).attr("class","message success");
 	$('#'+showmessageId).html("<i class='icon fa fa-check'></i> "+message);
-	$("#"+showmessageId).css("display","block");
+	$("#"+showmessageId).css("display","inline");
 	
 	setTimeout(function(){
 		$("#"+showmessageId).css("display","none");

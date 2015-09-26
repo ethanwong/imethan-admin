@@ -1,6 +1,7 @@
 package cn.imethan.security.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import cn.imethan.common.hibernate.CrudOperations;
 import cn.imethan.security.entity.Menu;
@@ -22,6 +23,15 @@ public interface MenuDao extends CrudOperations<Menu,Long>{
 	 * @datetime 2015年9月21日 下午11:39:56
 	 */
 	List<Long> getRootMenuChildIdList(Long menuId);
+	
+	/**
+	 * 获取所有根级菜单
+	 * @return
+	 *
+	 * @author Ethan
+	 * @datetime 2015年9月26日 下午10:57:40
+	 */
+	List<Menu> getRootMenu();
 
 }
 

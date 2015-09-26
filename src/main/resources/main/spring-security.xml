@@ -12,6 +12,7 @@
 	<http pattern="/theme/**" security="none" />
 	<http pattern="/upload/**" security="none" />
 	<http pattern="/security/**" security="none" />
+	<http pattern="/security/role/**" security="none" />
 	
 	<global-method-security secured-annotations="enabled"/>
 	

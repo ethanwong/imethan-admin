@@ -1,6 +1,9 @@
 package cn.imethan.security.dao.impl;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
@@ -23,6 +26,12 @@ public class MenuDaoImpl extends HibernateTemplateSupport<Menu, Long>  implement
 		Query query = this.createQuery("select id from Menu where parent.id=:menuId");
 		query.setLong("menuId", menuId);
 		return query.list();
+	}
+
+	@Override
+	public List<Menu> getRootMenu() {
+		Query query = this.createQuery("from Menu where isRoot=true");
+		return  query.list();
 	}
 
 }

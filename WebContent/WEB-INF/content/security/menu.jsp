@@ -9,8 +9,7 @@
 <body>
       <div class="content-wrapper">
         <section class="content-header">
-			<small><i class="fa fa-home"></i> 权限配置 > 菜单管理</small>
-			<span style="padding-left: 20px;" id="warn-message"></span>
+			<small><i class="fa fa-home"></i> 权限配置 > 菜单授权管理</small>
 		</section>
 		     
         <!-- Main content -->
@@ -24,10 +23,10 @@
 					</div>
 					<div class="box-body">
 						<div class="btn-group">
-							<a id="addRootMenu" class="btn btn-primary  btn-sm">增加一级</a>
-			            	<a id="addSecondMenu" class="btn btn-info  btn-sm">增加二级</a>
-			            	<a id="modifyMenu" class="btn btn-default  btn-sm">修改</a>
-			            	<a id="deleteMenu" class="btn btn-danger  btn-sm">删除</a>
+							<a id="addRootMenu" class="btn btn-primary  btn-sm btn-flat">增加一级</a>
+			            	<a id="addSecondMenu" class="btn btn-info  btn-sm btn-flat">增加二级</a>
+			            	<a id="modifyMenu" class="btn btn-default  btn-sm btn-flat">修改</a>
+			            	<a id="deleteMenu" class="btn btn-danger  btn-sm btn-flat">删除</a>
 						</div>
 						<div id="menu-tree" class="ztree"></div>
 					</div>
@@ -35,17 +34,17 @@
 				</div>
             </div><!-- /.col -->
             <div class="col-md-8">
-              <div class="box box-primary">
+              <div class="box box-info">
                 <div class="box-header with-border">
                 	 授权管理
                 	 <span id="rightshowmessage"></span>    
                 </div>
                 <div class="box-body">
                 	<div class="btn-group">
-		                <a id="quickAddPermissionPreview" class="btn btn-success margin-bottom btn-sm">快捷授权</a>
-		            	<a id="addPermission" class="btn btn-info margin-bottom btn-sm">添加授权</a>
-		            	<a id="modifyPermission" class="btn btn-default margin-bottom btn-sm">修改</a>
-		            	<a id="deletePermission" class="btn btn-danger margin-bottom btn-sm">删除</a>
+		                <a id="quickAddPermissionPreview" class="btn btn-success margin-bottom btn-sm btn-flat">快捷授权</a>
+		            	<a id="addPermission" class="btn btn-info margin-bottom btn-sm btn-flat">添加授权</a>
+		            	<a id="modifyPermission" class="btn btn-default margin-bottom btn-sm btn-flat">修改</a>
+		            	<a id="deletePermission" class="btn btn-danger margin-bottom btn-sm btn-flat">删除</a>
                 	</div>
                 	<div class="box-tools pull-right">
 	                    <div class="has-feedback">
@@ -88,8 +87,8 @@
 					</form>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-primary" id="menu-input-modal-button-save">保存</button>
+					<button type="button" class="btn btn-default btn-flat" data-dismiss="modal">关闭</button>
+					<button type="button" class="btn btn-primary btn-flat" id="menu-input-modal-button-save">保存</button>
 				</div>
 			</div>
 		</div>
@@ -115,8 +114,8 @@
 					</form>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-primary" id="permission-input-modal-button-save" >保存</button>
+					<button type="button" class="btn btn-default btn-flat" data-dismiss="modal">关闭</button>
+					<button type="button" class="btn btn-primary btn-flat" id="permission-input-modal-button-save" >保存</button>
 				</div>
 			</div>
 		</div>

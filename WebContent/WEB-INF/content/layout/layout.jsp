@@ -69,7 +69,7 @@
     <!-- ztree begin -->
 	<link rel="stylesheet" href="${root}/theme/other/jtree/css/zTreeStyle/zTreeStyle.css" type="text/css">
 	<script type="text/javascript" src="${root}/theme/other/jtree/js/jquery.ztree.all-3.5.js"></script>
-	<script type="text/javascript" src="${root}/theme/other/jtree/js/jquery.ztree.core-3.5.js"></script>
+<%-- 	<script type="text/javascript" src="${root}/theme/other/jtree/js/jquery.ztree.core-3.5.js"></script> --%>
 	<!-- ztree end -->
     
     <!-- jqgrid begin-->

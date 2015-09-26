@@ -1,6 +1,7 @@
 package cn.imethan.security.web;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.ServletRequest;
 
@@ -72,5 +73,14 @@ public class RoleController {
 	public ReturnDto delete(Model model, @PathVariable Long id, ServletRequest request) {
 		return roleService.deleteById(id);
 	}
+	
+	
+    @ModelAttribute
+    public void getModel(@RequestParam(value = "id", required = false) Long id, ServletRequest request, Model model) throws Exception {
+        if (id != null) {
+            Role role = roleService.getById(id);
+            model.addAttribute("role", role);
+        }
+    }
 
 }

@@ -28,7 +28,8 @@ th {
 .message {
 	margin: 0px;
 	padding: 0px;
-	float: right;
+/* 	float: right; */
+	padding-left: 10px;
 }
 
 .success {
