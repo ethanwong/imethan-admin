@@ -50,8 +50,7 @@
         <ul class="treeview-menu">
           <li class="active"><a href="${root}/security/user"><i class="fa fa-circle-o"></i> 用户管理</a></li>
           <li><a href="${root}/security/role"><i class="fa fa-circle-o"></i> 角色管理</a></li>
-          <li><a href="${root}/security/menu"><i class="fa fa-circle-o"></i> 菜单管理</a></li>
-          <li><a href="${root}/security/permission"><i class="fa fa-circle-o"></i> 授权管理</a></li>
+          <li><a href="${root}/security/menu"><i class="fa fa-circle-o"></i> 菜单授权</a></li>
         </ul>
       </li>
       

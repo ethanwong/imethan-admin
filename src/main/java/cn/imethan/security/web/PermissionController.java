@@ -105,10 +105,28 @@ public class PermissionController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "/delete/{id}", method = { RequestMethod.POST })
-	public ReturnDto delete(Model model, @PathVariable Long id, ServletRequest request) {
-		return permissionService.deleteById(id);
+	@RequestMapping(value = "/delete/{rowids}", method = { RequestMethod.POST })
+	public ReturnDto delete(Model model, @PathVariable List<Long> rowids, ServletRequest request) {
+		System.out.println("rowids:"+rowids);
+		return permissionService.deleteByIds(rowids);
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/quickAddPreview/{menuId}", method = { RequestMethod.POST })
+	public List<Permission> quickAddPreview(Model model, @PathVariable Long menuId, ServletRequest request) {
+		return permissionService.quickAddPreview(menuId);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/quickAddSave/{menuId}", method = { RequestMethod.POST })
+	public ReturnDto quickAddSave(Model model, @PathVariable Long menuId, ServletRequest request) {
+		String allNameAndUrl = request.getParameter("allNameAndUrl");
+		return permissionService.quickAddSave(menuId,allNameAndUrl);
+	}
+	
+	
+	
+	
 
 	// @ModelAttribute
 	// public void getModel(@RequestParam(value = "id", required = false) Long

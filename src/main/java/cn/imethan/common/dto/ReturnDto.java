@@ -12,7 +12,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class ReturnDto {
 	private boolean isSuccess = true;
 	private String message = "Succeed";
-	private Object entity;
+	private Object object;
 	
 	public ReturnDto() {
 		
@@ -24,10 +24,10 @@ public class ReturnDto {
 			message = "Succeed";
 		}
 	}
-	public ReturnDto(boolean isSuccess, Object entity) {
+	public ReturnDto(boolean isSuccess, Object object) {
 		super();
 		this.isSuccess = isSuccess;
-		this.entity = entity;
+		this.object = object;
 	}
 	
 	public ReturnDto(boolean isSuccess,String message) {
@@ -36,11 +36,11 @@ public class ReturnDto {
 		this.message = message;
 	}
 	
-	public ReturnDto(boolean isSuccess,String message, Object entity) {
+	public ReturnDto(boolean isSuccess,String message, Object object) {
 		super();
 		this.isSuccess = isSuccess;
 		this.message = message;
-		this.entity = entity;
+		this.object = object;
 	}
 	
 	public boolean isSuccess() {
@@ -49,19 +49,19 @@ public class ReturnDto {
 	public void setSuccess(boolean isSuccess) {
 		this.isSuccess = isSuccess;
 	}
-	public Object getEntity() {
-		return entity;
-	}
-	public void setEntity(Object entity) {
-		this.entity = entity;
-	}
+
 	public String getMessage() {
 		return message;
 	}
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	
+	public Object getObject() {
+		return object;
+	}
+	public void setObject(Object object) {
+		this.object = object;
+	}
 	@Override
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);

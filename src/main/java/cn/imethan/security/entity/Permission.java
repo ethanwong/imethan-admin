@@ -34,6 +34,14 @@ public class Permission extends BaseEntity {
 	@Transient
 	private Long menuId;
 	
+	public Permission(){}
+	
+	public Permission(Menu menu,String name,String url){
+		this.menu = menu;
+		this.name = name;
+		this.url = url;
+	}
+	
 	public Long getMenuId() {
 		return this.getMenu().getId();
 	}

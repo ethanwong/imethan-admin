@@ -75,6 +75,37 @@ public interface PermissionService{
 	 * @datetime 2015年9月23日 下午10:10:52
 	 */
 	public boolean isUrlExists(String url);
+	
+	/**
+	 * 快捷添加保持
+	 * @param menuId
+	 * @param allNameAndUrl
+	 * @return
+	 *
+	 * @author Ethan
+	 * @datetime 2015年9月26日 下午3:40:02
+	 */
+	ReturnDto quickAddSave(Long menuId,String allNameAndUrl);
+	
+	/**
+	 * 快捷添加预览
+	 * @param menuId
+	 * @return
+	 *
+	 * @author Ethan
+	 * @datetime 2015年9月26日 下午3:52:04
+	 */
+	List<Permission> quickAddPreview(Long menuId);
+	
+	/**
+	 * 根据ID列表删除
+	 * @param rowids
+	 * @return
+	 *
+	 * @author Ethan
+	 * @datetime 2015年9月26日 下午8:16:33
+	 */
+	ReturnDto deleteByIds(List<Long> rowids);
 
 }
 

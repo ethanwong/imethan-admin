@@ -1,5 +1,6 @@
 package cn.imethan.security.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -11,7 +12,9 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import cn.imethan.common.dto.ReturnDto;
 import cn.imethan.common.hibernate.Page;
 import cn.imethan.common.hibernate.SearchFilter;
+import cn.imethan.security.dao.MenuDao;
 import cn.imethan.security.dao.PermissionDao;
+import cn.imethan.security.entity.Menu;
 import cn.imethan.security.entity.Permission;
 import cn.imethan.security.service.PermissionService;
 
@@ -26,10 +29,11 @@ import cn.imethan.security.service.PermissionService;
 public class PermissionServiceImpl implements PermissionService {
 
 	private Logger logger = Logger.getLogger(PermissionServiceImpl.class);
-	private ReturnDto returnDto = new ReturnDto(true, "操作成功");
 
 	@Autowired
 	private PermissionDao permissionDao;
+	@Autowired
+	private MenuDao menuDao;
 
 	@Override
 	public List<Permission> getByMenuId(Long menuId) {
@@ -128,6 +132,78 @@ public class PermissionServiceImpl implements PermissionService {
 	@Override
 	public Page<Permission> getPage(List<SearchFilter> filters, Page<Permission> page) {
 		return permissionDao.getPageByFilters(page, filters, false);
+	}
+	
+
+	@Override
+	@Transactional(readOnly = false)
+	public ReturnDto quickAddSave(Long menuId,String allNameAndUrl) {
+		
+		try {
+			Menu menu = menuDao.getById(menuId);
+			String[] nameAndUrls = allNameAndUrl.split(",");
+			for(String nameAndUrl : nameAndUrls){
+				if(nameAndUrl.trim().equals("")){
+					continue;
+				}
+				System.out.println("nameAndUrl:"+nameAndUrl);
+				int index = nameAndUrl.indexOf(":");
+				String menuName = nameAndUrl.substring(0,index);
+				String menuUrl = nameAndUrl.substring(index+1,nameAndUrl.length());
+				Permission permission = new Permission(menu,menuName,menuUrl);
+				
+				permissionDao.save(permission);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			return new ReturnDto(false,"快捷授权失败");
+		}
+		
+		return new ReturnDto(true,"快捷授权成功");
+	}
+	
+	@Override
+	public List<Permission>  quickAddPreview(Long menuId){
+		List<Permission> list = new ArrayList<Permission>();
+		
+		Menu menu = menuDao.getById(menuId);
+		
+		String menuName = menu.getName();
+		String menuUrl = menu.getUrl();
+		String modelName = menuName;
+		if(menuName.substring(menuName.length()-2, menuName.length()).trim().equals("管理")){
+			modelName = menuName.substring(0, menuName.length()-2);
+		}
+		
+		Permission jsonUrlPermission = new Permission(menu,"浏览"+modelName,menuUrl + "/json");
+		Permission detailUrlPermission = new Permission(menu,"查看"+modelName,menuUrl + "/detail");
+		Permission menuUrlPermission = new Permission(menu,"添加"+modelName+"",menuUrl + "/input");
+		Permission saveUrlPermission = new Permission(menu,"保存"+modelName,menuUrl + "/save");
+		Permission deleteUrlPermission = new Permission(menu,"删除"+modelName,menuUrl + "/delete");
+		
+		list.add(jsonUrlPermission);
+		list.add(detailUrlPermission);
+		list.add(menuUrlPermission);
+		list.add(saveUrlPermission);
+		list.add(deleteUrlPermission);		
+		
+		return list;
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public ReturnDto deleteByIds(List<Long> rowids) {
+		try {
+			for(Long rowId : rowids){
+				this.deleteById(rowId);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			return new ReturnDto(false,"删除授权失败");
+		}
+		return new ReturnDto(true,"删除授权成功");
 	}
 
 }

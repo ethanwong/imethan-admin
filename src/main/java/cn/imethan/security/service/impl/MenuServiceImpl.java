@@ -35,7 +35,7 @@ public class MenuServiceImpl implements MenuService {
 	public ReturnDto saveOrModify(Menu entity) {
 		try {
 			resourceDao.save(entity);
-			returnDto.setEntity(entity);
+			returnDto.setObject(entity);
 		} catch (Exception e) {
 			e.printStackTrace();
 			returnDto = new ReturnDto(false,"保存失败");
@@ -56,7 +56,10 @@ public class MenuServiceImpl implements MenuService {
 		try {
 			Menu menu = this.getById(id);
 			if(menu.getChildrens() != null && !menu.getChildrens().isEmpty()){
-				return new ReturnDto(false,"清先删除二级菜单"); 
+				return new ReturnDto(false,"请先删除二级菜单"); 
+			}
+			if(menu.getPermissions() != null && !menu.getPermissions().isEmpty()){
+				return new ReturnDto(false,"请先删除关联的授权"); 
 			}
 			resourceDao.deleteById(id);
 		} catch (Exception e) {
