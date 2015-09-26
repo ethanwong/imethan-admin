@@ -3,6 +3,8 @@ package cn.imethan.security.web;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.ServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,11 +15,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+
 import cn.imethan.common.dto.JqGridPageDto;
 import cn.imethan.common.dto.ReturnDto;
 import cn.imethan.common.hibernate.Page;
 import cn.imethan.common.hibernate.SearchFilter;
+import cn.imethan.security.entity.Role;
 import cn.imethan.security.entity.User;
+import cn.imethan.security.service.RoleService;
 import cn.imethan.security.service.UserService;
 
 /**
@@ -32,6 +37,8 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private RoleService roleService;
 
 	@RequestMapping("")
 	public String user(Model model) {
@@ -45,7 +52,6 @@ public class UserController {
 
 		Page<User> page = new Page<User>(pageNo, pageSize);
 		page = userService.getPage(filters, page);
-		System.out.println("-------------page:"+page.getList());
 		
 		return new JqGridPageDto<User>(page);
 	}
@@ -66,6 +72,20 @@ public class UserController {
 	@RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
 	public ReturnDto delete(@PathVariable Long id) {
 		return userService.deleteById(id);
+	}
+	
+    @ModelAttribute
+    public void getModel(@RequestParam(value = "id", required = false) Long id, ServletRequest request, Model model) throws Exception {
+        if (id != null) {
+            User user = userService.getById(id);
+            model.addAttribute("user", user);
+        }
+    }
+    
+	@ResponseBody
+	@RequestMapping(value = "/rolejson" , method = {RequestMethod.POST})
+	public List<Role>  json(){
+		return roleService.getAllList();
 	}
 
 }

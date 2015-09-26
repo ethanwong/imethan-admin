@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -66,10 +67,13 @@ public class UserServiceImpl implements UserService {
 			roles.add(role);
 			entity.setRoles(roles);
 			
+			BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+			String password = bCryptPasswordEncoder.encode(entity.getPassword());
+			entity.setPassword(password);
+			
 			if(entity.getId() != null){
 				entity.setModifyTime(new Date());
-			}
-			
+			}			
 			userDao.save(entity);
 		} catch (Exception e) {
 			returnDto = new ReturnDto(false,"操作失败");
