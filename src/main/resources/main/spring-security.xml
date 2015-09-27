@@ -11,7 +11,7 @@
 	<!-- 配置不过滤的资源（静态资源及登录相关） -->
 	<http pattern="/theme/**" security="none" />
 	<http pattern="/upload/**" security="none" />
-	<http pattern="/security/**" security="none" />
+<!-- 	<http pattern="/security/**" security="none" /> -->
 	
 	<global-method-security secured-annotations="enabled"/>
 	
@@ -23,8 +23,8 @@
 		<access-denied-handler ref="accessDeniedHandler"/>
 		<!-- 登录过滤 -->
 		<custom-filter position="FORM_LOGIN_FILTER" ref="customLoginFilter" />
-		<!-- 扩展攻击过滤 -->
-		<csrf />
+		<!-- 扩展Csrf过滤 -->
+		<csrf request-matcher-ref="customRequiresCsrfMatcher"/>
 		<!-- 注销过滤 -->
 		<custom-filter position="LOGOUT_FILTER" ref="customLogoutFilter"/>
 	    <!-- 认证过滤器, 动态加载数据库中的URL与权限的关系 -->
@@ -36,6 +36,8 @@
 		<!-- 会话并发过滤 -->
 		<custom-filter position="CONCURRENT_SESSION_FILTER" ref="concurrencyFilter"  />
 	</http>
+	
+	<beans:bean id="customRequiresCsrfMatcher" class="cn.imethan.common.security.filter.CustomRequiresCsrfMatcher"/>
 	
 	<!-- 登录切入点 -->
 	<beans:bean id="authenticationEntryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">

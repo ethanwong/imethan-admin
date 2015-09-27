@@ -35,6 +35,7 @@ public class UserServiceImpl implements UserService {
 	
 	private Logger logger = Logger.getLogger(UserServiceImpl.class); 
 	private ReturnDto returnDto = new ReturnDto(true,"操作成功");
+	
 	@Autowired
 	private UserDao userDao;
 	@Autowired
@@ -168,6 +169,22 @@ public class UserServiceImpl implements UserService {
 		}
 		
 		return rootMenuList;
+	}
+
+	@Transactional(readOnly = false)
+	@Override
+	public ReturnDto deleteByIds(List<Long> ids) {
+		try {
+			for(Long id : ids){
+				userDao.deleteById(id);
+			}
+		} catch (Exception e) {
+			returnDto = new ReturnDto(false,"操作失败");
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+			logger.error("操作失败", e.fillInStackTrace());
+			e.printStackTrace();
+		}
+		return new ReturnDto(true,"删除成功");
 	}
 
 }

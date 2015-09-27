@@ -13,6 +13,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import cn.imethan.common.dto.ReturnDto;
 import cn.imethan.common.hibernate.SearchFilter;
+import cn.imethan.common.security.filter.InvocationSecurityMetadataSource;
 import cn.imethan.security.dao.MenuDao;
 import cn.imethan.security.dao.PermissionDao;
 import cn.imethan.security.dao.RoleDao;
@@ -47,6 +48,7 @@ public class MenuServiceImpl implements MenuService {
 		try {
 			menuDao.save(entity);
 			returnDto.setObject(entity);
+			InvocationSecurityMetadataSource.reFresh();//刷新授权信息
 		} catch (Exception e) {
 			e.printStackTrace();
 			returnDto = new ReturnDto(false,"保存失败");
@@ -77,6 +79,7 @@ public class MenuServiceImpl implements MenuService {
 				return new ReturnDto(false,"菜单被角色关联，不能删除"); 
 			}
 			menuDao.deleteById(id);
+			InvocationSecurityMetadataSource.reFresh();//刷新授权信息
 		} catch (Exception e) {
 			e.printStackTrace();
 			returnDto = new ReturnDto(false,"操作失败");
@@ -156,7 +159,6 @@ public class MenuServiceImpl implements MenuService {
 
 	@Override
 	public List<Long> getRootMenuChildIdList(Long menuId) {
-		
 		return menuDao.getRootMenuChildIdList(menuId);
 	}
 

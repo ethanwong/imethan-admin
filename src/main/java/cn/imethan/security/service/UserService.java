@@ -85,4 +85,14 @@ public interface UserService{
 	 */
 	public Set<Menu> getUserRootMenu(Set<Role> roles);
 	
+	/**
+	 * 根据id列表删除
+	 * @param ids
+	 * @return
+	 *
+	 * @author Ethan
+	 * @datetime 2015年9月27日 下午9:34:59
+	 */
+	public ReturnDto deleteByIds(List<Long> ids);
+	
 }

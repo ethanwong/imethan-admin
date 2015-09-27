@@ -56,13 +56,13 @@
      <c:forEach var="menu" items="${userRootMenus}">
 	     <li class="treeview">
 	        <a href="#">
-	          <i class="<c:if test="${menu.ico == null }">fa fa-folder</c:if>${menu.ico}"></i>
+	          <i class="<c:if test="${menu.ico == null || menu.ico eq ''}">fa fa-folder</c:if>${menu.ico}"></i>
 	          <span>${menu.name}</span><b class="arrow pull-right fa fa-angle-left"></b>
 	        </a>
 	     	<ul class="treeview-menu">
 		     	<c:forEach var="child" items="${menu.childrens}">
 		     	 	<li id="${child.module}" class="<c:if test="${module eq child.module}">active</c:if>">
-		     	 		<a href="${root}${child.url}"><i class="<c:if test="${child.ico == null }">fa fa-circle-o</c:if>${child.ico}"></i> ${child.name}</a>
+		     	 		<a href="${root}${child.url}"><i class="<c:if test="${child.ico == null || child.ico eq '' }">fa fa-circle-o</c:if>${child.ico}"></i> ${child.name}</a>
 			     	 	<c:if test="${module eq child.module}">
 		     				<script type="text/javascript">
 								$(document).ready(function () {

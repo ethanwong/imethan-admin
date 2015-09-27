@@ -45,12 +45,12 @@ public class CommonInterceptor implements HandlerInterceptor  {
 			ModelAndView modelAndView) throws Exception {
 		//设置导航选中效果
 		String servletPath = request.getServletPath();
-		System.out.println("------------servletPath:"+servletPath);
+//		System.out.println("------------servletPath:"+servletPath);
 		String[] paths = StringUtils.split(servletPath, "/");
 		List<String> pathList = new ArrayList<String>();
 		
 		for(int i = 0;i<paths.length;i++){
-			System.out.println("------------path:"+paths[i]);
+//			System.out.println("------------path:"+paths[i]);
 			if(i == 1){
 				request.setAttribute("module", paths[i]);
 			}

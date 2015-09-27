@@ -12,6 +12,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import cn.imethan.common.dto.ReturnDto;
 import cn.imethan.common.hibernate.Page;
 import cn.imethan.common.hibernate.SearchFilter;
+import cn.imethan.common.security.filter.InvocationSecurityMetadataSource;
 import cn.imethan.security.dao.MenuDao;
 import cn.imethan.security.dao.PermissionDao;
 import cn.imethan.security.dao.RoleDao;
@@ -55,6 +56,8 @@ public class PermissionServiceImpl implements PermissionService {
 		ReturnDto returnDto = new ReturnDto(true, "操作成功");
 		try {
 			permissionDao.deleteById(id);
+			
+			InvocationSecurityMetadataSource.reFresh();//刷新授权信息
 		} catch (Exception e) {
 			e.printStackTrace();
 			returnDto.setSuccess(false);
@@ -98,7 +101,7 @@ public class PermissionServiceImpl implements PermissionService {
 				permissionDb.setUrl(url);
 				permissionDao.saveOrUpdate(permissionDb);
 			}
-
+			InvocationSecurityMetadataSource.reFresh();//刷新授权信息
 		} catch (Exception e) {
 			returnDto.setSuccess(false);
 			returnDto.setMessage("添加失败");
@@ -157,6 +160,7 @@ public class PermissionServiceImpl implements PermissionService {
 				
 				permissionDao.save(permission);
 			}
+			InvocationSecurityMetadataSource.reFresh();//刷新授权信息
 		} catch (Exception e) {
 			e.printStackTrace();
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -218,7 +222,7 @@ public class PermissionServiceImpl implements PermissionService {
 					this.deleteById(rowId);
 				}
 			}
-
+			InvocationSecurityMetadataSource.reFresh();//刷新授权信息
 		} catch (Exception e) {
 			e.printStackTrace();
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();

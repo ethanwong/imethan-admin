@@ -65,13 +65,6 @@ public class Menu extends BaseEntity {
 	@Transient
 	private String url2;//ztree中设置url的值默认会进行url跳转，所以更改为url2参数来取值
 	
-	public static final String AUTHORITY_PREFIX = "ROLE_";
-	
-	@Transient
-	public String getPrefixedName() {
-		return AUTHORITY_PREFIX + name;
-	}
-	
 //	//这个注解会产生N+1问题，所以设置@BatchSize,所以该注释只用于判断是否有记录存在，即menu是否被role关联
 //	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy="menus")
 //	@BatchSize(size=1)

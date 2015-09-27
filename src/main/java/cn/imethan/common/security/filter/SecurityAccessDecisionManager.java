@@ -30,7 +30,7 @@ public class SecurityAccessDecisionManager implements AccessDecisionManager {
 			System.out.println("SecurityAccessDecisionManager haveAuthorities:"+authentication.getAuthorities());
 			System.out.println("SecurityAccessDecisionManager needPermission:"+needPermission);
 			for (GrantedAuthority grantedAuthority : authentication.getAuthorities()) {
-				if (needPermission.equals("ROLE_"+grantedAuthority.getAuthority())) {
+				if (needPermission.trim().equals(grantedAuthority.getAuthority().trim())) {
 					return;
 				}
 			}

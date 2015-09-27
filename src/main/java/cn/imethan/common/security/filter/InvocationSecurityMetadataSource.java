@@ -49,21 +49,22 @@ public class InvocationSecurityMetadataSource implements FilterInvocationSecurit
 		System.out.println("---------------loadAuthorityDefine Authority---------------");
 		if(resourceMap == null) {
             resourceMap = new HashMap<String, Collection<ConfigAttribute>>();
-            
+            	
+            //获取所有菜单
 	          Iterable<Menu> menuAuthorityList = this.getAllMenuList();
 	          for (Menu menu : menuAuthorityList) {
-	          	System.out.println("InvocationSecurityMetadataSource menu:"+menu.getPrefixedName() +" -url:"+menu.getUrl());
+	          	System.out.println("InvocationSecurityMetadataSource menu:"+menu.getName() +" -url:"+menu.getUrl());
 	          	Collection<ConfigAttribute> configAttributes = new ArrayList<ConfigAttribute>();
-	          	ConfigAttribute configAttribute = new SecurityConfig(menu.getPrefixedName().trim());
+	          	ConfigAttribute configAttribute = new SecurityConfig(menu.getName().trim());
 	          	configAttributes.add(configAttribute);
 	          	resourceMap.put(menu.getUrl().trim(), configAttributes);
 	          }
-            
+            //获取所有授权
             Iterable<Permission> permissionAuthorityList = this.getAllPermissionList();
             for (Permission permission : permissionAuthorityList) {
-            	System.out.println("InvocationSecurityMetadataSource permission:"+permission.getPrefixedName() +" -url:"+permission.getUrl());
+            	System.out.println("InvocationSecurityMetadataSource permission:"+permission.getName() +" -url:"+permission.getUrl());
             	Collection<ConfigAttribute> configAttributes = new ArrayList<ConfigAttribute>();
-                ConfigAttribute configAttribute = new SecurityConfig(permission.getPrefixedName().trim());
+                ConfigAttribute configAttribute = new SecurityConfig(permission.getName().trim());
                 configAttributes.add(configAttribute);
                 resourceMap.put(permission.getUrl().trim(), configAttributes);
             }
@@ -77,10 +78,13 @@ public class InvocationSecurityMetadataSource implements FilterInvocationSecurit
 
 	public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
 		String requestURL = ((FilterInvocation) object).getRequestUrl();
+		System.out.println("---imethan-------requestURL:"+requestURL);
 		if(requestURL.indexOf("?") != -1) {
 			requestURL = requestURL.substring(0, requestURL.indexOf("?"));
         }
 		
+		System.out.println("---imethan-------requestURL:"+requestURL);
+		//如果为空重新加载，菜单和授权内容有变化时会调用InvocationSecurityMetadataSource.reFresh()来初始化
 		if (resourceMap == null) {
 			this.loadAuthorityDefine();
 		}

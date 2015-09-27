@@ -47,7 +47,7 @@ public class PermissionController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "json/{menuId}/{isRoot}", method = { RequestMethod.GET, RequestMethod.POST })
+	@RequestMapping(value = "json/{menuId}/{isRoot}", method = { RequestMethod.POST})
 	public JqGridPageDto<Permission> json(ServletRequest rquest, @PathVariable Long menuId, @PathVariable Boolean isRoot, @RequestParam("page") Integer pageNo, @RequestParam("rows") Integer pageSize) {
 
 		List<SearchFilter> filters = new ArrayList<SearchFilter>();
@@ -73,7 +73,7 @@ public class PermissionController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "detail/{id}", method = { RequestMethod.GET, RequestMethod.POST })
+	@RequestMapping(value = "detail/{id}", method = { RequestMethod.POST })
 	public Permission detail(@PathVariable Long id) {
 
 		return permissionService.getById(id);
@@ -122,9 +122,6 @@ public class PermissionController {
 		String allNameAndUrl = request.getParameter("allNameAndUrl");
 		return permissionService.quickAddSave(menuId,allNameAndUrl);
 	}
-	
-	
-	
 	
 
 	// @ModelAttribute

@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/content/base/taglibs.jsp"%>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,10 +20,15 @@
 				</div>
                 <div class="box-body">
                 	<div class="btn-group">
-                		<a id="inputUser" class="btn btn-primary btn-flat btn-sm margin-bottom">增加</a>
-						<a id="modifyUser" class="btn btn-default btn-flat btn-sm margin-bottom">修改</a>
-						<a id="detailUser" class="btn btn-success btn-flat btn-sm margin-bottom">查看</a>
-						<a id="deleteUser" class="btn btn-danger btn-flat btn-sm margin-bottom">删除</a>
+                		<security:authorize ifAnyGranted="添加用户">
+                			<a id="inputUser" class="btn btn-primary btn-flat btn-sm margin-bottom">增加</a>
+                		</security:authorize>
+                		<security:authorize ifAnyGranted="保存用户">
+							<a id="modifyUser" class="btn btn-default btn-flat btn-sm margin-bottom">修改</a>
+						</security:authorize>
+						<security:authorize ifAnyGranted="删除用户">
+							<a id="deleteUser" class="btn btn-danger btn-flat btn-sm margin-bottom">删除</a>
+						</security:authorize>
 					</div>
 					<div class="box-tools pull-right">
 	                    <div class="has-feedback">
@@ -37,8 +41,6 @@
 				</div>
 			</div>
 		</section>
-
-
 	</div>
 	
 	<script type="text/javascript">
@@ -172,12 +174,33 @@
 		
 		//删除用户
 		$("#deleteUser").click(function(){
-			
+			var rowids = $("#jqGrid").jqGrid('getGridParam','selarrrow');
+			var rowid = $("#jqGrid").jqGrid('getGridParam','selrow');
+			console.log("rowids:"+rowids);
+			if(rowids == ''){
+				showWarn("请选择用户","right");
+			}else{
+				var url= "${root}/security/user/delete/"+rowids;
+				setDeleteModal().bind('click',function(){
+					$.ajax({
+						url:url,
+						type:"POST",
+						dateType:"json",
+						success:function(msg){
+							showMessage(msg,"");
+							$("#jqGrid").trigger("reloadGrid");
+						},
+						error:function(){
+							showError("删除失败");	
+						}
+					});
+				});
+			}
 		});
 		
         $("#jqGrid").jqGrid({
             url: '${root}/security/user/json',
-            mtype: "GET",
+            mtype: "POST",
 			styleUI : 'Bootstrap',
             datatype: "json",
 			rowList: [10, 20, 30],

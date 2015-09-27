@@ -41,13 +41,13 @@ public class RoleController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "json", method = { RequestMethod.POST })
+	@RequestMapping(value = "json", method = {RequestMethod.POST })
 	public List<Role> json() {
 		return roleService.getAllList();
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "detail/{id}", method = { RequestMethod.POST, RequestMethod.GET })
+	@RequestMapping(value = "detail/{id}", method = {RequestMethod.POST })
 	public Role detail(@PathVariable Long id) {
 		return roleService.getById(id);
 	}

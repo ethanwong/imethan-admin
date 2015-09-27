@@ -46,7 +46,7 @@ public class UserController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "json", method = { RequestMethod.POST, RequestMethod.GET })
+	@RequestMapping(value = "json", method = {RequestMethod.POST})
 	public JqGridPageDto<User> json(@RequestParam("page") Integer pageNo,@RequestParam("rows") Integer pageSize) {
 		List<SearchFilter> filters = new ArrayList<SearchFilter>();
 
@@ -69,9 +69,9 @@ public class UserController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
-	public ReturnDto delete(@PathVariable Long id) {
-		return userService.deleteById(id);
+	@RequestMapping(value = "/delete/{ids}", method = RequestMethod.POST)
+	public ReturnDto delete(@PathVariable List<Long> ids) {
+		return userService.deleteByIds(ids);
 	}
 	
     @ModelAttribute

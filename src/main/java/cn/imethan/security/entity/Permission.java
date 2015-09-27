@@ -25,8 +25,6 @@ public class Permission extends BaseEntity {
 	
 	private static final long serialVersionUID = 3002097053120526602L;
 	
-	public static final String AUTHORITY_PREFIX = "ROLE_";
-	
 	private String name;//权限名称
 	private String url;//授权URL
 	private String intro;//描述
@@ -53,11 +51,6 @@ public class Permission extends BaseEntity {
 	}
 	public void setUrl(String url) {
 		this.url = url;
-	}
-	
-	@Transient
-	public String getPrefixedName() {
-		return AUTHORITY_PREFIX + name;
 	}
 	
 	@ManyToOne(cascade = {CascadeType.PERSIST},fetch = FetchType.LAZY)
