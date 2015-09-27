@@ -14,6 +14,7 @@ import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.util.AntPathMatcher;
 
+import cn.imethan.security.entity.Menu;
 import cn.imethan.security.entity.Permission;
 
 /**
@@ -31,7 +32,7 @@ public class InvocationSecurityMetadataSource implements FilterInvocationSecurit
 
 	public InvocationSecurityMetadataSource(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
-		this.loadResourceDefine();
+		this.loadAuthorityDefine();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -39,16 +40,32 @@ public class InvocationSecurityMetadataSource implements FilterInvocationSecurit
 		return sessionFactory.openSession().createQuery("from Permission").list();
 	}
 	
-	private void loadResourceDefine() {		
+	@SuppressWarnings("unchecked")
+	private List<Menu> getAllMenuList(){
+		return sessionFactory.openSession().createQuery("from Menu").list();
+	}
+	
+	private void loadAuthorityDefine() {		
+		System.out.println("---------------loadAuthorityDefine Authority---------------");
 		if(resourceMap == null) {
             resourceMap = new HashMap<String, Collection<ConfigAttribute>>();
-            Iterable<Permission> authorityList = this.getAllPermissionList();
-            for (Permission permission : authorityList) {
-            	System.out.println("InvocationSecurityMetadataSource permission:"+permission.getPrefixedName());
+            
+	          Iterable<Menu> menuAuthorityList = this.getAllMenuList();
+	          for (Menu menu : menuAuthorityList) {
+	          	System.out.println("InvocationSecurityMetadataSource menu:"+menu.getPrefixedName() +" -url:"+menu.getUrl());
+	          	Collection<ConfigAttribute> configAttributes = new ArrayList<ConfigAttribute>();
+	          	ConfigAttribute configAttribute = new SecurityConfig(menu.getPrefixedName().trim());
+	          	configAttributes.add(configAttribute);
+	          	resourceMap.put(menu.getUrl().trim(), configAttributes);
+	          }
+            
+            Iterable<Permission> permissionAuthorityList = this.getAllPermissionList();
+            for (Permission permission : permissionAuthorityList) {
+            	System.out.println("InvocationSecurityMetadataSource permission:"+permission.getPrefixedName() +" -url:"+permission.getUrl());
             	Collection<ConfigAttribute> configAttributes = new ArrayList<ConfigAttribute>();
-                ConfigAttribute configAttribute = new SecurityConfig(permission.getPrefixedName());
+                ConfigAttribute configAttribute = new SecurityConfig(permission.getPrefixedName().trim());
                 configAttributes.add(configAttribute);
-                resourceMap.put(permission.getMenu().getUrl(), configAttributes);
+                resourceMap.put(permission.getUrl().trim(), configAttributes);
             }
         }
 	}
@@ -65,7 +82,7 @@ public class InvocationSecurityMetadataSource implements FilterInvocationSecurit
         }
 		
 		if (resourceMap == null) {
-			this.loadResourceDefine();
+			this.loadAuthorityDefine();
 		}
 		Iterator<String> iterator = resourceMap.keySet().iterator();
 		while (iterator.hasNext()) {

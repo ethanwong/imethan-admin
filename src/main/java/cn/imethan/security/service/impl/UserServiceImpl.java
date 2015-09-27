@@ -18,6 +18,7 @@ import cn.imethan.common.hibernate.Page;
 import cn.imethan.common.hibernate.SearchFilter;
 import cn.imethan.security.dao.RoleDao;
 import cn.imethan.security.dao.UserDao;
+import cn.imethan.security.entity.Menu;
 import cn.imethan.security.entity.Role;
 import cn.imethan.security.entity.User;
 import cn.imethan.security.service.UserService;
@@ -38,6 +39,7 @@ public class UserServiceImpl implements UserService {
 	private UserDao userDao;
 	@Autowired
 	private RoleDao roleDao;
+	
 
 	@Override
 	public User getByUsername(String username) {
@@ -151,6 +153,21 @@ public class UserServiceImpl implements UserService {
 			e.printStackTrace();
 		}
 		return returnDto;
+	}
+
+	@Override
+	public Set<Menu> getUserRootMenu(Set<Role> roles) {
+		Set<Menu> rootMenuList = new HashSet<Menu>();
+		
+		for(Role role : roles){
+			for(Menu menu : role.getMenus()){
+				if(menu.isRoot() && !rootMenuList.contains(menu)){
+					rootMenuList.add(menu);
+				}
+			}
+		}
+		
+		return rootMenuList;
 	}
 
 }

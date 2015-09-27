@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -87,8 +88,16 @@ public class MenuServiceImpl implements MenuService {
 
 	@Override
 	public List<Menu> getRootMenu() {
+		
 		SearchFilter searchFilter = new SearchFilter("EQB_isRoot","true");
-		return menuDao.getByFilter(searchFilter, false);
+		List<Menu> list = menuDao.getByFilterAndOrder(searchFilter,Order.asc("id"), false);
+		
+		Set<Menu> set = new HashSet<Menu>(); 
+		set.addAll(list);//给set填充     
+		list.clear();
+		list.addAll(set);
+		
+		return list;
 	}
 
 	@Override

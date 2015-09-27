@@ -54,6 +54,7 @@ public class Menu extends BaseEntity {
 	private String intro;//描述
 	
 	private boolean isRoot;//是否是根节点
+	private String ico = "";//图标
 	
 	@Transient
 	private boolean open = true;//节点是否打开
@@ -64,12 +65,27 @@ public class Menu extends BaseEntity {
 	@Transient
 	private String url2;//ztree中设置url的值默认会进行url跳转，所以更改为url2参数来取值
 	
+	public static final String AUTHORITY_PREFIX = "ROLE_";
+	
+	@Transient
+	public String getPrefixedName() {
+		return AUTHORITY_PREFIX + name;
+	}
+	
 //	//这个注解会产生N+1问题，所以设置@BatchSize,所以该注释只用于判断是否有记录存在，即menu是否被role关联
 //	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy="menus")
 //	@BatchSize(size=1)
 //	private Set<Role> roles = new HashSet<Role>();//角色
 	
-//	public Set<Role> getRoles() {
+	public String getIco() {
+		return ico;
+	}
+
+	public void setIco(String ico) {
+		this.ico = ico;
+	}
+
+	//	public Set<Role> getRoles() {
 //		return roles;
 //	}
 //	public void setRoles(Set<Role> roles) {
@@ -143,11 +159,11 @@ public class Menu extends BaseEntity {
 	@JoinColumn(name="pid")
 	private Menu parent;//父级
 	
-	@OneToMany(cascade = CascadeType.REFRESH,fetch = FetchType.LAZY,mappedBy="parent")
+	@OneToMany(cascade = CascadeType.REFRESH,fetch = FetchType.EAGER,mappedBy="parent")
 	@OrderBy("id")
 	private Set<Menu> childrens = new HashSet<Menu>();//子级
 	
-	@OneToMany(cascade = CascadeType.REFRESH,fetch = FetchType.LAZY,mappedBy="menu")
+	@OneToMany(cascade = CascadeType.REFRESH,fetch = FetchType.EAGER,mappedBy="menu")
 	@OrderBy("id")
 	private Set<Permission> permissions = new HashSet<Permission>();//授权
 	

@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
+import cn.imethan.security.entity.Menu;
 import cn.imethan.security.entity.Permission;
 import cn.imethan.security.entity.Role;
 import cn.imethan.security.entity.User;
@@ -49,16 +50,23 @@ public class UserLoginService implements UserDetailsService {
 		
 		userDetails.setUsername(username);
 		userDetails.setPassword(user.getPassword());
+		userDetails.setUserId(user.getId());
+		userDetails.setRoles(user.getRoles());
 
 		return userDetails;
 	}
 
 	private Set<GrantedAuthority> obtainGrantedAuthorities(User user) {
+		System.out.println("---------------UserDetailsService curentUser Authority---------------");
 		Set<GrantedAuthority> authSet = new HashSet<GrantedAuthority>();
 		for (Role role : user.getRoles()) {
+			for(Menu menu : role.getMenus()){
+				System.out.println("UserDetailsService menu       name:" + menu.getName());
+				authSet.add(new SimpleGrantedAuthority(menu.getName().trim()));
+			}
 			for (Permission permission : role.getPermissions()) {
 				System.out.println("UserDetailsService permission name:" + permission.getName());
-				authSet.add(new SimpleGrantedAuthority(permission.getName()));
+				authSet.add(new SimpleGrantedAuthority(permission.getName().trim()));
 			}
 		}
 		return authSet;

@@ -1,10 +1,13 @@
 package cn.imethan.security.service;
 
 import java.util.List;
+import java.util.Set;
 
 import cn.imethan.common.dto.ReturnDto;
 import cn.imethan.common.hibernate.Page;
 import cn.imethan.common.hibernate.SearchFilter;
+import cn.imethan.security.entity.Menu;
+import cn.imethan.security.entity.Role;
 import cn.imethan.security.entity.User;
 
 /**
@@ -72,5 +75,14 @@ public interface UserService{
 	 * @return
 	 */
 	public ReturnDto updatePassword(String username, String password);
+	
+	/**
+	 * 获取登录用户所拥有的菜单
+	 * @return
+	 *
+	 * @author Ethan
+	 * @datetime 2015年9月27日 下午5:09:48
+	 */
+	public Set<Menu> getUserRootMenu(Set<Role> roles);
 	
 }

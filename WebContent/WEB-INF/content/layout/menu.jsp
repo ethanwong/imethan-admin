@@ -29,7 +29,7 @@
       <li class="header">MAIN NAVIGATION</li>
       <li class="">
         <a href="${root}/console">
-          <i class="fa fa-dashboard"></i> <span>用户首页</span>
+          <i class="fa fa-dashboard"></i> <span>欢迎首页</span>
         </a>
       </li>
       
@@ -42,28 +42,50 @@
 <!--           <li><a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li> -->
 <!--         </ul> -->
 <!--       </li> -->
-      <li class="treeview active">
-        <a href="#">
-          <i class="fa fa-users"></i>
-          <span>权限管理</span><b class="arrow pull-right fa fa-angle-left"></b>
-        </a>
-        <ul class="treeview-menu">
-          <li class="active"><a href="${root}/security/user"><i class="fa fa-circle-o"></i> 用户管理</a></li>
-          <li><a href="${root}/security/role"><i class="fa fa-circle-o"></i> 角色管理</a></li>
-          <li><a href="${root}/security/menu"><i class="fa fa-circle-o"></i> 菜单授权</a></li>
-        </ul>
-      </li>
-      
-      <li class="treeview">
-        <a href="#">
-          <i class="fa fa-folder"></i>
-          <span>基础页面</span><b class="arrow pull-right fa fa-angle-left"></b>
-        </a>
-        <ul class="treeview-menu">
-          <li><a href="${root}/theme/"><i class="fa fa-circle-o"></i> 404错误</a></li>
-          <li><a href="${root}/theme/"><i class="fa fa-circle-o"></i> 500错误</a></li>
-        </ul>
-      </li>
+<!--       <li class="treeview active"> -->
+<!--         <a href="#"> -->
+<!--           <i class="fa fa-users"></i> -->
+<!--           <span>权限管理</span><b class="arrow pull-right fa fa-angle-left"></b> -->
+<!--         </a> -->
+<!--         <ul class="treeview-menu"> -->
+<%--           <li class="active"><a href="${root}/security/user"><i class="fa fa-circle-o"></i> 用户管理</a></li> --%>
+<%--           <li><a href="${root}/security/role"><i class="fa fa-circle-o"></i> 角色管理</a></li> --%>
+<%--           <li><a href="${root}/security/menu"><i class="fa fa-circle-o"></i> 菜单授权</a></li> --%>
+<!--         </ul> -->
+<!--       </li> -->
+     <c:forEach var="menu" items="${userRootMenus}">
+	     <li class="treeview">
+	        <a href="#">
+	          <i class="<c:if test="${menu.ico == null }">fa fa-folder</c:if>${menu.ico}"></i>
+	          <span>${menu.name}</span><b class="arrow pull-right fa fa-angle-left"></b>
+	        </a>
+	     	<ul class="treeview-menu">
+		     	<c:forEach var="child" items="${menu.childrens}">
+		     	 	<li id="${child.module}" class="<c:if test="${module eq child.module}">active</c:if>">
+		     	 		<a href="${root}${child.url}"><i class="<c:if test="${child.ico == null }">fa fa-circle-o</c:if>${child.ico}"></i> ${child.name}</a>
+			     	 	<c:if test="${module eq child.module}">
+		     				<script type="text/javascript">
+								$(document).ready(function () {
+									$("#${child.module}").parent().parent().attr("class","treeview active");
+								})
+							</script>
+			     		</c:if>
+		     	 	</li>
+		     	</c:forEach>
+	     	</ul>
+	     </li>
+     </c:forEach>
+     
+<!--       <li class="treeview"> -->
+<!--         <a href="#"> -->
+<!--           <i class="fa fa-folder"></i> -->
+<!--           <span>基础页面</span><b class="arrow pull-right fa fa-angle-left"></b> -->
+<!--         </a> -->
+<!--         <ul class="treeview-menu"> -->
+<%--           <li><a href="${root}/theme/"><i class="fa fa-circle-o"></i> 404错误</a></li> --%>
+<%--           <li><a href="${root}/theme/"><i class="fa fa-circle-o"></i> 500错误</a></li> --%>
+<!--         </ul> -->
+<!--       </li> -->
 
 <!--       <li class="header">LABELS</li> -->
 <!--       <li><a href="#"><i class="fa fa-circle-o text-red"></i> <span>Important</span></a></li> -->
