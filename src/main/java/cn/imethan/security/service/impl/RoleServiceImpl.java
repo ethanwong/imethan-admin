@@ -117,6 +117,10 @@ public class RoleServiceImpl implements RoleService {
 	public ReturnDto deleteById(Long id) {
 		try {
 			Role role = roleDao.getById(id);
+			if(role.getUsers() != null && !role.getUsers().isEmpty()){
+				return new ReturnDto(false,"角色已经被用户关联，不能删除");
+			}
+			
 			role.setPermissions(null);
 			role.setMenus(null);
 			roleDao.save(role);
@@ -133,6 +137,11 @@ public class RoleServiceImpl implements RoleService {
 	@Override
 	public Role getById(Long id) {
 		return roleDao.getById(id);
+	}
+
+	@Override
+	public Boolean isExistsName(String id, String name) {
+		return roleDao.isExistsName(id,name);
 	}
 
 }

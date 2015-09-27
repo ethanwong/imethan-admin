@@ -32,6 +32,8 @@ public interface MenuDao extends CrudOperations<Menu,Long>{
 	 * @datetime 2015年9月26日 下午10:57:40
 	 */
 	List<Menu> getRootMenu();
+	
+
 
 }
 

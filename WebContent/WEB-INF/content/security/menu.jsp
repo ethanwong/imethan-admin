@@ -163,7 +163,8 @@
 			console.log("treeNode id:"+treeNode.id);
 			
 			$("#jqGrid").jqGrid('setGridParam', {
-				url : '${root}/security/permission/json/'+treeNode.id+'/'+treeNode.root
+				url : '${root}/security/permission/json/'+treeNode.id+'/'+treeNode.root,
+				page:1
 			}).trigger("reloadGrid");
 		};
 		

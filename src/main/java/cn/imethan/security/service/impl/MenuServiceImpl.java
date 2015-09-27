@@ -71,6 +71,10 @@ public class MenuServiceImpl implements MenuService {
 			if(menu.getPermissions() != null && !menu.getPermissions().isEmpty()){
 				return new ReturnDto(false,"请先删除关联的授权"); 
 			}
+			//判断是否有角色关联
+			if(roleDao.isAssociationMenu(id)){
+				return new ReturnDto(false,"菜单被角色关联，不能删除"); 
+			}
 			menuDao.deleteById(id);
 		} catch (Exception e) {
 			e.printStackTrace();

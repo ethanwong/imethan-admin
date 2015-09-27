@@ -14,6 +14,7 @@ import cn.imethan.common.hibernate.Page;
 import cn.imethan.common.hibernate.SearchFilter;
 import cn.imethan.security.dao.MenuDao;
 import cn.imethan.security.dao.PermissionDao;
+import cn.imethan.security.dao.RoleDao;
 import cn.imethan.security.entity.Menu;
 import cn.imethan.security.entity.Permission;
 import cn.imethan.security.service.PermissionService;
@@ -34,6 +35,8 @@ public class PermissionServiceImpl implements PermissionService {
 	private PermissionDao permissionDao;
 	@Autowired
 	private MenuDao menuDao;
+	@Autowired
+	private RoleDao roleDao;
 
 	@Override
 	public List<Permission> getByMenuId(Long menuId) {
@@ -194,16 +197,39 @@ public class PermissionServiceImpl implements PermissionService {
 	@Override
 	@Transactional(readOnly = false)
 	public ReturnDto deleteByIds(List<Long> rowids) {
+		int deleteCount = rowids.size();
+		
 		try {
-			for(Long rowId : rowids){
-				this.deleteById(rowId);
+			if(deleteCount == 1){
+				//判断是否被角色关联
+				if(roleDao.isAssociationPermission(rowids.get(0))){
+					return new ReturnDto(false,"授权被角色关联，不能删除");
+				}
+				
+				this.deleteById(rowids.get(0));
+			}else{
+				for(Long rowId : rowids){
+					//判断是否被角色关联
+					if(roleDao.isAssociationPermission(rowId)){
+						deleteCount--;
+						continue;
+					}
+					
+					this.deleteById(rowId);
+				}
 			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 			return new ReturnDto(false,"删除授权失败");
 		}
-		return new ReturnDto(true,"删除授权成功");
+		if(deleteCount > 0){
+			return new ReturnDto(true,"成功删除"+deleteCount+"条授权记录");
+		}else{
+			return new ReturnDto(false,"授权被角色关联，不能删除");
+		}
+		
 	}
 
 }

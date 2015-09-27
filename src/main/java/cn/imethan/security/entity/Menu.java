@@ -7,6 +7,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
@@ -14,6 +16,8 @@ import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.BatchSize;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sun.istack.internal.NotNull;
@@ -60,6 +64,17 @@ public class Menu extends BaseEntity {
 	@Transient
 	private String url2;//ztree中设置url的值默认会进行url跳转，所以更改为url2参数来取值
 	
+//	//这个注解会产生N+1问题，所以设置@BatchSize,所以该注释只用于判断是否有记录存在，即menu是否被role关联
+//	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY,mappedBy="menus")
+//	@BatchSize(size=1)
+//	private Set<Role> roles = new HashSet<Role>();//角色
+	
+//	public Set<Role> getRoles() {
+//		return roles;
+//	}
+//	public void setRoles(Set<Role> roles) {
+//		this.roles = roles;
+//	}
 	public String getUrl2() {
 		url2 = url;
 		return url2;

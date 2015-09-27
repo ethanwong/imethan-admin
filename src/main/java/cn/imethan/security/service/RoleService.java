@@ -50,6 +50,17 @@ public interface RoleService{
 	 * @param id
 	 * @return
 	 */
-	public Role getById(Long id);	
+	public Role getById(Long id);
+	
+	/**
+	 * 角色名称是否已经存在
+	 * @param id
+	 * @param name
+	 * @return
+	 *
+	 * @author Ethan
+	 * @datetime 2015年9月27日 下午2:12:37
+	 */
+	public Boolean isExistsName(String id, String name);	
 
 }

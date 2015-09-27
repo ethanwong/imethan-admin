@@ -74,6 +74,30 @@
 <script type="text/javascript">
 	//页面加载时初始化脚本
 	$(document).ready(function () {
+		
+		//添加校验
+		$("#input-form").validate({
+			rules: {
+			 name:{required:true,rangelength:[3,10],
+			    remote:{
+			           type:"POST",
+			           url:"${root}/security/role/isExistsName",
+			           data:{
+			             	id:function(){return $("#id").val();},
+			        	   name:function(){return $("#name").val();}
+			           } 
+			          } 
+			      }
+			},
+			messages: {
+			 name:{
+				 required:"角色名不能为空！",
+				 rangelength:"角色名位数必须在3到10字符之间！",
+				 remote:"角色名已经存在！"
+				 }
+			}
+		});
+		
 		//加载角色列表
 		reloadRoleList();
 		
@@ -83,6 +107,7 @@
 			$("#name").val("");
 			$("#menuPermission").val("");
 			setResourcePermissionZtree(0);
+			
 		});
 		
 		//保存角色

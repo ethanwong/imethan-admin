@@ -1,7 +1,6 @@
 package cn.imethan.security.web;
 
 import java.util.List;
-import java.util.Set;
 
 import javax.servlet.ServletRequest;
 
@@ -56,15 +55,12 @@ public class RoleController {
 	@ResponseBody
 	@RequestMapping(value = "save", method = { RequestMethod.POST })
 	public ReturnDto save(@ModelAttribute("role") Role role, @RequestParam String menuPermission) {
-		System.out.println("------------role:" + role);
-		System.out.println("------------menuPermission:" + menuPermission);
 		return roleService.saveOrUpdate(role, menuPermission);
 	}
 
 	@ResponseBody
 	@RequestMapping(value = "menupermission/{roleId}", method = { RequestMethod.POST })
 	public List<Menu> menuPermissionForRoleInput(@PathVariable Long roleId) {
-		System.out.println("-------roleId:" + roleId);
 		return menuService.getMenuPermissionForRoleInput(roleId);
 	}
 
@@ -74,6 +70,13 @@ public class RoleController {
 		return roleService.deleteById(id);
 	}
 	
+	@ResponseBody
+	@RequestMapping(value = "/isExistsName", method = { RequestMethod.POST })
+	public Boolean isExistsName(Model model,ServletRequest request) {
+		String id = request.getParameter("id");
+		String name = request.getParameter("name");
+		return !roleService.isExistsName(id,name);
+	}
 	
     @ModelAttribute
     public void getModel(@RequestParam(value = "id", required = false) Long id, ServletRequest request, Model model) throws Exception {

@@ -39,8 +39,12 @@ public class Page<T> {
 		this.pageSize = pageSize;
 	}
 	public Integer getPageCount() {
-		pageCount =  (int) (this.getTotalCount()/this.getPageSize()) + (this.getTotalCount()%this.getPageSize())>1?1:0;;
-		return pageCount;
+		System.out.println("getTotalCount:"+getTotalCount());
+		System.out.println("getPageSize:"+this.getPageSize());
+		System.out.println("getPageSize:"+(this.getTotalCount()/this.getPageSize()));
+		System.out.println("getPageSize:"+((this.getTotalCount()%this.getPageSize())>1?1:0));
+		
+		return (int) ((this.getTotalCount()/this.getPageSize()) + ((this.getTotalCount()%this.getPageSize())>1?1:0));
 	}
 	public void setPageCount(Integer pageCount) {
 		this.pageCount = pageCount;

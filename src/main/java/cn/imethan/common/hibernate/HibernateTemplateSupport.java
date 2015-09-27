@@ -245,16 +245,20 @@ public class HibernateTemplateSupport<T, P extends Serializable> implements Crud
 	// -------------------------------------------------------------------------
 	private Page<T> getPageByCriterions(Page<T> page, boolean isCache, Criterion[] criterions,List<SearchFilter> searchFilters) {
 		Criteria criteria = createCriteria(isCache, criterions);
-
-		criteria.setFirstResult(page.getFirstResult());
-		criteria.setMaxResults(page.getMaxResults());
-		List<T> list = criteria.list();
-		page.setList(list);
+		
+//		page.setTotalCount((Long) criteria.setProjection(Projections.rowCount()).uniqueResult());
+//		criteria.setProjection(null);  
+		
 		if(searchFilters == null || searchFilters.isEmpty()){
 			page.setTotalCount(this.countCriteriaResult(criteria));
 		}else{
 			page.setTotalCount(this.countFiltersResult(searchFilters, isCache));
 		}
+		
+		criteria.setFirstResult(page.getFirstResult());
+		criteria.setMaxResults(page.getMaxResults());
+		List<T> list = criteria.list();
+		page.setList(list);
 		
 		return page;
 	}

@@ -107,7 +107,6 @@ public class PermissionController {
 	@ResponseBody
 	@RequestMapping(value = "/delete/{rowids}", method = { RequestMethod.POST })
 	public ReturnDto delete(Model model, @PathVariable List<Long> rowids, ServletRequest request) {
-		System.out.println("rowids:"+rowids);
 		return permissionService.deleteByIds(rowids);
 	}
 	
