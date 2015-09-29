@@ -33,7 +33,7 @@
       </div><!-- /.login-logo -->
       <div class="login-box-body">
         <p class="login-box-msg">
-        	<sec:authorize access="isRememberMe()">嘿，你记住我了</sec:authorize>
+        	<security:authorize access="isRememberMe()">嘿，你记住我了</security:authorize>
 	        <c:if test="${param.error != null}">
 				Invalid username and password.
 			</c:if>

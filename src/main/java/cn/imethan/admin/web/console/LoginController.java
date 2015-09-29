@@ -18,4 +18,11 @@ public class LoginController {
 	public String login() {
 		return "console/login";
 	}
+	
+	@RequestMapping(value = "/test",method = {RequestMethod.POST,RequestMethod.GET})
+	public String test() {
+		return "console/login";
+	}
+	
+	
 }

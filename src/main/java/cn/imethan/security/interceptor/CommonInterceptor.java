@@ -56,7 +56,6 @@ public class CommonInterceptor implements HandlerInterceptor  {
 			}
 			
 		}
-
 		
 //		for(String path:paths){
 //			System.out.println("------------path:"+path);

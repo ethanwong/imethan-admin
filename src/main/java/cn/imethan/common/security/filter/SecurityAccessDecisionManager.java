@@ -20,6 +20,9 @@ public class SecurityAccessDecisionManager implements AccessDecisionManager {
 
 	@Override
 	public void decide(Authentication authentication, Object object, Collection<ConfigAttribute> configAttributes) throws AccessDeniedException, InsufficientAuthenticationException {
+		
+		System.out.println("---------SecurityAccessDecisionManager--------decide----------------------------");
+		
 		if (configAttributes == null) {
 			return;
 		}

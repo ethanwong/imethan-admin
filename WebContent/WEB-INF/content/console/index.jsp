@@ -23,7 +23,7 @@
               <div class="small-box bg-aqua">
                 <div class="inner">
                   <h3>150</h3>
-                  <p> <sec:authorize access="isRememberMe()">嘿，你记住我了</sec:authorize>
+                  <p> <security:authorize access="isRememberMe()">嘿，你记住我了</security:authorize>
                   </p>
                 </div>
                 <div class="icon">
