@@ -3,7 +3,8 @@ package cn.imethan.security.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +31,7 @@ import cn.imethan.security.service.PermissionService;
 @Transactional(readOnly = true)
 public class PermissionServiceImpl implements PermissionService {
 
-	private Logger logger = Logger.getLogger(PermissionServiceImpl.class);
+	private Logger logger = LogManager.getLogger(PermissionServiceImpl.class);
 
 	@Autowired
 	private PermissionDao permissionDao;

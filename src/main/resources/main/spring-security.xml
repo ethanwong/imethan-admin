@@ -15,8 +15,6 @@
 	
 	<global-method-security secured-annotations="enabled"/>
 	
-	<debug/>
-	
 	<!-- 权限的过滤和控制从这里开始，当自动配置关闭后，需要重新自定义配置过滤器 -->
 	<http entry-point-ref="authenticationEntryPoint" use-expressions="true" auto-config="false" disable-url-rewriting="false">
 		<!-- 没有权限处理过滤 -->

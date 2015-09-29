@@ -47,7 +47,7 @@
 		<property name="hibernateProperties">
 			<value>
 				hibernate.dialect=org.hibernate.dialect.MySQLDialect
-				hibernate.show_sql=true
+				hibernate.show_sql=false
 				hibernate.hbm2ddl.auto=true
 				hibernate.hbm2ddl.auto=update
 				hibernate.use_sql_comments=true

@@ -7,7 +7,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,7 +34,7 @@ import cn.imethan.security.service.RoleService;
 @Transactional(readOnly = true)
 public class RoleServiceImpl implements RoleService {
 	
-	private Logger logger = Logger.getLogger(RoleServiceImpl.class); 
+	private Logger logger = LogManager.getLogger(RoleServiceImpl.class); 
 	private ReturnDto returnDto = new ReturnDto(true,"操作成功");
 	
 	@Autowired

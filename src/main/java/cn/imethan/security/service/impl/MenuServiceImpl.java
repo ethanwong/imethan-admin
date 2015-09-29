@@ -4,7 +4,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,8 @@ import cn.imethan.security.service.MenuService;
 @Transactional(readOnly = true)
 public class MenuServiceImpl implements MenuService {
 	
-	private Logger logger = Logger.getLogger(MenuServiceImpl.class); 
+	private Logger logger = LogManager.getLogger(MenuServiceImpl.class);
+	
 	private ReturnDto returnDto = new ReturnDto(true,"操作成功");
 	
 	@Autowired

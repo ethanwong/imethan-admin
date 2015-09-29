@@ -209,7 +209,7 @@
              <img src="${root}/theme/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
              <span class="hidden-xs">
              	${currentUser.username}
-<%--              	 <sec:authentication property="principal.username" /> --%>
+<!--              	 <sec:authentication property="principal.username" /> -->
              </span>
            </a>
            <ul class="dropdown-menu">

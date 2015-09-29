@@ -40,6 +40,7 @@ dependencies {
     //hibernate begin
     compile 'org.hibernate:hibernate-core:4.3.11.Final'
     compile "org.hibernate:hibernate-validator:5.1.0.Final"
+    compile "org.jboss.logging:jboss-logging:3.2.0.Final"
     //hibernate end
 	
 	//mysql jdbc driver 
@@ -59,16 +60,15 @@ dependencies {
 	//servlet end
 	
     //log begin
-    compile 'log4j:log4j:1.2.16'
-    compile 'org.slf4j:slf4j-api:1.6.1'
-    compile 'org.slf4j:jcl-over-slf4j:1.6.1'
-    compile 'org.slf4j:slf4j-log4j12:1.6.1'
+    compile 'org.apache.logging.log4j:log4j-api:2.4'
+  	compile 'org.apache.logging.log4j:log4j-core:2.4'
+  	compile 'org.apache.logging.log4j:log4j-slf4j-impl:2.4'
+  	compile 'org.apache.logging.log4j:log4j-jcl:2.4'
+  	compile 'org.apache.logging.log4j:log4j-nosql:2.4'
+  	compile 'org.apache.logging.log4j:log4j-web:2.4'
     //log end
     
     //JSON begin
-	//compile 'org.codehaus.jackson:jackson-core-asl:1.9.13'
-	//compile 'org.codehaus.jackson:jackson-mapper-asl:1.9.13'
-	//compile 'org.json:org.json:chargebee-1.0'
 	compile 'com.fasterxml.jackson.core:jackson-core:2.1.0'
 	compile 'com.fasterxml.jackson.core:jackson-databind:2.1.0'
 	compile 'com.fasterxml.jackson.core:jackson-annotations:2.1.0'
@@ -93,7 +93,11 @@ dependencies {
     //quartz begin
     compile 'org.quartz-scheduler:quartz:2.2.1'
     compile 'org.quartz-scheduler:quartz-jobs:2.2.1'
-    //quartz end		
+    //quartz end	
+    
+    //mongodb begin
+    compile 'org.mongodb:mongo-java-driver:2.12.3'	
+    //mongodb end
 
 	
     compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
