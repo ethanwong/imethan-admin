@@ -18,6 +18,8 @@ import cn.imethan.security.entity.User;
  */
 public interface UserService{
 	
+	public void justForTestMethod();
+	
 	/**
 	 * 根据用户名获取
 	 * @param username

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import cn.imethan.admin.repository.cms.ChannelRepository;
 import cn.imethan.common.security.service.UserInfo;
 import cn.imethan.security.service.UserService;
 
@@ -32,6 +33,7 @@ public class IndexControl {
 	@RequestMapping("")
 	public String index(Model model,HttpServletRequest request) {
 		System.out.println("------console----------isRememberMe:"+isRememberMeAuthenticated());
+		userSerivce.justForTestMethod();
 		
 		//获取登录用户信息
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();

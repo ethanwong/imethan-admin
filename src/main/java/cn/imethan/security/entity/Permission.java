@@ -10,7 +10,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import cn.imethan.common.entity.BaseEntity;
+
+import cn.imethan.common.hibernate.BaseEntity;
 
 /**
  * Permission.java

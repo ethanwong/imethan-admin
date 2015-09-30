@@ -22,7 +22,7 @@ import org.hibernate.annotations.BatchSize;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sun.istack.internal.NotNull;
 
-import cn.imethan.common.entity.BaseEntity;
+import cn.imethan.common.hibernate.BaseEntity;
 
 /**
  * Resource.java

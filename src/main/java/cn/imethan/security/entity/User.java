@@ -12,7 +12,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import cn.imethan.common.entity.BaseEntity;
+import cn.imethan.common.hibernate.BaseEntity;
 
 /**
  * User.java

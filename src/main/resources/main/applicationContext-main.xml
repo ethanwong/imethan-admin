@@ -5,6 +5,7 @@
 	<description>导入资源中的applicationContext文件列表</description>
 
 	<import resource="classpath*:main/applicationContext.xml" />
+	<import resource="classpath*:mongodb/applicationContext-mongodb.xml" />
 	<import resource="classpath*:main/spring-security.xml" />
 <!-- 	<import resource="classpath*:quartz/applicationContext-quartz.xml" /> -->
 	

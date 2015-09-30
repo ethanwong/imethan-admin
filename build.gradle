@@ -97,6 +97,13 @@ dependencies {
     
     //mongodb begin
     compile 'org.mongodb:mongo-java-driver:2.12.3'	
+    compile 'org.springframework.data:spring-data-mongodb:1.8.0.RELEASE'
+    //compile 'org.springframework.data:spring-data-mongodb-cross-store:1.8.0.RELEASE'
+    //compile 'com.mysema.querydsl:querydsl-core:3.6.7'
+    compile 'com.mysema.querydsl:querydsl-apt:3.6.7'
+    compile 'com.mysema.querydsl:querydsl-mongodb:3.6.7'
+    //compile 'com.mysema.querydsl:querydsl-jpa:3.6.7'
+    
     //mongodb end
 
 	

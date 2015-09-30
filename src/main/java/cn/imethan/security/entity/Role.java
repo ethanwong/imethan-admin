@@ -14,7 +14,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import cn.imethan.common.entity.BaseEntity;
+import cn.imethan.common.hibernate.BaseEntity;
 
 /**
  * Role.java

@@ -1,10 +1,9 @@
-package cn.imethan.common.entity;
+package cn.imethan.common.mongodb;
 
+import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.MappedSuperclass;
-
-import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
  * BaseEntity.java
@@ -12,13 +11,13 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * @author Ethan Wong
  * @time 2014年3月14日下午8:23:18
  */
-@MappedSuperclass 
-public class BaseEntity extends IdEntity{
+@Document
+public class BaseDocument extends IdDocument implements Serializable{
 	
-	private static final long serialVersionUID = -8052135027431298206L;
+	private static final long serialVersionUID = -1873097870263576532L;
 	
 	private Date createTime = new Date();//创建时间
-	private Date modifyTime;//更新时间
+	private Date modifyTime = new Date();//更新时间
 	
 	public Date getCreateTime() {
 		return createTime;
@@ -31,11 +30,6 @@ public class BaseEntity extends IdEntity{
 	}
 	public void setModifyTime(Date modifyTime) {
 		this.modifyTime = modifyTime;
-	}
-	
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this);
 	}
 	
 }

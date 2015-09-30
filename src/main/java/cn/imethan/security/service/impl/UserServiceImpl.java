@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
-
 import cn.imethan.common.dto.ReturnDto;
 import cn.imethan.common.hibernate.Page;
 import cn.imethan.common.hibernate.SearchFilter;
@@ -41,7 +40,11 @@ public class UserServiceImpl implements UserService {
 	private UserDao userDao;
 	@Autowired
 	private RoleDao roleDao;
-	
+
+	@Override
+	public void justForTestMethod() {
+		System.out.println("------justForTestMethod------------");
+	}	
 
 	@Override
 	public User getByUsername(String username) {
@@ -187,6 +190,7 @@ public class UserServiceImpl implements UserService {
 		}
 		return new ReturnDto(true,"删除成功");
 	}
+
 
 }
 

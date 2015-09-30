@@ -16,7 +16,8 @@
 			expression="org.springframework.web.bind.annotation.ControllerAdvice" />
 	</context:component-scan>
 
-	<context:property-placeholder location="classpath*:/main/jdbc.properties" />
+	<context:property-placeholder location="classpath*:/main/jdbc.properties,classpath*:/mongodb/mongo.properties" />
+	
 
 	<bean id="myDataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">

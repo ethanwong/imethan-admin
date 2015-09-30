@@ -1,7 +1,6 @@
 package cn.imethan.security.dao;
 
 import java.util.List;
-import java.util.Set;
 
 import cn.imethan.common.hibernate.CrudOperations;
 import cn.imethan.security.entity.Menu;
