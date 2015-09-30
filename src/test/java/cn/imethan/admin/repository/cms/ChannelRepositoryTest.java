@@ -1,7 +1,9 @@
 package cn.imethan.admin.repository.cms;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
@@ -11,10 +13,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import cn.imethan.admin.document.cms.Channel;
+import cn.imethan.common.mongodb.SearchFilter;
+import cn.imethan.common.mongodb.SearchFilter.Operator;
 
 /**
  * ChannelRepositoryTest.java
@@ -33,11 +41,17 @@ public class ChannelRepositoryTest {
 	
 	@Test
 	public void testSave(){
-		Channel channel = new Channel();
-		channel.setTitle("第二个栏目"+new Date());;
-		channel.setDescribe("第二个栏目的描述");
-		channel.setCreateTime(new Date());
-		System.out.println(channelRepository.save(channel));
+		int i = 10;
+		while(i>0){
+			Channel channel = new Channel();
+			channel.setTitle("标题"+i);;
+			channel.setDescribe("描述"+i);
+			channel.setCreateTime(new Date());
+			System.out.println(channelRepository.save(channel));
+			
+			i--;
+		}
+
 	}
 	
 	@Test
@@ -50,20 +64,60 @@ public class ChannelRepositoryTest {
 	@Test
 	public void testGetPageByParameters(){
 		Pageable  pageable  = new PageRequest(0,10,Direction.DESC,"createTime");
+		
 		Map<String,Object> parameters = new HashMap<String,Object>();
+		parameters.put(Operator.LIKE.toString()+"_title", "第一");//key:"Operator"_"field",value:values
 		
 		Page<Channel> page = channelRepository.findPageByParameters(parameters, pageable);
 		
-		System.out.println("page:"+page);
+		System.out.println("page:"+page.getContent());
+	}
+	
+	@Test
+	public void testGetPageBySearchFilters(){
+		Pageable  pageable  = new PageRequest(0,10,Direction.DESC,"createTime");
+		
+		// 创建searchFilter
+		List<SearchFilter> filters = new ArrayList<SearchFilter>();
+		SearchFilter filter1 = new SearchFilter("title", Operator.LIKE, "第二");
+		SearchFilter filter2 = new SearchFilter("describe", Operator.LIKE, "第三");
+		filters.add(filter1);
+		filters.add(filter2);
+		
+		Page<Channel> page = channelRepository.findPageBySearchFilters(filters, pageable);
+		
+		System.out.println("page:"+page.getContent());
 	}
 	
 	@Test
 	public void testOther(){
-//		channelRepository.baseTest();
 		String name = channelRepository.getDbName();
 		System.out.println("name:"+name);
+		
+		Pageable  pageable  = new PageRequest(0,10,Direction.DESC,"createTime");
+		String title = "标题1";
+		
+		long count = channelRepository.countByTitle(title);
+		System.out.println("count:"+count);
+		
+		List<Channel> list = channelRepository.findByTitle(title);
+		System.out.println("list:"+list);
+		
+		List<Channel> list1 = channelRepository.findTop3ByTitle(title, pageable);
+		System.out.println("list1:"+list1);
+		
+		List<Channel> list2 = channelRepository.readAllByTitleNotNull();
+		System.out.println("list2:"+list2);
+		
+		MongoTemplate mongoTemplate = (MongoTemplate) channelRepository.getMongoOperations();
+		List<Channel> list3 = mongoTemplate.findAll(channelRepository.getMongoEntityInformation().getJavaType());
+		System.out.println("list3:"+list3);
+		
+		
+		Query query = new Query(Criteria.where("title").is(title));
+		Update update = new Update().set("describe", "随便更新点什么");
+		Channel channel = mongoTemplate.findAndModify(query, update, Channel.class);
+		System.out.println("channel:"+channel);
 	}
 
 }
-
-

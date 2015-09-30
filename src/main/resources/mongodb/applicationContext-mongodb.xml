@@ -35,8 +35,13 @@
 
 	<mongo:repositories base-package="cn.imethan" mongo-template-ref="mongoTemplate"
 	base-class="cn.imethan.common.mongodb.BaseRepositoryImpl" />
+	
+	
+	
 
 	<!-- Use this post processor to translate any MongoExceptions thrown in @Repository annotated classes -->
 	<bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+	<!-- Enabling Spring Data web support in XML -->
+	<bean class="org.springframework.data.web.config.SpringDataWebConfiguration" />
 	
 </beans>

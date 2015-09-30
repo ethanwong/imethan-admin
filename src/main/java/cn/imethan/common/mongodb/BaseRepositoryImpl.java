@@ -1,6 +1,7 @@
 package cn.imethan.common.mongodb;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +31,17 @@ public class BaseRepositoryImpl<T, ID extends Serializable> extends SimpleMongoR
 		this.mongoOperations = mongoOperations;
 		this.metadata = metadata;
 	}
+	
 
+	@Override
+	public MongoOperations getMongoOperations() {
+		return mongoOperations;
+	}
+
+	@Override
+	public MongoEntityInformation<T, ID> getMongoEntityInformation() {
+		return metadata;
+	}
 
 	@Override
 	public Page<T> findPageByParameters(Map<String, Object> parameters, Pageable pageable) {
@@ -41,11 +52,22 @@ public class BaseRepositoryImpl<T, ID extends Serializable> extends SimpleMongoR
 		
 		return new PageImpl<T>(list, pageable, count);
 	}
-
-
-	@Override
-	public void baseTest() {
-		System.out.println("test:"+mongoOperations.findAll(metadata.getJavaType()));
+	
+	public Page<T> findPageBySearchFilter(SearchFilter searchFilter, Pageable pageable){
+		
+		List<SearchFilter> searchFilters = new ArrayList<SearchFilter>();
+		searchFilters.add(searchFilter);
+		
+		return this.findPageBySearchFilters(searchFilters, pageable);
+		
 	}
-
+	public Page<T> findPageBySearchFilters(List<SearchFilter> searchFilters, Pageable pageable){
+		
+		Query query = QueryUtils.dynamicGenerateQuery(searchFilters);
+		
+		List<T> list =  mongoOperations.find(query.with(pageable),metadata.getJavaType());
+		long count = mongoOperations.count(query, metadata.getJavaType());
+		
+		return new PageImpl<T>(list, pageable, count);
+	}
 }
