@@ -32,6 +32,21 @@ dependencies {
 	compile 'org.springframework.security:spring-security-config:4.0.2.RELEASE'
 	compile 'org.springframework.security:spring-security-taglibs:3.2.8.RELEASE'
     //Spring security end
+    
+    //Spring data jpa begin
+    compile 'org.springframework.data:spring-data-jpa:1.9.0.RELEASE'
+    //compile 'com.mysema.querydsl:querydsl-jpa:3.6.7'
+    //Spring data jpa end
+    
+    //Spring data mongodb begin
+    compile 'org.springframework.data:spring-data-mongodb:1.8.0.RELEASE'
+    compile 'com.mysema.querydsl:querydsl-apt:3.6.7'
+    compile 'com.mysema.querydsl:querydsl-mongodb:3.6.7'
+    //Spring data mongodb end
+    
+    //mongodb driver begin
+    compile 'org.mongodb:mongo-java-driver:2.12.3'	
+    //mongodb driver end
      
     compile 'org.aspectj:aspectjrt:1.6.11'
     compile 'org.aspectj:aspectjweaver:1.6.11'
@@ -40,6 +55,9 @@ dependencies {
     //hibernate begin
     compile 'org.hibernate:hibernate-core:4.3.11.Final'
     compile "org.hibernate:hibernate-validator:5.1.0.Final"
+    //compile 'org.hibernate:ejb3-persistence:1.0.2.GA'
+    compile 'org.hibernate:hibernate-entitymanager:4.3.11.Final'
+
     compile "org.jboss.logging:jboss-logging:3.2.0.Final"
     //hibernate end
 	
@@ -59,22 +77,20 @@ dependencies {
 	compile 'javax.servlet:servlet-api:2.5'
 	compile 'javax.servlet.jsp:jsp-api:2.0'
 	*/
-	
 	compile 'javax.servlet:javax.servlet-api:3.1.0'
 	compile 'javax.servlet.jsp:jsp-api:2.0'
 	compile 'javax.servlet:jstl:1.2'
 	compile 'taglibs:standard:1.1.2'
-	
 	//servlet end
 	
-    //log begin
+    //log4j2 begin
     compile 'org.apache.logging.log4j:log4j-api:2.4'
   	compile 'org.apache.logging.log4j:log4j-core:2.4'
   	compile 'org.apache.logging.log4j:log4j-slf4j-impl:2.4'
   	compile 'org.apache.logging.log4j:log4j-jcl:2.4'
   	compile 'org.apache.logging.log4j:log4j-nosql:2.4'
   	compile 'org.apache.logging.log4j:log4j-web:2.4'
-    //log end
+    //log4j2 end
     
     //JSON begin
 	compile 'com.fasterxml.jackson.core:jackson-core:2.1.0'
@@ -102,18 +118,6 @@ dependencies {
     compile 'org.quartz-scheduler:quartz:2.2.1'
     compile 'org.quartz-scheduler:quartz-jobs:2.2.1'
     //quartz end	
-    
-    //mongodb begin
-    compile 'org.mongodb:mongo-java-driver:2.12.3'	
-    compile 'org.springframework.data:spring-data-mongodb:1.8.0.RELEASE'
-    //compile 'org.springframework.data:spring-data-mongodb-cross-store:1.8.0.RELEASE'
-    //compile 'com.mysema.querydsl:querydsl-core:3.6.7'
-    compile 'com.mysema.querydsl:querydsl-apt:3.6.7'
-    compile 'com.mysema.querydsl:querydsl-mongodb:3.6.7'
-    //compile 'com.mysema.querydsl:querydsl-jpa:3.6.7'
-    
-    //mongodb end
-
 	
     compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
     testCompile group: 'junit', name: 'junit', version: '4.+'

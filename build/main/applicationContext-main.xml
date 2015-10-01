@@ -6,6 +6,7 @@
 
 	<import resource="classpath*:main/applicationContext.xml" />
 	<import resource="classpath*:mongodb/applicationContext-mongodb.xml" />
+	<import resource="classpath*:jpa/applicationContext-jpa.xml" />
 	<import resource="classpath*:main/spring-security.xml" />
 <!-- 	<import resource="classpath*:quartz/applicationContext-quartz.xml" /> -->
 	
