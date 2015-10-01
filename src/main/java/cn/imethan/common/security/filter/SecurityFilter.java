@@ -11,6 +11,7 @@ import javax.servlet.ServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.SecurityMetadataSource;
 import org.springframework.security.access.intercept.AbstractSecurityInterceptor;
 import org.springframework.security.access.intercept.InterceptorStatusToken;
@@ -43,7 +44,9 @@ public class SecurityFilter extends AbstractSecurityInterceptor implements Filte
 		InterceptorStatusToken token = super.beforeInvocation(filterInvocation);
 		try {
 			filterInvocation.getChain().doFilter(filterInvocation.getRequest(), filterInvocation.getResponse());
-        } finally {
+        } catch(AccessDeniedException e){
+        	throw e;
+        }finally {
             super.afterInvocation(token, null);
         }
 	}

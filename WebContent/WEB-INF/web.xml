@@ -8,24 +8,30 @@
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
 	
-	<!-- log4j2 begin -->
-	<listener>
-        <listener-class>org.apache.logging.log4j.web.Log4jServletContextListener</listener-class>
-    </listener>
-    <filter>
-        <filter-name>log4jServletFilter</filter-name>
-        <filter-class>org.apache.logging.log4j.web.Log4jServletFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>log4jServletFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-        <dispatcher>REQUEST</dispatcher>
-        <dispatcher>FORWARD</dispatcher>
-        <dispatcher>INCLUDE</dispatcher>
-        <dispatcher>ERROR</dispatcher>
-    </filter-mapping>
-
-    <!-- log4j2 end -->
+	<!-- log4j2 web3.0 begin -->
+<!-- 	<context-param> -->
+<!--         <param-name>isLog4jAutoInitializationDisabled</param-name> -->
+<!--         <param-value>true</param-value> -->
+<!--     </context-param> -->
+    <!-- log4j2 web3.0 end -->
+    
+	<!-- log4j2 web2.0 begin -->
+<!-- 	<listener> -->
+<!--         <listener-class>org.apache.logging.log4j.web.Log4jServletContextListener</listener-class> -->
+<!--     </listener> -->
+<!--     <filter> -->
+<!--         <filter-name>log4jServletFilter</filter-name> -->
+<!--         <filter-class>org.apache.logging.log4j.web.Log4jServletFilter</filter-class> -->
+<!--     </filter> -->
+<!--     <filter-mapping> -->
+<!--         <filter-name>log4jServletFilter</filter-name> -->
+<!--         <url-pattern>/*</url-pattern> -->
+<!--         <dispatcher>REQUEST</dispatcher> -->
+<!--         <dispatcher>FORWARD</dispatcher> -->
+<!--         <dispatcher>INCLUDE</dispatcher> -->
+<!--         <dispatcher>ERROR</dispatcher> -->
+<!--     </filter-mapping> -->
+    <!-- log4j2 web2.0 end-->
     
     <!-- Spring listener -->
 	<context-param>
