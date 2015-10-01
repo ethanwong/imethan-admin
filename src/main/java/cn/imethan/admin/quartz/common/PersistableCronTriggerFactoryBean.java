@@ -1,6 +1,5 @@
 package cn.imethan.admin.quartz.common;
 import org.springframework.scheduling.quartz.CronTriggerFactoryBean;
-import org.springframework.scheduling.quartz.JobDetailAwareTrigger;
 
 /**
  * Needed to set Quartz useProperties=true when using Spring classes, because
@@ -15,6 +14,6 @@ public class PersistableCronTriggerFactoryBean extends CronTriggerFactoryBean {
 	public void afterPropertiesSet() {
 		super.afterPropertiesSet();
 		// Remove the JobDetail element
-		getJobDataMap().remove(JobDetailAwareTrigger.JOB_DETAIL_KEY);
+//		getJobDataMap().remove(JobDetailAwareTrigger.JOB_DETAIL_KEY);
 	}
 }

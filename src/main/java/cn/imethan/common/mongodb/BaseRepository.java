@@ -23,7 +23,7 @@ public interface BaseRepository<T, ID extends Serializable> extends MongoReposit
 	
 	
 	/**
-	 * Get MongoOperations{@link MongoOperations}.
+	 * Get {@link MongoOperations}.
 	 * @return
 	 *
 	 * @author Ethan Wong
@@ -32,7 +32,7 @@ public interface BaseRepository<T, ID extends Serializable> extends MongoReposit
 	public MongoOperations getMongoOperations();
 	
 	/**
-	 * Get MongoEntityInformation{@link MongoEntityInformation}.
+	 * Get {@link MongoEntityInformation}.
 	 * @return
 	 *
 	 * @author Ethan Wong
@@ -53,7 +53,7 @@ public interface BaseRepository<T, ID extends Serializable> extends MongoReposit
 	Page<T> findPageByParameters(Map<String, Object> parameters, Pageable pageable);
 	
 	/**
-	 * Find page by SearchFilter{@link SearchFilter}.
+	 * Find page by {@link SearchFilter}.
 	 * 
 	 * @param searchFilter
 	 * @param pageable
@@ -65,7 +65,7 @@ public interface BaseRepository<T, ID extends Serializable> extends MongoReposit
 	Page<T> findPageBySearchFilter(SearchFilter searchFilter, Pageable pageable);
 	
 	/**
-	 * Find page by SearchFilter{@link SearchFilter} list.
+	 * Find page by {@link SearchFilter} list.
 	 * 
 	 * @param searchFilters
 	 * @param pageable

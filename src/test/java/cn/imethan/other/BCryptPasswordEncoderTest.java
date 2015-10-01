@@ -1,4 +1,4 @@
-package cn.imethan.admin.test;
+package cn.imethan.other;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
