@@ -1,4 +1,6 @@
 package cn.imethan.admin.quartz.common;
+import java.text.ParseException;
+
 import org.springframework.scheduling.quartz.CronTriggerFactoryBean;
 
 /**
@@ -12,7 +14,12 @@ public class PersistableCronTriggerFactoryBean extends CronTriggerFactoryBean {
 	
 	@Override
 	public void afterPropertiesSet() {
-		super.afterPropertiesSet();
+		try {
+			super.afterPropertiesSet();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// Remove the JobDetail element
 //		getJobDataMap().remove(JobDetailAwareTrigger.JOB_DETAIL_KEY);
 	}
