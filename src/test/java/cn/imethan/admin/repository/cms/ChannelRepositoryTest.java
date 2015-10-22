@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.mapreduce.MapReduceResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -23,11 +24,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import cn.imethan.admin.document.cms.Channel;
 import cn.imethan.common.mongodb.SearchFilter;
 import cn.imethan.common.mongodb.SearchFilter.Operator;
+import cn.imethan.dto.ValueObject;
 
 /**
  * ChannelRepositoryTest.java
  *
- * @author suncco
+ * @author Ethan Wong
  * @time 2014年3月12日下午2:39:27
  */
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -90,7 +92,7 @@ public class ChannelRepositoryTest {
 	}
 	
 	@Test
-	public void testOther(){
+	public void testQuery(){
 		String name = channelRepository.getDbName();
 		System.out.println("name:"+name);
 		
@@ -119,5 +121,25 @@ public class ChannelRepositoryTest {
 		Channel channel = mongoTemplate.findAndModify(query, update, Channel.class);
 		System.out.println("channel:"+channel);
 	}
+	
+	@Test
+	public void testMapReduce(){
+		MongoTemplate mongoTemplate = (MongoTemplate) channelRepository.getMongoOperations();
+		
+		String map = "function() {"+
+            "emit(this.cust_id, this.price);"+
+        "};";
+		
+		
+		String reduce = "function(keyCustId, valuesPrices) {"+
+            "return Array.sum(valuesPrices);"+
+        "};";
+		
+//		MapReduceResults<ValueObject> results = mongoTemplate.mapReduce("jmr1", "classpath:mongodb/map.js", "classpath:mongodb/reduce.js", ValueObject.class);
+		MapReduceResults<ValueObject> results = mongoTemplate.mapReduce("jrm2", map, reduce, ValueObject.class);
+		for (ValueObject valueObject : results) {
+		  System.out.println(valueObject);
+		}
+	} 
 
 }

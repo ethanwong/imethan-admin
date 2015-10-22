@@ -78,7 +78,7 @@ dependencies {
 	compile 'javax.servlet.jsp:jsp-api:2.0'
 	*/
 	compile 'javax.servlet:javax.servlet-api:3.1.0'
-	compile 'javax.servlet.jsp:jsp-api:2.0'
+	compile 'javax.servlet.jsp:jsp-api:2.2'
 	compile 'javax.servlet:jstl:1.2'
 	compile 'taglibs:standard:1.1.2'
 	//servlet end
@@ -99,7 +99,7 @@ dependencies {
 	//JSON end
     
     //sitemesh begin
-    compile 'opensymphony:sitemesh:2.4.1'
+    compile 'opensymphony:sitemesh:2.4.2'
     //sitemesh end
     
     compile 'com.google.guava:guava:16.0.1'

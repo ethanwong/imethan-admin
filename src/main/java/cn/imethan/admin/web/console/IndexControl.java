@@ -1,6 +1,5 @@
 package cn.imethan.admin.web.console;
 
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import cn.imethan.admin.repository.cms.ChannelRepository;
 import cn.imethan.common.security.service.UserInfo;
 import cn.imethan.security.service.UserService;
 
