@@ -91,6 +91,8 @@ dependencies {
   	compile 'org.apache.logging.log4j:log4j-nosql:2.4'
   	compile 'org.apache.logging.log4j:log4j-web:2.4'
     //log4j2 end
+
+	compile 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
     
     //JSON begin
 	compile 'com.fasterxml.jackson.core:jackson-core:2.1.0'

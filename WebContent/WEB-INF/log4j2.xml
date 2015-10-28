@@ -49,6 +49,10 @@
       <AppenderRef ref="RollingFileError"/>
     </Root>
     
+    <Logger name="log4jdbc.log4j2" level="debug" additivity="false">
+ 	 	<AppenderRef ref="Console"/>
+	</Logger>
+    
     <Logger name="org.hibernate" level="debug" additivity="false">
     	<AppenderRef ref="Console"/>
     </Logger>
