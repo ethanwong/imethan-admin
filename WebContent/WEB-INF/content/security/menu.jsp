@@ -22,12 +22,10 @@
 						<span id="leftshowmessage"></span>   
 					</div>
 					<div class="box-body">
-						<div class="btn-group">
 							<a id="addRootMenu" class="btn btn-primary  btn-sm btn-flat">增加一级</a>
 			            	<a id="addSecondMenu" class="btn btn-info  btn-sm btn-flat">增加二级</a>
 			            	<a id="modifyMenu" class="btn btn-default  btn-sm btn-flat">修改</a>
 			            	<a id="deleteMenu" class="btn btn-danger  btn-sm btn-flat">删除</a>
-						</div>
 						<div id="menu-tree" class="ztree"></div>
 					</div>
 					<div class="box-footer clearfix"></div>
@@ -40,12 +38,10 @@
                 	 <span id="rightshowmessage"></span>    
                 </div>
                 <div class="box-body">
-                	<div class="btn-group">
 		                <a id="quickAddPermissionPreview" class="btn btn-success margin-bottom btn-sm btn-flat">快捷授权</a>
 		            	<a id="addPermission" class="btn btn-info margin-bottom btn-sm btn-flat">添加授权</a>
 		            	<a id="modifyPermission" class="btn btn-default margin-bottom btn-sm btn-flat">修改</a>
 		            	<a id="deletePermission" class="btn btn-danger margin-bottom btn-sm btn-flat">删除</a>
-                	</div>
                 	<div class="box-tools pull-right">
 	                    <div class="has-feedback">
 	                      <input type="text" class="form-control input-sm" placeholder="Search permission">
@@ -127,7 +123,9 @@
 		//ztree参数设置
 		var setting = {
 				view: {
-					showLine: true
+					dblClickExpand: false,
+					showLine: true,
+					addDiyDom: nodeOperation
 				},
 				data: {
 					key: {
@@ -142,6 +140,11 @@
 				}
 		};
 		
+		function nodeOperation(treeId, treeNode) {
+			var objectStr = $("#" + treeNode.tId + "_a");
+// 			objectStr.after("imethan");
+		}
+		
 		//初始化ztree
 		function initZtree(){
 			$.ajax({
@@ -149,18 +152,13 @@
 				type:"POST",
 				success:function(msg){
 					var zNodes = msg;
-					$.fn.zTree.init($("#menu-tree"), setting, eval("(" + zNodes + ")"));
+					$.fn.zTree.init($("#menu-tree"), setting, eval("(" + zNodes + ")")).expandAll(true);
 				}
 			});
 		};
 		
 		//点击菜单树节点事件
 		function clickNode(event, treeId, treeNode){
-// 			console.log("event:"+event);
-// 			console.log("treeId:"+treeId);
-// 			console.log("treeNode:"+treeNode);
-			console.log("treeNode name:"+treeNode.name);
-			console.log("treeNode id:"+treeNode.id);
 			
 			$("#jqGrid").jqGrid('setGridParam', {
 				url : '${root}/security/permission/json/'+treeNode.id+'/'+treeNode.root,
@@ -191,7 +189,10 @@
 				autoheight : true,
 				rownumbers : false,
 	 			viewrecords: true,
-	 			multiselect : true
+	 			multiselect : true,
+	 			loadComplete : function() {
+					
+	 			}
 	        }).closest(".ui-jqgrid-bdiv").css({ 'overflow-x' : 'hidden' });
 		}
 		

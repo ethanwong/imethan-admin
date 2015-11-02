@@ -23,7 +23,7 @@
 						<span id="leftshowmessage"></span>
 						</div>
 						<div class="box-body no-padding">
-							<div class="btn-group" style="padding: 10px;">
+							<div style="padding: 10px;">
 								<a id="addRole" class="btn btn-primary btn-sm btn-flat">增加</a>
 				            	<a id="deleteRole" class="btn btn-danger btn-sm btn-flat">删除</a>
 							</div>
@@ -261,7 +261,7 @@
 			dateType:"json",
 			success:function(data){
 				var zNodes = eval("(" + data + ")");
-				var zTree = $.fn.zTree.init($("#role-menu-tree"), setting, eval(zNodes));
+				var zTree = $.fn.zTree.init($("#role-menu-tree"), setting, eval(zNodes)).expandAll(true);;
 				
 				//设置已经选中节点表单隐藏域信息
 				var checkedNodes = zTree.getCheckedNodes(true);

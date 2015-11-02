@@ -7,17 +7,12 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
-import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Size;
-
-import org.hibernate.annotations.BatchSize;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sun.istack.internal.NotNull;
@@ -53,11 +48,13 @@ public class Menu extends BaseEntity {
 	@Size(min=1,message="intro must not by null")
 	private String intro;//描述
 	
+	private int orderNo = 1;//排序号
+	
 	private boolean isRoot;//是否是根节点
 	private String ico = "";//图标
 	
 	@Transient
-	private boolean open = true;//节点是否打开
+	private boolean open = false;//节点是否打开
 	@Transient
 	private String nodeType = "menu";//Ztree节点类型，menu和permission,在角色授权编辑功能使用到,默认是menu类型
 	@Transient
@@ -156,7 +153,7 @@ public class Menu extends BaseEntity {
 	@OrderBy("id")
 	private Set<Menu> childrens = new HashSet<Menu>();//子级
 	
-	@OneToMany(cascade = CascadeType.REFRESH,fetch = FetchType.EAGER,mappedBy="menu")
+	@OneToMany(cascade = CascadeType.REFRESH,fetch = FetchType.LAZY,mappedBy="menu")
 	@OrderBy("id")
 	private Set<Permission> permissions = new HashSet<Permission>();//授权
 	
@@ -209,6 +206,14 @@ public class Menu extends BaseEntity {
 	}
 	public void setRoot(boolean isRoot) {
 		this.isRoot = isRoot;
+	}
+
+	public int getOrderNo() {
+		return orderNo;
+	}
+
+	public void setOrderNo(int orderNo) {
+		this.orderNo = orderNo;
 	}
 
 }

@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.imethan.common.dto.ReturnDto;
-import cn.imethan.common.utils.JsonUtil;
 import cn.imethan.security.entity.Menu;
 import cn.imethan.security.service.MenuService;
 

@@ -108,7 +108,7 @@
   |               | sidebar-mini                            |
   |---------------------------------------------------------|
   -->
-<body class="hold-transition skin-blue-light fixed">
+<body class="hold-transition skin-blue-light sidebar-mini">
     <div class="wrapper">
 		<%@ include file="/WEB-INF/content/layout/header.jsp"%>
 		<%@ include file="/WEB-INF/content/layout/menu.jsp"%>

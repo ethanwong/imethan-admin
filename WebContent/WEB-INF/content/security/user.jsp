@@ -19,7 +19,6 @@
 						<span id="showmessage"></span>   
 				</div>
                 <div class="box-body">
-                	<div class="btn-group">
                 		<security:authorize ifAnyGranted="添加用户">
                 			<a id="inputUser" class="btn btn-primary btn-flat btn-sm margin-bottom">增加</a>
                 		</security:authorize>
@@ -29,7 +28,6 @@
 						<security:authorize ifAnyGranted="删除用户">
 							<a id="deleteUser" class="btn btn-danger btn-flat btn-sm margin-bottom">删除</a>
 						</security:authorize>
-					</div>
 					<div class="box-tools pull-right">
 	                    <div class="has-feedback">
 	                      <input type="text" class="form-control input-sm" placeholder="Search user">

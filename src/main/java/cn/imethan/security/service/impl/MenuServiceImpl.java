@@ -1,19 +1,22 @@
 package cn.imethan.security.service.impl;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import cn.imethan.common.dto.ReturnDto;
-import cn.imethan.common.hibernate.SearchFilter;
 import cn.imethan.common.security.filter.InvocationSecurityMetadataSource;
 import cn.imethan.security.dao.MenuDao;
 import cn.imethan.security.dao.PermissionDao;
@@ -22,6 +25,7 @@ import cn.imethan.security.entity.Menu;
 import cn.imethan.security.entity.Permission;
 import cn.imethan.security.entity.Role;
 import cn.imethan.security.service.MenuService;
+import cn.imethan.security.utils.comparator.MenuComparator;
 
 /**
  * MenuServiceImpl.java
@@ -94,13 +98,15 @@ public class MenuServiceImpl implements MenuService {
 	@Override
 	public List<Menu> getRootMenu() {
 		
-		SearchFilter searchFilter = new SearchFilter("EQB_isRoot","true");
-		List<Menu> list = menuDao.getByFilterAndOrder(searchFilter,Order.asc("id"), false);
+//		SearchFilter searchFilter = new SearchFilter("EQB_isRoot","true");
+//		List<Menu> list = menuDao.getByFilterAndOrder(searchFilter,Order.desc("id").asc("orderNo"), false);
 		
-		Set<Menu> set = new HashSet<Menu>(); 
-		set.addAll(list);//给set填充     
-		list.clear();
-		list.addAll(set);
+		List<Menu> list = menuDao.getRootMenu();
+		
+//		Set<Menu> set = new HashSet<Menu>(); 
+//		set.addAll(list);//给set填充     
+//		list.clear();
+//		list.addAll(set);
 		
 		return list;
 	}
@@ -136,7 +142,8 @@ public class MenuServiceImpl implements MenuService {
 				
 				Set<Permission> permissions = children.getPermissions();//子级节点的授权信息
 				if(children.getChildrens() ==null || children.getChildrens().isEmpty()){
-					Set<Menu> menuChildrensTemp = new HashSet<Menu>();
+					Set<Menu> menuChildrensTemp = new LinkedHashSet<Menu>();
+
 					
 					for(Permission permission : permissions){
 						Menu menuChildrenTemp = new Menu();
@@ -152,6 +159,15 @@ public class MenuServiceImpl implements MenuService {
 						}
 						menuChildrensTemp.add(menuChildrenTemp);
 					}
+					
+//					// 对授权进行排序,保证展示出来顺序一致.
+//					MenuComparator comparator = new MenuComparator();
+//					List<Menu> listTemp = new ArrayList<Menu>();
+//					listTemp.addAll(menuChildrensTemp);
+//			        Collections.sort(listTemp, comparator);
+//			        menuChildrensTemp.clear();
+//			        menuChildrensTemp.addAll(listTemp);
+			        
 					children.setChildrens(menuChildrensTemp);
 				}
 			}
