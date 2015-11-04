@@ -23,8 +23,10 @@
               <div class="small-box bg-aqua">
                 <div class="inner">
                   <h3>150</h3>
-                  <p> <security:authorize access="isRememberMe()">嘿，你记住我了</security:authorize>
-                  </p>
+                  <p> <security:authorize access="isRememberMe()">嘿，你记住我了</security:authorize></p>
+                  <p>Language : <a href="?language=en_US">English</a>|<a href="?language=zh_CN">Chinese</a></p>
+                  welcome.springmvc : <spring:message code="welcome.springmvc" text="default text" />
+                  Current Locale : ${pageContext.response.locale}
                 </div>
                 <div class="icon">
                   <i class="ion ion-bag"></i>
