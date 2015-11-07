@@ -85,7 +85,7 @@ public interface UserService{
 	 * @author Ethan
 	 * @datetime 2015年9月27日 下午5:09:48
 	 */
-	public Set<Menu> getUserRootMenu(Set<Role> roles);
+	public Set<Menu> getUserMenu(Set<Role> roles);
 	
 	/**
 	 * 根据id列表删除

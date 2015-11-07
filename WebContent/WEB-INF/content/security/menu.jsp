@@ -22,10 +22,10 @@
 						<span id="leftshowmessage"></span>   
 					</div>
 					<div class="box-body">
-							<a id="addRootMenu" class="btn btn-primary  btn-sm btn-flat">增加一级</a>
-			            	<a id="addSecondMenu" class="btn btn-info  btn-sm btn-flat">增加二级</a>
-			            	<a id="modifyMenu" class="btn btn-default  btn-sm btn-flat">修改</a>
-			            	<a id="deleteMenu" class="btn btn-danger  btn-sm btn-flat">删除</a>
+							<a id="addRootMenu" class="btn btn-primary btn-flat">增加一级</a>
+			            	<a id="addSecondMenu" class="btn btn-info btn-flat">增加二级</a>
+			            	<a id="modifyMenu" class="btn btn-default btn-flat">修改</a>
+			            	<a id="deleteMenu" class="btn btn-danger btn-flat">删除</a>
 						<div id="menu-tree" class="ztree"></div>
 					</div>
 					<div class="box-footer clearfix"></div>
@@ -38,10 +38,10 @@
                 	 <span id="rightshowmessage"></span>    
                 </div>
                 <div class="box-body">
-		                <a id="quickAddPermissionPreview" class="btn btn-success margin-bottom btn-sm btn-flat">快捷授权</a>
-		            	<a id="addPermission" class="btn btn-info margin-bottom btn-sm btn-flat">添加授权</a>
-		            	<a id="modifyPermission" class="btn btn-default margin-bottom btn-sm btn-flat">修改</a>
-		            	<a id="deletePermission" class="btn btn-danger margin-bottom btn-sm btn-flat">删除</a>
+		                <a id="quickAddPermissionPreview" class="btn btn-success margin-bottom  btn-flat">快捷授权</a>
+		            	<a id="addPermission" class="btn btn-info margin-bottom  btn-flat">添加授权</a>
+		            	<a id="modifyPermission" class="btn btn-default margin-bottom  btn-flat">修改</a>
+		            	<a id="deletePermission" class="btn btn-danger margin-bottom  btn-flat">删除</a>
                 	<div class="box-tools pull-right">
 	                    <div class="has-feedback">
 	                      <input type="text" class="form-control input-sm" placeholder="Search permission">
@@ -79,7 +79,6 @@
 						<input type="hidden" id="menu-isRoot" name="root" value="true">
 						
 						<div id="menu-input-form-content"></div>
-						
 					</form>
 				</div>
 				<div class="modal-footer">
@@ -90,6 +89,7 @@
 		</div>
 	</div>
 	<!-- 添加菜单modal结束 -->
+	
 	<!-- 添加授权modal开始 -->
 	<div class="modal fade" id="permission-input-modal">
 		<div class="modal-dialog">
@@ -142,7 +142,7 @@
 		
 		function nodeOperation(treeId, treeNode) {
 			var objectStr = $("#" + treeNode.tId + "_a");
-// 			objectStr.after("imethan");
+// 			objectStr.after("排序:"+treeNode.orderNo);
 		}
 		
 		//初始化ztree
@@ -240,16 +240,22 @@
 							"<input type='text' class='form-control required' id='menu-module' placeholder='Enter module' name='module' >"+
 						"</div>"+
 						"<div class='form-group'>"+
+							"<label for='exampleInputTitle'>OrderNo</label>"+
+							"<input type='text' class='form-control required' id='menu-orderNo' placeholder='Enter orderNo' name='orderNo' >"+
+						"</div>"+
+						"<div class='form-group'>"+
 							"<label for='exampleInputTitle'>Url</label>"+
 							"<input type='text' class='form-control required' id='menu-url' placeholder='Enter url' name='url' >"+
 						"</div>"+
 						"<div class='form-group'>"+
 							"<label for='exampleInputDescribe'>Intro</label>"+
-							"<textarea class='form-control required' rows='3' id='menu-intro' placeholder='Enter intro' name='intro' ></textarea>"+
+							"<textarea class='form-control required' rows='2' id='menu-intro' placeholder='Enter intro' name='intro' ></textarea>"+
 						"</div>";
 			
 			//添加一级菜单
 			$("#addRootMenu").click(function() {
+				
+				$("#menu-id").val("");
 				$('#menu-input-modal').modal();
 				//填充表单内容
 				$("#menu-input-form-content").html(menuInputFormContent);
@@ -271,6 +277,7 @@
 					$('#menu-input-modal').modal();
 					//填充表单内容
 					$("#menu-input-form-content").html(menuInputFormContent);
+					$("#menu-id").val("");
 					$("#menu-isRoot").val("false");
 					$("#menu-parentId").val(node.id);
 				}
@@ -289,6 +296,7 @@
 					$("#menu-id").val(node.id);
 					$("#menu-name").val(node.name);
 					$("#menu-module").val(node.module);
+					$("#menu-orderNo").val(node.orderNo);
 					$("#menu-url").val(node.url2);
 					$("#menu-intro").val(node.intro);
 					$("#menu-isRoot").val(node.root);
@@ -326,13 +334,14 @@
 					var id = $("#menu-id").val();
 					var name = $("#menu-name").val();
 					var module = $("#menu-module").val();
+					var orderNo = $("#menu-orderNo").val();
 					var url = $("#menu-url").val();
 					var intro = $("#menu-intro").val();
 					var root = $("#menu-isRoot").val();
 					var parentId = $("#menu-parentId").val();
 					
 					$.ajax({
-						url:"${root}/security/menu/save?name="+name+"&module="+module+"&url="+url+"&intro="+intro+"&root="+root+"&id="+id+"&parentId="+parentId,
+						url:"${root}/security/menu/save?name="+name+"&module="+module+"&url="+url+"&intro="+intro+"&root="+root+"&id="+id+"&parentId="+parentId+"&orderNo="+orderNo,
 						type:"POST",
 						dateType:"json",
 						success:function(msg){

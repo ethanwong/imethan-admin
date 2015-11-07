@@ -37,8 +37,8 @@ public class UserLoginService implements UserDetailsService {
 			throw new UsernameNotFoundException("username "+ username + "not exists");
 		}
 		Set<GrantedAuthority> authorities = obtainGrantedAuthorities(user);
-		boolean enabled = true;
-		boolean accountNonExpired = true;
+		boolean enabled = true;//账号是否启动
+		boolean accountNonExpired = true;//是否没有过期
 		boolean credentialsNonExpired = true;
 		boolean accountNonLocked = true;
 		UserInfo userDetails = new UserInfo( user.getUsername(), 
@@ -51,8 +51,9 @@ public class UserLoginService implements UserDetailsService {
 		userDetails.setUsername(username);
 		userDetails.setPassword(user.getPassword());
 		userDetails.setUserId(user.getId());
-		userDetails.setRoles(user.getRoles());
-
+		userDetails.setRolename(user.getRoleName());
+		userDetails.setRoleId(user.getRoleId());
+		userDetails.setCreateDate(user.getCreateTime());
 		return userDetails;
 	}
 

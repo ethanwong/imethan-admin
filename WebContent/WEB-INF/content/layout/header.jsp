@@ -2,7 +2,8 @@
 <%@ include file="/WEB-INF/content/base/taglibs.jsp"%>
 <header class="main-header">
    <!-- Logo -->
-   <a href="index2.html" class="logo">
+   <a href="${root}/console" class="logo">
+   		
      <!-- mini logo for sidebar mini 50x50 pixels -->
      <span class="logo-mini"><b>I</b>EA</span>
      <!-- logo for regular state and mobile devices -->
@@ -206,7 +207,7 @@
          <!-- User Account: style can be found in dropdown.less -->
          <li class="dropdown user user-menu">
            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-             <img src="${root}/theme/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
+             <img src="${root}/theme/images/e-rgb(76, 142, 250).png" class="user-image" alt="User Image">
              <span class="hidden-xs">
              	${currentUser.username}
 <!--              	 <sec:authentication property="principal.username" /> -->
@@ -215,10 +216,10 @@
            <ul class="dropdown-menu">
              <!-- User image -->
              <li class="user-header">
-               <img src="${root}/theme/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+               <img src="${root}/theme/images/e-rgb(76, 142, 250).png" class="img-circle" alt="User Image">
                <p>
-                 Alexander Pierce - Web Developer
-                 <small>Member since Nov. 2012</small>
+                 ${currentUser.rolename}
+                 <small>Member since  ${currentUser.createDate}</small>
                </p>
              </li>
              <!-- Menu Body -->
@@ -236,10 +237,10 @@
              <!-- Menu Footer-->
              <li class="user-footer">
                <div class="pull-left">
-                 <a href="#" class="btn btn-default btn-flat" >Profile</a>
+                 <a href="#" class="btn btn-default btn-flat" >个人信息</a>
                </div>
                <div class="pull-right">
-                 <a href="${root}/logout" class="btn btn-default btn-flat" id="logout">Sign out</a>
+                 <a href="${root}/logout" class="btn btn-default btn-flat" id="logout">注销</a>
                </div>
              </li>
            </ul>

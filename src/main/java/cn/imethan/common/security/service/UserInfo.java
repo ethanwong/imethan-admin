@@ -1,13 +1,10 @@
 package cn.imethan.common.security.service;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Date;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
-
-import cn.imethan.security.entity.Role;
 
 /**
  * UserInfo.java
@@ -22,7 +19,9 @@ public class UserInfo extends User {
 	private Long userId;
 	private String username;
 	private String password;
-	private Set<Role> roles = new HashSet<Role>();//角色
+	private Long roleId;
+	private String rolename;
+	private Date createDate;
 
 	public UserInfo(String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
 		super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
@@ -52,12 +51,28 @@ public class UserInfo extends User {
 		this.userId = userId;
 	}
 
-	public Set<Role> getRoles() {
-		return roles;
+	public Long getRoleId() {
+		return roleId;
 	}
 
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
+	public void setRoleId(Long roleId) {
+		this.roleId = roleId;
+	}
+
+	public String getRolename() {
+		return rolename;
+	}
+
+	public void setRolename(String rolename) {
+		this.rolename = rolename;
+	}
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
 	}
 }
 

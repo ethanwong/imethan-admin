@@ -1,6 +1,5 @@
 package cn.imethan.security.web;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletRequest;
@@ -20,6 +19,7 @@ import cn.imethan.common.dto.JqGridPageDto;
 import cn.imethan.common.dto.ReturnDto;
 import cn.imethan.common.hibernate.Page;
 import cn.imethan.common.hibernate.SearchFilter;
+import cn.imethan.common.utils.SearchFilterUtil;
 import cn.imethan.security.entity.Role;
 import cn.imethan.security.entity.User;
 import cn.imethan.security.service.RoleService;
@@ -47,8 +47,8 @@ public class UserController {
 
 	@ResponseBody
 	@RequestMapping(value = "json", method = {RequestMethod.POST})
-	public JqGridPageDto<User> json(@RequestParam("page") Integer pageNo,@RequestParam("rows") Integer pageSize) {
-		List<SearchFilter> filters = new ArrayList<SearchFilter>();
+	public JqGridPageDto<User> json(ServletRequest request,@RequestParam("page") Integer pageNo,@RequestParam("rows") Integer pageSize) {
+		List<SearchFilter> filters = SearchFilterUtil.buildByHttpRequest(request);
 
 		Page<User> page = new Page<User>(pageNo, pageSize);
 		page = userService.getPage(filters, page);

@@ -27,7 +27,7 @@ public class MenuDaoImpl extends HibernateTemplateSupport<Menu, Long>  implement
 
 	@Override
 	public List<Menu> getRootMenu() {
-		Query query = this.createQuery("from Menu where isRoot=true order by orderNo asc,id desc");
+		Query query = this.createQuery("from Menu where isRoot=true order by orderNo asc");
 		return  query.list();
 	}
 

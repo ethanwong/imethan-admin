@@ -98,15 +98,18 @@ public class MenuServiceImpl implements MenuService {
 	@Override
 	public List<Menu> getRootMenu() {
 		
-//		SearchFilter searchFilter = new SearchFilter("EQB_isRoot","true");
-//		List<Menu> list = menuDao.getByFilterAndOrder(searchFilter,Order.desc("id").asc("orderNo"), false);
-		
 		List<Menu> list = menuDao.getRootMenu();
+		for(Menu menu : list){
+			//排序处理
+			TreeSet<Menu> t = new TreeSet<Menu>(new MenuComparator());
+			Set<Menu> childrens = menu.getChildrens();
+			for(Menu children : childrens){
+				t.add(children);
+			}
+			menu.setChildrens(t);
+		}
 		
-//		Set<Menu> set = new HashSet<Menu>(); 
-//		set.addAll(list);//给set填充     
-//		list.clear();
-//		list.addAll(set);
+		Collections.sort(list, new MenuComparator());
 		
 		return list;
 	}

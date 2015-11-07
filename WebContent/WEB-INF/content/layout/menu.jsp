@@ -14,7 +14,7 @@
 <!--         <a href="#"><i class="fa fa-circle text-success"></i> Online</a> -->
 <!--       </div> -->
 <!--     </div> -->
-    <!-- search form -->
+    <!-- search form 
     <form action="#" method="get" class="sidebar-form">
       <div class="input-group">
         <input type="text" name="q" class="form-control" placeholder="Search...">
@@ -22,11 +22,11 @@
           <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
         </span>
       </div>
-    </form>
+    </form>-->
     <!-- /.search form -->
     <!-- sidebar menu: : style can be found in sidebar.less -->
     <ul class="sidebar-menu ">
-      <li class="header">MAIN NAVIGATION</li>
+<!--       <li class="header">MAIN NAVIGATION</li> -->
       <li class="">
         <a href="${root}/console">
           <i class="fa fa-dashboard"></i> <span>欢迎首页</span>
@@ -53,14 +53,15 @@
 <%--           <li><a href="${root}/security/menu"><i class="fa fa-circle-o"></i> 菜单授权</a></li> --%>
 <!--         </ul> -->
 <!--       </li> -->
-     <c:forEach var="menu" items="${userRootMenus}">
-	     <li class="treeview">
+     <c:forEach var="menu" items="${userRootMenus}" varStatus="varStatus">
+<%--      	<c:if test="${varStatus.index eq 0}">active</c:if> --%>
+	     <li class="treeview"  >
 	        <a href="#">
 	          <i class="<c:if test="${menu.ico == null || menu.ico eq ''}">fa fa-folder</c:if>${menu.ico}"></i>
 	          <span>${menu.name}</span><b class="arrow pull-right fa fa-angle-left"></b>
 	        </a>
 	     	<ul class="treeview-menu">
-		     	<c:forEach var="child" items="${menu.childrens}">
+		     	<c:forEach var="child" items="${menu.childrens}" varStatus="status">
 		     	 	<li id="${child.module}" class="<c:if test="${module eq child.module}">active</c:if>">
 		     	 		<a href="${root}${child.url}"><i class="<c:if test="${child.ico == null || child.ico eq '' }">fa fa-circle-o</c:if>${child.ico}"></i> ${child.name}</a>
 			     	 	<c:if test="${module eq child.module}">

@@ -24,8 +24,8 @@
 						</div>
 						<div class="box-body no-padding">
 							<div style="padding: 10px;">
-								<a id="addRole" class="btn btn-primary btn-sm btn-flat">增加</a>
-				            	<a id="deleteRole" class="btn btn-danger btn-sm btn-flat">删除</a>
+								<a id="addRole" class="btn btn-primary  btn-flat">增加</a>
+				            	<a id="deleteRole" class="btn btn-danger  btn-flat">删除</a>
 							</div>
 							<ul id="role-list" class="nav nav-pills nav-stacked">
 		                   		<li class="active"><a href="#"><i class="fa fa-inbox"></i> Inbox <span class="label label-primary pull-right">12</span></a></li>

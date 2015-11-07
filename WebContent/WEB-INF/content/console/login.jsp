@@ -68,7 +68,7 @@
         <form action="${root}/securitylogin" method="post" id="inputForm"  onsubmit="return login();"> 
         	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/> 
           <div class="form-group has-feedback">
-            <input id="username" type="text" class="form-control required" placeholder="Username" name="username" value="ethan">
+            <input id="username" type="text" class="form-control required" placeholder="Username" name="username" value="imethan">
             <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
           </div>
           <div class="form-group has-feedback">

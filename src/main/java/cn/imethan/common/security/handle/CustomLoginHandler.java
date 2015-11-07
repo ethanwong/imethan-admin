@@ -39,12 +39,13 @@ public class CustomLoginHandler extends SavedRequestAwareAuthenticationSuccessHa
 		HttpSession session = request.getSession();
 		UserInfo userInfo = (UserInfo) authentication.getPrincipal();
 		
+		
+		String username = userInfo.getUsername();
+		System.out.println("login userInfo:"+userInfo);
+		
 //		userInfo.setLoggingIp(this.getCurrentUserIp(request));
 		session.setAttribute("currentUser", userInfo);
 		
-		
-		//设置用户拥有的菜单
-
 		SavedRequest savedRequest = requestCache.getRequest(request, response);
 
 		if (savedRequest == null) {

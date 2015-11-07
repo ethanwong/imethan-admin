@@ -83,7 +83,7 @@ public class SearchFilter {
 	public static List<SearchFilter> buildSearchParams(Map<String, Object> searchParams) {
 		List<SearchFilter> filterList = new ArrayList<SearchFilter>();
 
-		for (Map.Entry entry : searchParams.entrySet()) {
+		for (@SuppressWarnings("rawtypes") Map.Entry entry : searchParams.entrySet()) {
 			String filterName = (String) entry.getKey();
 			String filterValue = (String) entry.getValue();
 

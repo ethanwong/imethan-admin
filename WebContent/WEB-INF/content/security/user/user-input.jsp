@@ -10,12 +10,11 @@
 	<div class="content-wrapper">
 		<section class="content-header">
 			<small><i class="fa fa-home"></i> 权限配置 > 用户管理</small>
-
 		</section>
 		<section class="content">
 			<div class="box box-primary">
 				<div class="box-header with-border">
-					添加用户 <span id="showmessage"></span>
+					<c:if test="${entity.id != null}">修改用户</c:if><c:if test="${entity.id == null}">添加用户</c:if> <span id="showmessage"></span>
 				</div>
 				<div class="box-body">
 					<security:authorize ifAnyGranted="更新用户">
@@ -81,7 +80,7 @@
 			//添加校验
 			$("#input-form").validate({
 				rules: {
-				 username:{required:true,rangelength:[3,10],
+				 username:{required:true,rangelength:[3,20],
 				    remote:{
 				           type:"POST",
 				           url:"${root}/security/user/isExistsName",

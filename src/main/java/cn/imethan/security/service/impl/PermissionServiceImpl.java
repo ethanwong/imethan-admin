@@ -186,13 +186,15 @@ public class PermissionServiceImpl implements PermissionService {
 		
 		Permission jsonUrlPermission = new Permission(menu,"浏览"+modelName,menuUrl + "/json");
 		Permission detailUrlPermission = new Permission(menu,"查看"+modelName,menuUrl + "/detail");
-		Permission menuUrlPermission = new Permission(menu,"添加"+modelName+"",menuUrl + "/input");
+		Permission inputUrlPermission = new Permission(menu,"添加"+modelName+"",menuUrl + "/input");
+		Permission updateUrlPermission = new Permission(menu,"更新"+modelName+"",menuUrl + "/update");
 		Permission saveUrlPermission = new Permission(menu,"保存"+modelName,menuUrl + "/save");
 		Permission deleteUrlPermission = new Permission(menu,"删除"+modelName,menuUrl + "/delete");
 		
 		list.add(jsonUrlPermission);
 		list.add(detailUrlPermission);
-		list.add(menuUrlPermission);
+		list.add(inputUrlPermission);
+		list.add(updateUrlPermission);
 		list.add(saveUrlPermission);
 		list.add(deleteUrlPermission);		
 		

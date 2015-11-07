@@ -18,21 +18,28 @@
 						<span id="showmessage"></span>   
 				</div>
                 <div class="box-body">
-                		<security:authorize ifAnyGranted="添加用户">
-                			<a href="${root}/security/user/input" class="btn btn-info btn-flat  margin-bottom">增加</a>
-                		</security:authorize>
-                		<security:authorize ifAnyGranted="更新用户">
-                			<a id="modifyUser" href="#" class="btn btn-default btn-flat  margin-bottom">修改</a>
-                		</security:authorize>
-						<security:authorize ifAnyGranted="删除用户">
-							<a id="batchDeleteUser" class="btn btn-danger btn-flat  margin-bottom">删除</a>
-						</security:authorize>
-					<div class="box-tools pull-right">
-	                    <div class="has-feedback">
-	                      <input type="text" class="form-control " placeholder="Search user">
-	                      <span class="glyphicon glyphicon-search form-control-feedback"></span>
-	                    </div>
-                 	</div>
+                	<div class="row">
+                		<div class="col-md-8">
+	                		<security:authorize ifAnyGranted="添加用户">
+	                			<a href="${root}/security/user/input" class="btn btn-info btn-flat  margin-bottom">增加</a>
+	                		</security:authorize>
+	                		<security:authorize ifAnyGranted="更新用户">
+	                			<a id="modifyUser" href="#" class="btn btn-default btn-flat  margin-bottom">修改</a>
+	                		</security:authorize>
+							<security:authorize ifAnyGranted="删除用户">
+								<a id="batchDeleteUser" class="btn btn-danger btn-flat  margin-bottom">删除</a>
+							</security:authorize>
+                		</div>
+                		<div class="col-md-4">
+	                		<div class="input-group">
+	                			<input type="text" id="search_LIKES_username" class="form-control"  placeholder="输入账号搜索"/>
+	                			<span class="input-group-btn">
+	                				<button type="button" id="search" class=" btn btn-info btn-flat"><i class="glyphicon glyphicon-search"></i></button>
+	                			</span>
+	                		</div>
+                		</div>
+                	</div>
+
 				    <table id="jqGrid" class="table-bordered table-striped"></table>
     				<div id="jqGridPager"></div>
 				</div>
@@ -42,6 +49,16 @@
 	
 	<script type="text/javascript">
 	$(document).ready(function () {
+		
+		//搜索
+		$("#search").click(function() {
+			$("#jqGrid").jqGrid('setGridParam', {
+				postData : {
+					'search_LIKES_username' : $('#search_LIKES_username').val()
+				},
+				page : 1
+			}).trigger("reloadGrid");
+		});
 		
 		//修改用户
 		$("#modifyUser").click(function(){

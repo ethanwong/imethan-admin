@@ -110,6 +110,16 @@
   |---------------------------------------------------------|
   -->
 <body class="hold-transition skin-blue-light sidebar-mini">
+	<div id="loader">
+		<div id='loading-mask'></div>
+		<div id="loading">
+		    <div class="loading-indicator">
+		       <img src="${root}/theme/images/ajax-loader.gif" width="41" height="31" style="padding-left: 10px;" /> 
+		       <div class="loading-msg">Loading...</div>
+		    </div>
+		</div>
+	</div>
+	
     <div class="wrapper">
 		<%@ include file="/WEB-INF/content/layout/header.jsp"%>
 		<%@ include file="/WEB-INF/content/layout/menu.jsp"%>
@@ -140,5 +150,11 @@
 		</div>
 	</div>	
 	<!-- warnConfirmModal end -->
+		<script type="text/javascript">
+		//页面加载时初始化脚本
+		$(document).ready(function () {
+			$('#loader').hide();
+		});
+	</script>
 </body>
 </html>

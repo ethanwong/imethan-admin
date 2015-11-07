@@ -12,7 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import cn.imethan.common.security.service.SecurityContext;
 import cn.imethan.common.security.service.UserInfo;
+import cn.imethan.security.entity.User;
 import cn.imethan.security.service.UserService;
 
 /**
@@ -31,24 +33,19 @@ public class IndexControl {
 	@RequestMapping("")
 	public String index(Model model,HttpServletRequest request) {
 		System.out.println("------console----------isRememberMe:"+isRememberMeAuthenticated());
-		userSerivce.justForTestMethod();
 		
-		//获取登录用户信息
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		String username = "";
-		if (principal instanceof UserDetails) {
-			UserInfo userInfo = (UserInfo) ((UserDetails) principal);
-			username = userInfo.getUsername();
+		UserInfo userInfo = SecurityContext.getUserInfo();//获取登录用户信息
+		System.out.println("------console----------userInfo:"+userInfo.getRolename());
+		
+		if (userInfo != null) {
+			String username = userInfo.getUsername();
 			
-			
+			User user = userSerivce.getByUsername(username);
 			//设置登录用户菜单
 			HttpSession session = request.getSession();
-			session.setAttribute("userRootMenus", userSerivce.getUserRootMenu(userInfo.getRoles()));
+			session.setAttribute("userRootMenus", userSerivce.getUserMenu(user.getRoles()));
 			
-		} else {
-			username = principal.toString();
 		}
-		System.out.println("username:"+username);
 
 		return "console/index";
 	}

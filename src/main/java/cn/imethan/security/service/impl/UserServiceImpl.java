@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,6 +25,7 @@ import cn.imethan.security.entity.Menu;
 import cn.imethan.security.entity.Role;
 import cn.imethan.security.entity.User;
 import cn.imethan.security.service.UserService;
+import cn.imethan.security.utils.comparator.MenuComparator;
 
 /**
  * UserServiceImpl.java
@@ -166,18 +168,33 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Set<Menu> getUserRootMenu(Set<Role> roles) {
-		Set<Menu> rootMenuList = new HashSet<Menu>();
+	public Set<Menu> getUserMenu(Set<Role> roles) {
+//		Set<Menu> userMenuList = new HashSet<Menu>();
+		TreeSet<Menu> userMenuList = new TreeSet<Menu>(new MenuComparator());
 		
 		for(Role role : roles){
-			for(Menu menu : role.getMenus()){
-				if(menu.isRoot() && !rootMenuList.contains(menu)){
-					rootMenuList.add(menu);
+			Set<Menu> allMenu = role.getMenus();//获取拥有权限的一级菜单
+			for(Menu menu : allMenu){
+				//剔除没有权限的菜单
+				if(menu.isRoot() && !userMenuList.contains(menu)){
+					
+					//排序处理
+					TreeSet<Menu> childrenTemp = new TreeSet<Menu>(new MenuComparator());
+					
+					Set<Menu> childrens = menu.getChildrens();
+					for(Menu children : childrens){
+						if(allMenu.contains(children)){
+							childrenTemp.add(children);
+						}
+					}
+					
+					menu.setChildrens(childrenTemp);
+					userMenuList.add(menu);
 				}
 			}
 		}
 		
-		return rootMenuList;
+		return userMenuList;
 	}
 
 	@Transactional(readOnly = false)

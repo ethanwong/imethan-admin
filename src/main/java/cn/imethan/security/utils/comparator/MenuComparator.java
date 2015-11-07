@@ -14,14 +14,14 @@ import cn.imethan.security.entity.Menu;
 public class MenuComparator implements Comparator<Menu> {
 	
 	@Override
-    public int compare(Menu arg0, Menu arg1) {
-        if (arg0.getId() > arg1.getId()) {
-            return 1;
-        } else if (arg0.getId() == arg1.getId()) {
-            return 0;
-        } else {
-            return -1;
-        }
-    }
+	public int compare(Menu o1, Menu o2) {
+		if(o1.getOrderNo()>o2.getOrderNo()){
+			return 1;
+		}else if(o1.getOrderNo()<o2.getOrderNo()){
+			return -1;
+		}else{
+			return o1.getId().compareTo(o2.getId());
+		}
+	}
 
 }

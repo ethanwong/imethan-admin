@@ -36,8 +36,14 @@
 							<div class="col-sm-2 columnlable">Email：</div>
 							<div class="col-sm-10 columncontent">${entity.email}</div>
 						</div>
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-8">
+								<a type="button" href="${root}/security/user" class="btn btn-flat btn-default ">返回</a>
+							</div>
+						</div>
 					</security:authorize>
 				</div>
+				<div class="box-footer"></div>
 			</div>
 		</section>
 	</div>

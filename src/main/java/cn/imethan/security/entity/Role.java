@@ -49,7 +49,7 @@ public class Role extends BaseEntity {
 
 	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JoinTable(name="imethan_security_role_menu",joinColumns = { @JoinColumn(name ="roleId" )} ,inverseJoinColumns = { @JoinColumn(name = "menuId")})
-	@OrderBy("id")
+	@OrderBy("orderNo")
 	private Set<Menu> menus = new HashSet<Menu>();//菜单
 	
 	public Set<Menu> getMenus() {
