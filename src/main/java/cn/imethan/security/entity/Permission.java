@@ -9,6 +9,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import cn.imethan.common.hibernate.BaseEntity;
@@ -21,6 +24,7 @@ import cn.imethan.common.hibernate.BaseEntity;
  */
 @Entity
 @Table(name="imethan_security_permission")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "securityCache")
 @JsonIgnoreProperties(value={"menu"})
 public class Permission extends BaseEntity {
 	

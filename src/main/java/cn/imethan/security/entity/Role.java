@@ -12,6 +12,10 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import cn.imethan.common.hibernate.BaseEntity;
@@ -24,6 +28,7 @@ import cn.imethan.common.hibernate.BaseEntity;
  */
 @Entity
 @Table(name="imethan_security_role")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "securityCache")
 @JsonIgnoreProperties(value = {"users","createTime"})
 public class Role extends BaseEntity {
 	

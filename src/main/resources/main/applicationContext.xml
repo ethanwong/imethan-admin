@@ -47,11 +47,19 @@
 		</property>
 		<property name="hibernateProperties">
 			<value>
+				<!-- 基本配置 -->
 				hibernate.dialect=org.hibernate.dialect.MySQLDialect
 				hibernate.show_sql=false
 				hibernate.hbm2ddl.auto=true
 				hibernate.hbm2ddl.auto=update
 				hibernate.use_sql_comments=true
+				<!-- 缓存配置 -->
+				hibernate.cache.use_query_cache=true
+				hibernate.cache.use_second_level_cache=true
+				hibernate.cache.provider_class=net.sf.ehcache.hibernate.EhCacheProvider
+				hibernate.cache.region.factory_class=org.hibernate.cache.ehcache.EhCacheRegionFactory
+				hibernate.cache.provider_configuration_file_resource_path=/cache/ehcache.xml
+				jdbc.use_scrollable_resultset=false
 			</value>
 		</property>
 	</bean>

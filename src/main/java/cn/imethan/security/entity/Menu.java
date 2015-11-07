@@ -14,6 +14,9 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sun.istack.internal.NotNull;
 
@@ -27,6 +30,7 @@ import cn.imethan.common.hibernate.BaseEntity;
  */
 @Entity
 @Table(name="imethan_security_menu")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = "securityCache")
 @JsonIgnoreProperties(value={"parent","roles","modifyTime","createTime","url"})
 public class Menu extends BaseEntity {
 	
