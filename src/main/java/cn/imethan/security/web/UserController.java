@@ -8,13 +8,13 @@ import javax.servlet.ServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 
 import cn.imethan.common.dto.JqGridPageDto;
 import cn.imethan.common.dto.ReturnDto;
@@ -42,7 +42,7 @@ public class UserController {
 
 	@RequestMapping("")
 	public String user(Model model) {
-		return "security/user";
+		return "security/user/user";
 	}
 
 	@ResponseBody
@@ -55,11 +55,26 @@ public class UserController {
 		
 		return new JqGridPageDto<User>(page);
 	}
-
-	@ResponseBody
-	@RequestMapping(value = "detail/{id}", method = { RequestMethod.POST })
-	public User detail(@PathVariable Long id) {
-		return userService.getById(id);
+	
+	@RequestMapping(value = "detail/{id}", method = { RequestMethod.GET })
+	public String detail(@PathVariable Long id,Model model) {
+		model.addAttribute("entity", userService.getById(id));
+		return "security/user/user-detail";
+	}
+	
+	@RequestMapping(value = {"input"}, method = { RequestMethod.GET })
+	public String input(Model model) throws Exception {
+		model.addAttribute("roles", roleService.getAllList());
+		return "security/user/user-input";
+	}
+	
+	@RequestMapping(value = {"update/{id}"}, method = { RequestMethod.GET })
+	public String input(Model model,@PathVariable Long id) throws Exception {
+		model.addAttribute("roles", roleService.getAllList());
+		if(!StringUtils.isEmpty(id)){
+			model.addAttribute("entity", userService.getById(id));
+		}
+		return "security/user/user-input";
 	}
 
 	@ResponseBody
@@ -87,5 +102,13 @@ public class UserController {
 	public List<Role>  json(){
 		return roleService.getAllList();
 	}
-
+	
+	@ResponseBody
+	@RequestMapping(value = "/isExistsName", method = { RequestMethod.POST })
+	public Boolean isExistsName(Model model,ServletRequest request) {
+		String id = request.getParameter("id");
+		String username = request.getParameter("username");
+		return !userService.isExistsName(id,username);
+	}
+	
 }

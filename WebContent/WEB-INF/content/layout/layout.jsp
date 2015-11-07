@@ -86,6 +86,7 @@
 	<script src="${root}/theme/other/jquery-validation-1.14.0/additional-methods.js"></script>
 	<script src="${root}/theme/other/jquery-validation-1.14.0/messages_zh.min.js"></script>
     <!-- jquery-validation end-->
+    <script src="${root}/theme/plugins/cryptojs/crypto-js-md5.js"></script>
 	<decorator:head></decorator:head>
 </head>
   <!--

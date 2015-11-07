@@ -44,13 +44,35 @@ public class User extends BaseEntity {
 	
 	@Transient
 	private Long roleId;//角色ID
-
-	public Long getRoleId() {
+	@Transient
+	private String roleName;//角色名称
+	
+	public Long getRoleIdForInput(){
 		if(roles != null && !roles.isEmpty()){
 			return roles.iterator().next().getId();
 		}else{
 			return roleId;
+		} 
+	}
+
+	public String getRoleName() {
+		if(roles != null && !roles.isEmpty()){
+			return roles.iterator().next().getName();
+		}else{
+			return roleName;
 		}
+	}
+
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
+	}
+
+	public Long getRoleId() {
+//		if(roles != null && !roles.isEmpty()){
+//			return roles.iterator().next().getId();
+//		}else{
+			return roleId;
+//		}
 	}
 
 	public void setRoleId(Long roleId) {

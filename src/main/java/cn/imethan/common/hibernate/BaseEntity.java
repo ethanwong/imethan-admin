@@ -4,7 +4,9 @@ import java.util.Date;
 
 import javax.persistence.MappedSuperclass;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import cn.imethan.common.utils.CustomDateSerializer;
 
 /**
  * BaseEntity.java
@@ -20,6 +22,7 @@ public class BaseEntity extends IdEntity{
 	private Date createTime = new Date();//创建时间
 	private Date modifyTime;//更新时间
 	
+	@JsonSerialize(using = CustomDateSerializer.class)
 	public Date getCreateTime() {
 		return createTime;
 	}

@@ -1,5 +1,6 @@
 package cn.imethan.security.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -59,7 +61,9 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Page<User> getPage(List<SearchFilter> filters, Page<User> page) {
-		return userDao.getPageByFilters(page, filters, false);
+		List<Order> orderList = new ArrayList<Order>();
+		orderList.add(Order.desc("id"));
+		return userDao.getPageByFiltersAndOrders(page, filters, orderList, false);
 	}
 	
 	@Transactional(readOnly = false)
@@ -68,7 +72,6 @@ public class UserServiceImpl implements UserService {
 		try {
 			//设置角色信息
 			Long roleId = entity.getRoleId();
-			System.out.println("-----------roleId:"+roleId);
 			Role role = roleDao.getById(roleId);
 			Set<Role> roles = new HashSet<Role>();
 			roles.add(role);
@@ -82,6 +85,8 @@ public class UserServiceImpl implements UserService {
 				entity.setModifyTime(new Date());
 			}			
 			userDao.save(entity);
+			
+			return new ReturnDto(true,"添加成功");
 		} catch (Exception e) {
 			returnDto = new ReturnDto(false,"操作失败");
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -189,6 +194,11 @@ public class UserServiceImpl implements UserService {
 			e.printStackTrace();
 		}
 		return new ReturnDto(true,"删除成功");
+	}
+
+	@Override
+	public boolean isExistsName(String id, String name) {
+		return userDao.isExistsName(id,name);
 	}
 
 

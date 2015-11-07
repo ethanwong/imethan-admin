@@ -97,4 +97,15 @@ public interface UserService{
 	 */
 	public ReturnDto deleteByIds(List<Long> ids);
 	
+	/**
+	 * 是否存在账号
+	 * @param id
+	 * @param name
+	 * @return
+	 *
+	 * @author Ethan
+	 * @datetime 2015年11月7日 下午2:08:55
+	 */
+	public boolean isExistsName(String id, String name);
+	
 }

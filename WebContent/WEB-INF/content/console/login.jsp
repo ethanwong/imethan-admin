@@ -25,6 +25,27 @@
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script src="${root}/theme/plugins/cryptojs/crypto-js-md5.js"></script>
+    <script type="text/javascript">
+	function login(){
+		var username = $("#username").val();
+		var password = $("#password").val();
+		if(username == '' && password == ''){
+			$(".login-box-msg").html("请输入账号和密码");
+			return false;
+		}else if(username == ''){
+			$(".login-box-msg").html("请输入账号");
+			return false;
+		}else if(password == ''){
+			$(".login-box-msg").html("请输入密码");
+			return false;
+		}else{
+			var password = $('#password').val();
+			$('#password').val(CryptoJS.MD5(password));
+			return true;
+		}
+	}
+	</script>
   </head>
   <body class="hold-transition login-page">
     <div class="login-box">
@@ -44,14 +65,14 @@
 				Sign in to start your session
 			</c:if>
         </p>
-        <form action="${root}/securitylogin" method="post">
+        <form action="${root}/securitylogin" method="post" id="inputForm"  onsubmit="return login();"> 
         	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/> 
           <div class="form-group has-feedback">
-            <input type="text" class="form-control" placeholder="Username" name="username" value="ethan">
+            <input id="username" type="text" class="form-control required" placeholder="Username" name="username" value="ethan">
             <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
           </div>
           <div class="form-group has-feedback">
-            <input type="password" class="form-control" placeholder="Password" name="password" value="123456">
+            <input id="password" type="password" class="form-control required" placeholder="Password" name="password" value="123456">
             <span class="glyphicon glyphicon-lock form-control-feedback"></span>
           </div>
           <div class="row">

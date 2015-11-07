@@ -13,6 +13,30 @@
 }(jQuery));
 
 /**
+ * 删除一条记录
+ * @param url
+ * 
+ * @author Ethan Wong
+ * @datetime 2015年11月7日下午1:19:18
+ */
+function deleteOne(url){
+	setDeleteModal().bind('click',function(){
+		$.ajax({
+			url:url,
+			type:"POST",
+			dateType:"json",
+			success:function(msg){
+				showMessage(msg,"");
+				$("#jqGrid").trigger("reloadGrid");
+			},
+			error:function(){
+				showError("删除失败");	
+			}
+		});
+	});
+}
+
+/**
  * 初始化删除modal
  * @returns modal删除按钮对象
  * 

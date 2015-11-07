@@ -51,3 +51,14 @@ th {
 .modal-title {
 	font-size: 14px;
 }
+
+.box-body .columnlable{
+	padding-top: 6px;
+	text-align: right;
+}
+.box-body .columncontent{
+	padding-top: 6px;
+}
+label{
+	font-weight: normal;
+}

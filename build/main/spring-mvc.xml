@@ -36,6 +36,12 @@
 			<mvc:exclude-mapping path="/upload/**" />
 			<bean class="cn.imethan.security.interceptor.CommonInterceptor" />
 		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/**"/>
+			<mvc:exclude-mapping path="/theme/**" />
+			<mvc:exclude-mapping path="/upload/**" />
+			<ref local="localeChangeInterceptor"/>
+		</mvc:interceptor>
 	</mvc:interceptors>
 
 	<mvc:annotation-driven content-negotiation-manager="contentNegotiationManager" enableMatrixVariables="true">
@@ -90,5 +96,23 @@
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
 		<!-- one of the properties available; the maximum file size in bytes -->
 		<property name="maxUploadSize" value="1000000" />
+	</bean>
+	
+	<!-- i18n国际化配置 -->
+	<bean id="localeResolver"
+		class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+		<property name="defaultLocale" value="zh_CN" />
+	</bean>
+	
+	<!-- i18n本地化设置拦截器 -->
+	<bean id="localeChangeInterceptor" 
+		class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+		<property name="paramName" value="language" />
+	</bean>
+	
+	<!-- 添加message文件 -->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="message/welcome" />
 	</bean>
 </beans> 
