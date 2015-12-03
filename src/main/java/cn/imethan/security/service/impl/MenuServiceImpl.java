@@ -52,7 +52,7 @@ public class MenuServiceImpl implements MenuService {
 	@Override
 	public ReturnDto saveOrModify(Menu entity) {
 		try {
-			menuDao.save(entity);
+			menuDao.saveOrUpdate(entity);
 			returnDto.setObject(entity);
 			InvocationSecurityMetadataSource.reFresh();//刷新授权信息
 		} catch (Exception e) {

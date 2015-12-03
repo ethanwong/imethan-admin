@@ -92,7 +92,7 @@ public class RoleServiceImpl implements RoleService {
 					entity.setPermissions(permissionSet);
 				}
 			}
-			roleDao.save(entity);
+			roleDao.saveOrUpdate(entity);
 		} catch (Exception e) {
 			e.printStackTrace();
 			returnDto = new ReturnDto(false,"操作失败");

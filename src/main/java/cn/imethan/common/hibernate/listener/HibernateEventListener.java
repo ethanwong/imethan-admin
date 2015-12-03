@@ -1,4 +1,4 @@
-package cn.imethan.common.listener;
+package cn.imethan.common.hibernate.listener;
 
 import javax.annotation.PostConstruct;
 

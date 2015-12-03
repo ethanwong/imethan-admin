@@ -19,7 +19,10 @@ public class BaseEntity extends IdEntity{
 	
 	private static final long serialVersionUID = -8052135027431298206L;
 	
-	private Date createTime = new Date();//创建时间
+	/*******审计信息*******/
+	private String ipAddress;//IP地址
+	private String operateUser;//操作用户
+	private Date createTime;//创建时间
 	private Date modifyTime;//更新时间
 	
 	@JsonSerialize(using = CustomDateSerializer.class)
@@ -34,6 +37,18 @@ public class BaseEntity extends IdEntity{
 	}
 	public void setModifyTime(Date modifyTime) {
 		this.modifyTime = modifyTime;
+	}
+	public String getIpAddress() {
+		return ipAddress;
+	}
+	public void setIpAddress(String ipAddress) {
+		this.ipAddress = ipAddress;
+	}
+	public String getOperateUser() {
+		return operateUser;
+	}
+	public void setOperateUser(String operateUser) {
+		this.operateUser = operateUser;
 	}
 	
 }

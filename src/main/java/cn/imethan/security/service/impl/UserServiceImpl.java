@@ -83,10 +83,11 @@ public class UserServiceImpl implements UserService {
 			String password = bCryptPasswordEncoder.encode(entity.getPassword());
 			entity.setPassword(password);
 			
-			if(entity.getId() != null){
-				entity.setModifyTime(new Date());
-			}			
-			userDao.save(entity);
+//			if(entity.getId() != null){
+//				entity.setModifyTime(new Date());
+//			}			
+//			userDao.save(entity);
+			userDao.saveOrUpdate(entity);
 			
 			return new ReturnDto(true,"添加成功");
 		} catch (Exception e) {

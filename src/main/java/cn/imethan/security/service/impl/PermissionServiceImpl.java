@@ -88,7 +88,7 @@ public class PermissionServiceImpl implements PermissionService {
 				} else if (isUrlExists) {
 					return new ReturnDto(false, "授权URL已经存在");
 				}
-				permissionDao.save(permission);
+				permissionDao.saveOrUpdate(permission);
 			} else {
 				Permission permissionDb = this.getById(permission.getId());
 				
@@ -159,7 +159,7 @@ public class PermissionServiceImpl implements PermissionService {
 				String menuUrl = nameAndUrl.substring(index+1,nameAndUrl.length());
 				Permission permission = new Permission(menu,menuName,menuUrl);
 				
-				permissionDao.save(permission);
+				permissionDao.saveOrUpdate(permission);
 			}
 			InvocationSecurityMetadataSource.reFresh();//刷新授权信息
 		} catch (Exception e) {
