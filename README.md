@@ -17,14 +17,17 @@
 Spring data mongo、Spring data jpa、log4j2、quartz、ehcache等
 
 
+主要功能
+
+用户管理、角色管理、菜单管理、授权管理
+
+
 其他说明
 
 使用gradle构建项目、基于JDK1.7、Servlet 3.0
 
 
-主要功能
 
-用户管理、角色管理、菜单管理、授权管理
 
 
 
