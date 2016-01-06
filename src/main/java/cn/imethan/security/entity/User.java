@@ -12,6 +12,9 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import cn.imethan.common.hibernate.BaseEntity;
 
 /**
@@ -22,6 +25,13 @@ import cn.imethan.common.hibernate.BaseEntity;
  */
 @Entity
 @Table(name="imethan_security_user")
+
+//CacheConcurrencyStrategy.NONE 
+//CacheConcurrencyStrategy.READ_ONLY，只读模式，在此模式下，如果对数据进行更新操作，会有异常； 
+//CacheConcurrencyStrategy.READ_WRITE，读写模式在更新缓存的时候会把缓存里面的数据换成一个锁，其它事务如果去取相应的缓存数据，发现被锁了，直接就去数据库查询； 
+//CacheConcurrencyStrategy.NONSTRICT_READ_WRITE，不严格的读写模式则不会的缓存数据加锁； 
+//CacheConcurrencyStrategy.TRANSACTIONAL，事务模式指缓存支持事务，当事务回滚时，缓存也能回滚，只支持JTA环境
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE,region="securityCache") 
 public class User extends BaseEntity {
 	
 	private static final long serialVersionUID = 2732105841282347957L;

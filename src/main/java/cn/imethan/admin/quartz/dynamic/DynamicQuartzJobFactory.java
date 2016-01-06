@@ -1,6 +1,7 @@
 package cn.imethan.admin.quartz.dynamic;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -184,8 +185,14 @@ public class DynamicQuartzJobFactory {
 			
 			//表达式调度构建器
 			CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(timeExpression);
+			Date triggerStartTime = new Date();//开始执行时间
+			Date triggerEndTime = null;//任务失效时间，默认为null
 			//按新的cronExpression表达式构建一个新的trigger
-			trigger = TriggerBuilder.newTrigger().withIdentity(jobName, jobGroup).forJob(jobDetail).withSchedule(scheduleBuilder).build();
+			int triggerPriority = Trigger.DEFAULT_PRIORITY;//优先级越高越快执行
+			trigger = TriggerBuilder.newTrigger().withIdentity(jobName, jobGroup).withPriority(triggerPriority)
+					.startAt(triggerStartTime).endAt(triggerEndTime).forJob(jobDetail)
+					.withSchedule(scheduleBuilder)
+					.build();
 			
 			boolean isExists = scheduler.checkExists(jobDetail.getKey());
 			if(!isExists){

@@ -1,17 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="http://ehcache.sf.net/ehcache.xsd" name="ehCache">
-
+	<!-- 
+	user.home – 用户主目录    
+    user.dir      – 用户当前工作目录    
+    java.io.tmpdir – 默认临时文件路径 
+    -->
 	<diskStore path="java.io.tmpdir/ehcache" />
 
 	<!-- Mandatory Default Cache configuration. These settings will be applied 
 		to caches created programmtically using CacheManager.add(String cacheName) -->
+	<!-- 
+	maxElementsInMemory:设置基于内存的缓存可存放对象的最大数目 
+	maxElementsOnDisk:设置基于硬盘的缓存可存放对象的最大数目 
+	eternal:如果为true，表示对象永远不会过期，此时会忽略timeToIdleSeconds和timeToLiveSeconds属性，默认为false
+	timeToIdleSeconds： 设定允许对象处于空闲状态的最长时间，以秒为单位
+	timeToLiveSeconds：设定对象允许存在于缓存中的最长时间，以秒为单位 
+	overflowToDisk：如果为true,表示当基于内存的缓存中的对象数目达到了maxElementsInMemory界限后，会把益出的对象写到基于硬盘的缓存中。注意：如果缓存的对象要写入到硬盘中的话，则该对象必须实现了Serializable接口才行 
+	memoryStoreEvictionPolicy：缓存对象清除策略。有三种： 
+	1 FIFO ，first in first out ，这个是大家最熟的，先进先出，不多讲了 
+	2 LFU ， Less Frequently Used ，就是上面例子中使用的策略，直白一点就是讲一直以来最少被使用的。如上面所讲，缓存的元素有一个hit 属性，hit 值最小的将会被清出缓存。 
+	2 LRU ，Least Recently Used ，最近最少使用的，缓存的元素有一个时间戳，当缓存容量满了，而又需要腾出地方来缓存新的元素的时候，那么现有缓存元素中时间戳离当前时间最远的元素将被清出缓存。
+	-->
+	<!-- 设定缓存的默认数据过期策略 -->
 	<defaultCache maxElementsInMemory="10000" eternal="false"
 		timeToIdleSeconds="120" timeToLiveSeconds="120" overflowToDisk="true"
 		maxElementsOnDisk="10000000" diskPersistent="false"
 		diskExpiryThreadIntervalSeconds="120" memoryStoreEvictionPolicy="LRU" />
-	
-	<cache name="securityCache" maxElementsInMemory="0"
+		
+	<!-- 设定具体的命名缓存的数据过期策略,配置的属性继承默认过期策略，拥有的配置项将覆盖默认过期策略-->
+	<cache name="securityCache" maxElementsInMemory="10000"
 		maxElementsOnDisk="10000000" eternal="true" overflowToDisk="true"
 		diskSpoolBufferSizeMB="50" />
 
